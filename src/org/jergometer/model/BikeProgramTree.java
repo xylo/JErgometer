@@ -252,6 +252,3 @@ public class BikeProgramTree extends DefaultTreeModel {
 		return root;
 	}
 }
-
-class FileTreeCellRenderer extends DefaultTreeCellRenderer {
-}
