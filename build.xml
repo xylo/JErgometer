@@ -86,6 +86,21 @@
 			</manifest>
 		</jar>
 
+		<!-- Copy example programs and dlls. -->
+		<copy todir="${upload}/programs">
+			<fileset dir="programs"/>
+		</copy>
+		<mkdir dir="${upload}/lib"/>
+		<copy todir="${upload}/lib">
+			<fileset dir="${lib}">
+				<include name="*.jar"/>
+				<exclude name="annotations.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${upload}/lib/dlls">
+			<fileset dir="${lib}/dlls"/>
+		</copy>
+
 		<!-- Copy start scripts. -->
 		<copy todir="${upload}" file="scripts/${start.sh}"/>
 		<copy todir="${upload}" file="scripts/${start.bat}"/>

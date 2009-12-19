@@ -1,10 +1,21 @@
 #!/bin/bash
 
 DIR=`dirname $0`
+cd $DIR
+
+ARCH=uname -m
+case $ARCH in
+	i686)
+		ARCH=i386
+		;;
+	x86_64)
+		ARCH=amd64
+		;;
+esac
 
 action=start
 while [ "$action" = "start" ]; do
-	java -jar "$DIR/JLatexEditor.jar" "$@"
+	java -Djava.library.path=lib/dlls/Linux/$ARCH -cp jergometer.jar:RXTXcomm.jar org.jergometer.Jergometer "$@"
 	if [ "$?" != "255" ]; then
 		action=end
 	fi
