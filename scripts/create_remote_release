@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh ahso create_jergometer_release

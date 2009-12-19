@@ -1,0 +1,29 @@
+#!/bin/bash
+
+programName=JErgometer
+svnRepo=https://jergometer.org/svn/jergometer
+
+version=$1
+prefix=$programName-$version
+
+# tag this release
+#svn copy . $svnRepo/tags/$version -m "released version $version"
+
+mkdir -p dist/releases
+
+cd dist/
+
+# pack
+zip -r $prefix.zip $programName
+tar -czf $prefix.tar.gz $programName
+
+mv $prefix.* releases/
+
+# create symbolic links (last.*)
+cd releases
+for ext in zip tar.gz; do
+	[ -e $programName-latest.$ext ] && rm $programName-latest.$ext
+	ln -s $prefix.$ext $programName-latest.$ext
+done
+
+cd ../..

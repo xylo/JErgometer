@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DIR=`dirname $0`
+
+action=start
+while [ "$action" = "start" ]; do
+	java -jar "$DIR/JLatexEditor.jar" "$@"
+	if [ "$?" != "255" ]; then
+		action=end
+	fi
+done
