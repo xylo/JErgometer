@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.jergometer.gui.ChooseNewProgramWindow">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="20" y="20" width="1557" height="3395"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="84967" class="javax.swing.JLabel" binding="headline">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font style="0"/>
+          <text resource-bundle="org/jergometer/translation/jergometer" key="choose_new_program_dialog.sessions_uses_unknown_program"/>
+        </properties>
+        <clientProperties>
+          <html.disable class="java.lang.Boolean" value="true"/>
+        </clientProperties>
+      </component>
+      <component id="1aece" class="javax.swing.JTree" binding="bikeProgramTree">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+          <gridbag top="0" left="5" bottom="0" right="5" weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <showsRootHandles value="false"/>
+        </properties>
+        <clientProperties>
+          <JTree.lineStyle class="java.lang.String" value=""/>
+          <html.disable class="java.lang.Boolean" value="true"/>
+        </clientProperties>
+      </component>
+      <component id="7d1f9" class="javax.swing.JButton" binding="assignButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="5" bottom="5" right="2" weightx="0.5" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="org/jergometer/translation/jergometer" key="label.assign"/>
+        </properties>
+      </component>
+      <component id="f5cb2" class="javax.swing.JButton" binding="skipButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="2" bottom="5" right="5" weightx="0.5" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="org/jergometer/translation/jergometer" key="label.skip"/>
+        </properties>
+      </component>
+      <component id="ff407" class="javax.swing.JTextArea" binding="explanation">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+          <gridbag top="0" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background swing-color="OptionPane.background"/>
+          <editable value="false"/>
+          <enabled value="true"/>
+          <lineWrap value="true"/>
+          <rows value="1"/>
+          <text resource-bundle="org/jergometer/translation/jergometer" key="choose_new_program_dialog.explanation"/>
+          <wrapStyleWord value="true"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

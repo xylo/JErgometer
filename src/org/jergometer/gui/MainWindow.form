@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.jergometer.gui.MainWindow">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="20" y="20" width="868" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none">
+      <font/>
+    </border>
+    <children>
+      <splitpane id="a3508">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <continuousLayout value="false"/>
+          <oneTouchExpandable value="true"/>
+          <orientation value="0"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="87237" class="org.jergometer.gui.Diagram" binding="diagram">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+          <grid id="e842" layout-manager="GridBagLayout">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="30032" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="1" column="0" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="10" bottom="10" right="10" weightx="0.5" weighty="1.0"/>
+                </constraints>
+                <properties/>
+                <border type="none" title-resource-bundle="org/jergometer/translation/jergometer" title-key="label.training_program"/>
+                <children>
+                  <grid id="280f" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="0" bottom="5" right="5" weightx="0.5" weighty="0.0"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="ea97e" class="javax.swing.JButton" binding="recordButton">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties>
+                          <icon value="org/jergometer/images/record.png"/>
+                          <text value=""/>
+                          <toolTipText value="start recording training session"/>
+                        </properties>
+                      </component>
+                      <component id="72697" class="javax.swing.JButton" binding="stopButton">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag top="0" left="5" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties>
+                          <enabled value="false"/>
+                          <icon value="org/jergometer/images/stop.png"/>
+                          <text value=""/>
+                          <toolTipText value="stop recording training session"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <scrollpane id="5f678">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="5" bottom="5" right="5" weightx="0.5" weighty="0.5"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="79c37" class="javax.swing.JTree" binding="programTree">
+                        <constraints/>
+                        <properties>
+                          <rootVisible value="true"/>
+                          <showsRootHandles value="false"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+              <grid id="e65ca" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="0" column="2" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties/>
+                <border type="none">
+                  <font/>
+                </border>
+                <children>
+                  <component id="dc8ff" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.pulse"/>
+                    </properties>
+                  </component>
+                  <component id="49de1" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.pedal_rpm"/>
+                    </properties>
+                  </component>
+                  <component id="e3555" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.speed"/>
+                    </properties>
+                  </component>
+                  <component id="6ef9f" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.distance"/>
+                    </properties>
+                  </component>
+                  <component id="ed697" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.dest_power"/>
+                    </properties>
+                  </component>
+                  <component id="2f0fd" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.energy"/>
+                    </properties>
+                  </component>
+                  <component id="6d1d6" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.time"/>
+                    </properties>
+                  </component>
+                  <component id="a2637" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="org/jergometer/translation/jergometer" key="property.real_power"/>
+                    </properties>
+                  </component>
+                  <component id="354a" class="javax.swing.JLabel" binding="destPowerLabel">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="7b970" class="javax.swing.JLabel" binding="pulseLabel">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="1f67f" class="javax.swing.JLabel" binding="pedalRpmLabel">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="2e3af" class="javax.swing.JLabel" binding="speedLabel">
+                    <constraints>
+                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="e5e59" class="javax.swing.JLabel" binding="distanceLabel">
+                    <constraints>
+                      <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="a54fc" class="javax.swing.JLabel" binding="energyLabel">
+                    <constraints>
+                      <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="225d8" class="javax.swing.JLabel" binding="timeLabel">
+                    <constraints>
+                      <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="4b725" class="javax.swing.JLabel" binding="realPowerLabel">
+                    <constraints>
+                      <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="e6b31" class="javax.swing.JLabel" binding="welcomeLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font name="Bitstream Vera Serif" size="16" style="1"/>
+                  <text resource-bundle="org/jergometer/translation/jergometer" key="label.welcome"/>
+                </properties>
+              </component>
+              <grid id="9e815" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="0" column="1" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="0" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
+                </constraints>
+                <properties/>
+                <border type="none" title-resource-bundle="org/jergometer/translation/jergometer" title-key="label.training_data"/>
+                <children>
+                  <scrollpane id="2f721">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="5" bottom="5" right="5" weightx="1.0" weighty="0.5"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="735cb" class="javax.swing.JTable" binding="sessionTable">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </splitpane>
+    </children>
+  </grid>
+</form>

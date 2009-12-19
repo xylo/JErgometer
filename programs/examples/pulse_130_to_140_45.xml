@@ -1,0 +1,16 @@
+<program name="Pulse 130 to 140 (45 min)" duration="45m">
+	<timeEvents>
+		<timeEvent time="0"><action type="power" value="80"/></timeEvent>
+		<timeEvent time="30"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="5m"><action type="pulse" value="131"/></timeEvent>
+		<timeEvent time="9m"><action type="pulse" value="132"/></timeEvent>
+		<timeEvent time="13m"><action type="pulse" value="133"/></timeEvent>
+		<timeEvent time="17m"><action type="pulse" value="134"/></timeEvent>
+		<timeEvent time="21m"><action type="pulse" value="135"/></timeEvent>
+		<timeEvent time="25m"><action type="pulse" value="136"/></timeEvent>
+		<timeEvent time="29m"><action type="pulse" value="137"/></timeEvent>
+		<timeEvent time="33m"><action type="pulse" value="138"/></timeEvent>
+		<timeEvent time="37m"><action type="pulse" value="139"/></timeEvent>
+		<timeEvent time="41m"><action type="pulse" value="140"/></timeEvent>
+	</timeEvents>
+</program>

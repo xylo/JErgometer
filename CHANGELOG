@@ -1,0 +1,181 @@
+Changelog for JErgometer
+""""""""""""""""""""""""
+
+//== 0.7.3 ==
+
+== 0.7.2 ==
+
+2009-11-28
+* [stefan]  * fixed bug #153: "Edit" not available in program menu anymore
+
+== 0.7.1 ==
+
+2009-11-21
+* [stefan]  * implemented feature #148: add "rename" menu entry to popup of program tree
+            * fixed bug #149: JErgometer hangs when launched the editor
+            * fixed bug #151: pressing F5 on a selected bike program does not update the program
+            * fixed bug #150: empty directories look like files in the program tree
+            * implemented feature #152: add "create directory" to program tree popup
+
+== 0.7.0 ==
+
+2009-09-20
+* [stefan]  * implemented feature #138: allow copying programs in the program tree
+            * fixed bug #146: update of the program tree via F5 does not work
+            * implemented enhancement #147: change shortcut to edit program files to F4
+
+2009-09-19
+* [stefan]  * implemented enhancement issue #144: programs and subdirectores in the program tree should be alphabetically sorted
+            * implemented feature issue #145: add menu entry to update program tree
+
+2009-06-07
+* [stefan]  * solved issue #139: stop button is not disabled after start of JErgometer
+            * implemented feature issue #140: add a performance value to progress graph
+
+== 0.6.8 ==
+
+2009-05-19
+* [stefan]  * added popup to program table
+            * programs can be directly deleted in JErgometer
+            * programs can be opened in user's favorite XML editor
+            * added a configuration option in settings window to set favorite text/xml editor
+
+2009-05-15
+* [stefan]  * added popup to session table
+
+2009-05-14
+* [stefan]  * implemented enhancement issue #6: show status of recording and disable start / stop buttons if recording / not recording
+            * implemented enhancement issue #136: inform user about connection problems
+            * enhanced error messages
+            * solved crash issue #137: jergometer crashes under ubuntu jaunty
+
+== 0.6.7 ==
+
+2009-05-12
+* [stefan]  * implemented feature issue #129: add sample programs or program templates
+
+== 0.6.6 ==
+
+2009-05-10
+* [stefan]  * solved issue #135: selection an older session after a newly recorded session results in an exception
+
+== 0.6.5 ==
+
+2009-05-03
+* [stefan]  * implemented feature issue #134: implement "test connection" button in settings dialog
+
+2009-05-02
+* [stefan]  * implemented feature issue #132: add menu item to delete selected training sessions
+            * solved issue #133: jergometer cannot select 2 or more sessions with NaN values
+            * solved issue #116: static strings in ChooseNewProgramDialog need to be translated
+
+== 0.6.4 ==
+
+2009-04-26
+* [stefan]  * implemented feature issue #2: the serial port has to be configurable
+
+2009-04-19
+* [stefan]  * converted spaces to tabs in java files
+
+== 0.6.3 ==
+
+2009-03-23
+* [stefan]  * implemented feature issue #128: easier timeEvent configuration in program files
+
+== 0.6.2 ==
+
+2008-02-25
+* [stefan]  * implemented feature issue #122: progression diagram needs a date labeling for the time axis
+
+2008-02-18
+* [stefan]  * implemented feature issue #120: add shortcuts for menu items
+            * implemented feature issue #121: sessions diagram: change between average values and progression should update diagram
+
+2008-02-17
+* [stefan]  * solved issue #117: session diagram is not limited to program duration
+            * solved issue #115: wrong duration info in session file after recording
+            * solved issue #114: filter directories and files beginning with a dot
+            * implemented feature issue #119: main window should be maximized after start
+
+2008-02-16
+* [stefan]  * implemented feature issue #113: show only sessions of the selected program / program directory
+            * implemented feature issue #12: extended view and statistics for bike sessions
+
+2008-02-15
+* [stefan]  * implemented feature issue #3: rescan of bike sessions and fixing missing programs
+            * implemented feature issue #111: add attribute program length to the session objects and files
+            * implemented feature issue #112: add checkbox to view only completed session in the session table
+
+2008-01-23
+* [stefan]  * implemented issue #5: apache ant build file needed for compiling
+
+2007-10-09
+* [stefan]  * new method to get ports from BikeConnector
+
+2007-07-29
+* [stefan]  * solved feature issue #11: about dialog finished (image and text)
+            * solved major issue #15: package de.endrullis.jergometer renamed to org.jergometer
+
+2007-05-09
+* [stefan]  * changed some hard coded strings into i18n strings
+            * resource bundles converted into UTF-8 -> still a problem because plain properties files can only have
+              ISO-... encoding -> issue #14
+            * fixed minor issue #14: convert all files to UTF-8
+
+2007-05-01
+* [stefan]  * solved feature issue #13: display a progress dialog if loading user sessions takes more than a second
+            * annotations.jar added to lib directory
+            * solved minor issue #7: add the current bike session to the list after "stop recording"
+            * solved tweak issue #4: save the main information of all old sessions in an xml file:
+                - sessions.xml is created automaticly
+                - startup / switch user is much faster now
+                - complete bike sessions are loaded, if getLastRecord() od getData() is called
+
+2007-03-06
+* [stefan]  * fixed issue #1: jergometer.stopRecording(); does not return
+            * now we have a changelog
+            * fixed a ArrayIndexOutOfBoundsException in the session list when switching to another user
+            * fixed issue #10: use relative paths for program names in bike sessions
+            * fixed issue #9: show also the bike program when selecting an old bike session
+
+2007-02-07
+* [stefan]  * some minor changes in BikeProgramVisualizer
+
+2007-01-15
+* [stefan]  * some minor changes in BikeSession, SessionTableModel, UserData
+
+2007-01-08
+* [stefan]  * images for start / stop recording
+            * session list
+            * session visualisation implemented
+
+2007-01-07
+* [stefan]  * diagram works
+            * some minor fixes
+
+2007-01-04
+* [joerg]   * changes in Diagram
+
+2006-12-20
+* [stefan]  * better pulse control
+
+2006-12-19
+* [joerg]   * first version of Diagram component to visualize bike sessions and bike programs
+* [stefan]  * ergometer reset command implemented ("RS")
+
+2006-12-14
+* [stefan]  * minor changes in communication classes and BikeProgram, BikeSubprogram
+
+2006-12-12
+* [stefan]  * some changes in package structure
+            * BikeProgram, BikeSession, ...
+            * first pulse program
+
+2006-12-11
+* [stefan]  * begin of About... dialog
+
+2006-12-09
+* [stefan]  * i18n support
+
+2006-12-08
+* [stefan]  * initial svn commit

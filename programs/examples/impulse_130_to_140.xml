@@ -1,0 +1,26 @@
+<program name="ImPulse down130, up145 (60 min)" duration="1h">
+	<timeEvents>
+		<timeEvent time="0"><action type="power" value="80"/></timeEvent>
+		<timeEvent time="30"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="10m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="11m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="15m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="16m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="20m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="21m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="25m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="26m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="30m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="31m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="35m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="36m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="40m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="41m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="45m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="46m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="50m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="51m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="55m"><action type="pulse" value="145"/></timeEvent>
+		<timeEvent time="56m"><action type="pulse" value="130"/></timeEvent>
+	</timeEvents>
+</program>
