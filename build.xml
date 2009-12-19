@@ -2,7 +2,12 @@
 
 <project name="JErgometer" default="runJergometer" basedir=".">
 	<!-- Update if needed. -->
-	<property name="jergometer.version" value="0.7"/>
+	<property name="program.version"    value="0.7"/>
+
+	<!-- File names. -->
+	<property name="start.sh"           value="jergometer"/>
+	<property name="start.bat"          value="jergometer.bat"/>
+	<property name="program.jar"        value="jergometer.jar"/>
 
 	<!-- Locations -->
 	<property name="src"                location="src"/>
@@ -13,7 +18,7 @@
 	<property name="releases"           location="${dist}/releases"/>
 
 	<property name="buildClasses"       location="${build}/classes"/>
-	<property name="buildJar"           location="${upload}/${ant.project.name}.jar"/>
+	<property name="programJar"         location="${upload}/${program.jar}"/>
 	<property name="rxtxJar"            location="${lib}/RXTXcomm.jar"/>
 	
 	<path id="libraries">
@@ -43,7 +48,7 @@
 	<!-- Delete class and jar files. -->
 	<target name="clean">
 		<delete dir="${buildClasses}"/>
-		<delete file="${buildJar}"/>
+		<delete file="${programJar}"/>
 		<delete dir="${build}"/>
 	</target>
 	
@@ -67,12 +72,61 @@
 		</copy>
 	</target>
 	
-	<!-- Create jar-file. -->
-	<target name="jar" depends="compile">
-		<jar jarfile="${buildJar}" basedir="${buildClasses}">
+	<!-- Builds the upload directory including the jar file. -->
+	<target name="jar" depends="compile,updateBuildNumber">
+		<delete dir="${upload}"/>
+		<mkdir dir="${upload}"/>
+
+		<!-- Build jar file. -->
+		<jar jarfile="${programJar}" basedir="${buildClasses}">
 			<manifest>
 				<attribute name="Main-Class" value="org.jergometer.Jergometer"/>
 			</manifest>
 		</jar>
+
+		<!-- Copy start scripts. -->
+		<copy todir="${upload}" file="scripts/${start.sh}"/>
+		<copy todir="${upload}" file="scripts/${start.bat}"/>
+		<chmod file="${upload}/${start.sh}" perm="ugo+x"/>
+
+		<length file="${programJar}" property="program.jar.length"/>
+		<length file="${upload}/${start.sh}" property="start.sh.length"/>
+		<length file="${upload}/${start.bat}" property="start.bat.length"/>
+
+		<!-- Create versions.xml. -->
+		<copy todir="${upload}" file="templates/versions.xml"/>
+		<replace file="${upload}/versions.xml">
+		  <replacefilter token="@program.version@" value="${program.version}"/>
+		  <replacefilter token="@program.jar@" value="${program.jar}"/>
+			<replacefilter token="@program.jar.length@" value="${program.jar.length}"/>
+			<replacefilter token="@start.sh@" value="${start.sh}"/>
+			<replacefilter token="@start.sh.length@" value="${start.sh.length}"/>
+			<replacefilter token="@start.bat@" value="${start.bat}"/>
+			<replacefilter token="@start.bat.length@" value="${start.bat.length}"/>
+		  <replacefilter token="@build.number@" value="${build.number}"/>
+		</replace>
+	</target>
+
+	<!-- Build all files needed for deployment. -->
+	<target name="create_release" depends="jar">
+		<mkdir dir="${releases}"/>
+
+		<exec executable="scripts/create_release">
+			<arg value="${program.version}.${build.number}"/>
+		</exec>
+	</target>
+
+	<!-- Increments the build number. -->
+	<target name="updateBuildNumber">
+	  <buildnumber/>
+
+		<echo message="${program.version}.${build.number}" file="${buildClasses}/version.txt"/>
+	</target>
+
+	<!-- Validates the source code and creates a new release on the remote server. -->
+	<target name="create_remote_release" depends="compile">
+		<exec executable="scripts/create_remote_release">
+			<arg value="${ant.project.name}-${program.version}.${build.number}"/>
+		</exec>
 	</target>
 </project>
