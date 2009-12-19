@@ -26,6 +26,7 @@ public class JergometerSettings {
 
 // dynamic
 
+	private boolean checkForUpdatesOnStart = true;
 	private ArrayList<String> userNames = new ArrayList<String>();
 	private String lastUserName;
 	private String comPort;
@@ -69,12 +70,14 @@ public class JergometerSettings {
 				XMLDocument doc = parser.parse(StreamUtils.readXmlStream(new FileInputStream(settingsFile)));
 				XMLElement root = doc.getRootElement();
 
+				XMLElement update = root.getChildElement("update");
+				if (update != null) checkForUpdatesOnStart = update.getAttribute("checkOnStart").equals("true");
 				XMLElement users = root.getChildElement("users");
-				if (users != null) lastUserName = users.getAttribute("lastuser");
+				if (users != null) lastUserName = users.getAttribute("lastUser");
 				XMLElement comport = root.getChildElement("comport");
 				if (comport != null) comPort = comport.getAttribute("name");
-				XMLElement xmleditor = root.getChildElement("xmleditor");
-				if (xmleditor != null) xmlEditor = xmleditor.getAttribute("name");
+				XMLElement xmlEditor = root.getChildElement("xmlEditor");
+				if (xmlEditor != null) this.xmlEditor = xmlEditor.getAttribute("name");
 			} catch (Exception ignored) {
 			}
 		}
@@ -85,20 +88,26 @@ public class JergometerSettings {
 		root.setAttribute("version", "1");
 
 		{
+			XMLElement update = new XMLElement("update");
+			root.addChildElement(update);
+			update.setAttribute("checkOnStart", checkForUpdatesOnStart ? "true" : "false");
+
 			XMLElement users = new XMLElement("users");
 			root.addChildElement(users);
 			if (lastUserName != null) {
-				users.setAttribute("lastuser", lastUserName);
+				users.setAttribute("lastUser", lastUserName);
 			}
+
 			XMLElement comport = new XMLElement("comport");
 			root.addChildElement(comport);
 			if (comPort != null) {
 				comport.setAttribute("name", comPort);
 			}
-			XMLElement xmleditor = new XMLElement("xmleditor");
-			root.addChildElement(xmleditor);
-			if (xmlEditor != null) {
-				xmleditor.setAttribute("name", xmlEditor);
+			
+			XMLElement xmlEditor = new XMLElement("xmlEditor");
+			root.addChildElement(xmlEditor);
+			if (this.xmlEditor != null) {
+				xmlEditor.setAttribute("name", this.xmlEditor);
 			}
 		}
 
@@ -114,6 +123,14 @@ public class JergometerSettings {
 	}
 
 // getters and setters
+
+	public boolean isCheckForUpdatesOnStart() {
+		return checkForUpdatesOnStart;
+	}
+
+	public void setCheckForUpdatesOnStart(boolean checkForUpdatesOnStart) {
+		this.checkForUpdatesOnStart = checkForUpdatesOnStart;
+	}
 
 	public ArrayList<String> getUserNames() {
 		return userNames;

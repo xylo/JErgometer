@@ -43,7 +43,7 @@ public class SettingsWindow extends JDialog {
 		mainPanel.add(panel1, gbc);
 		panel1.setBorder(BorderFactory.createTitledBorder(ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.global_settings")));
 		final JLabel label1 = new JLabel();
-		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.com_port"));
+		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.com_port"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -69,7 +69,7 @@ public class SettingsWindow extends JDialog {
 		gbc.insets = new Insets(0, 5, 0, 5);
 		panel1.add(comPortComboBox, gbc);
 		updatePortsButton = new JButton();
-		this.$$$loadButtonText$$$(updatePortsButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.update"));
+		this.$$$loadButtonText$$$(updatePortsButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.update_ports"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
 		gbc.gridy = 0;
@@ -77,7 +77,7 @@ public class SettingsWindow extends JDialog {
 		gbc.insets = new Insets(0, 0, 0, 3);
 		panel1.add(updatePortsButton, gbc);
 		enterPortNameCheckBox = new JCheckBox();
-		this.$$$loadButtonText$$$(enterPortNameCheckBox, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.enter_port_name"));
+		this.$$$loadButtonText$$$(enterPortNameCheckBox, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.enter_port_name"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 1;
@@ -85,7 +85,7 @@ public class SettingsWindow extends JDialog {
 		gbc.insets = new Insets(5, 0, 1, 0);
 		panel1.add(enterPortNameCheckBox, gbc);
 		testPortButton = new JButton();
-		this.$$$loadButtonText$$$(testPortButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.test_port"));
+		this.$$$loadButtonText$$$(testPortButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.test_port"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
 		gbc.gridy = 1;
@@ -135,19 +135,43 @@ public class SettingsWindow extends JDialog {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 0, 1, 3);
 		panel1.add(xmlEditorChooseButton, gbc);
-		final JPanel spacer2 = new JPanel();
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		mainPanel.add(spacer2, gbc);
 		final JPanel panel3 = new JPanel();
 		panel3.setLayout(new GridBagLayout());
+		panel3.setBackground(new Color(-16777216));
+		panel3.setMaximumSize(new Dimension(2147483647, 1));
+		panel3.setMinimumSize(new Dimension(1, 1));
+		panel3.setPreferredSize(new Dimension(1, 1));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		gbc.gridwidth = 3;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(5, 0, 5, 0);
+		panel1.add(panel3, gbc);
+		panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(UIManager.getColor("Button.shadow")), null));
+		final JLabel label3 = new JLabel();
+		this.$$$loadLabelText$$$(label3, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.update"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.insets = new Insets(0, 3, 0, 5);
+		panel1.add(label3, gbc);
+		checkForUpdatesOnStartCheckBox = new JCheckBox();
+		checkForUpdatesOnStartCheckBox.setSelected(true);
+		this.$$$loadButtonText$$$(checkForUpdatesOnStartCheckBox, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.check_for_updates_on_start"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		gbc.anchor = GridBagConstraints.WEST;
+		panel1.add(checkForUpdatesOnStartCheckBox, gbc);
+		final JPanel panel4 = new JPanel();
+		panel4.setLayout(new GridBagLayout());
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.fill = GridBagConstraints.BOTH;
-		mainPanel.add(panel3, gbc);
+		mainPanel.add(panel4, gbc);
 		saveButton = new JButton();
 		this.$$$loadButtonText$$$(saveButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.save"));
 		gbc = new GridBagConstraints();
@@ -155,13 +179,13 @@ public class SettingsWindow extends JDialog {
 		gbc.gridy = 0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 0, 0, 2);
-		panel3.add(saveButton, gbc);
-		final JPanel spacer3 = new JPanel();
+		panel4.add(saveButton, gbc);
+		final JPanel spacer2 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.fill = GridBagConstraints.VERTICAL;
-		panel3.add(spacer3, gbc);
+		panel4.add(spacer2, gbc);
 		abortButton = new JButton();
 		this.$$$loadButtonText$$$(abortButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.abort"));
 		gbc = new GridBagConstraints();
@@ -169,7 +193,7 @@ public class SettingsWindow extends JDialog {
 		gbc.gridy = 0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 2, 0, 0);
-		panel3.add(abortButton, gbc);
+		panel4.add(abortButton, gbc);
 	}
 
 	/**
@@ -249,6 +273,7 @@ public class SettingsWindow extends JDialog {
 	private JButton abortButton;
 	private JTextField xmlEditorTextField;
 	private JButton xmlEditorChooseButton;
+	private JCheckBox checkForUpdatesOnStartCheckBox;
 
 	public SettingsWindow(Frame owner) {
 		super(owner, I18n.getString("settings_dialog.title"), true);
@@ -321,6 +346,13 @@ public class SettingsWindow extends JDialog {
 	public ReturnCode showDialog(JergometerSettings settings) {
 		updateComPorts(settings);
 
+		if (settings != null) {
+			if (settings.getXmlEditor() != null) {
+				xmlEditorTextField.setText(settings.getXmlEditor());
+			}
+			checkForUpdatesOnStartCheckBox.setSelected(settings.isCheckForUpdatesOnStart());
+		}
+
 		returnCode = ReturnCode.abort;
 
 		setVisible(true);
@@ -353,17 +385,11 @@ public class SettingsWindow extends JDialog {
 
 		comPortComboBox.setModel(comboBoxModel);
 		comPortComboBox.setSelectedIndex(comPortIndex);
-
-		if (settings != null && settings.getXmlEditor() != null) {
-			xmlEditorTextField.setText(settings.getXmlEditor());
-		}
 	}
 
-	public String getComPort() {
-		return (String) comPortComboBox.getSelectedItem();
-	}
-
-	public String getXmlEditor() {
-		return xmlEditorTextField.getText();
+	public void saveSettings(JergometerSettings settings) {
+		settings.setCheckForUpdatesOnStart(checkForUpdatesOnStartCheckBox.isSelected());
+		settings.setComPort((String) comPortComboBox.getSelectedItem());
+		settings.setXmlEditor(xmlEditorTextField.getText());
 	}
 }

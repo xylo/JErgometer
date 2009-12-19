@@ -42,7 +42,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	public enum State { notConnected, connected, reset, hello }
 	public enum SessionsVis { average, progression }
 
-	private final ProgramUpdater updater = new ProgramUpdater("JErgometer update", "http://jergometer.org/JLatexEditor/update/");
+	private final ProgramUpdater updater = new ProgramUpdater("JErgometer update", "http://common.jergometer.org/update/");
 
 	public static void main(String[] args) {
 		ShellPrintStream.replaceSystemOut(args);
@@ -146,6 +146,26 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 			mainWindow.getDiagram().addValue("power", i, w);
 		}
 		*/
+	}
+
+	private void checkForUpdates(boolean startup) {
+		// check for new version
+		if (updater.isNewVersionAvailable()) {
+			// ask user if (s)he wants to update
+			if (JOptionPane.showConfirmDialog(mainWindow, "A new version of JErgometer is available. Do you want to update?",
+					"JErgometer - Updater", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+
+				// perform update
+				if (updater.performUpdate(true)) {
+					// restart the editor
+					System.exit(255);
+				}
+			}
+		} else {
+			if (!startup) {
+				JOptionPane.showMessageDialog(mainWindow, "JErgometer is up-to-date.", "JErgometer - Updater", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
 	}
 
 	/**

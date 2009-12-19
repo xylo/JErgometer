@@ -647,8 +647,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	public void openSettingsWindow() {
 		SettingsWindow settingsWindow = new SettingsWindow(this);
 		if (settingsWindow.showDialog(jergometer.getSettings()) == SettingsWindow.ReturnCode.save) {
-			jergometer.getSettings().setComPort(settingsWindow.getComPort());
-			jergometer.getSettings().setXmlEditor(settingsWindow.getXmlEditor());
+			settingsWindow.saveSettings(jergometer.getSettings());
 		}
 	}
 

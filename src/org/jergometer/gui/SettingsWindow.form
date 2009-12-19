@@ -21,7 +21,7 @@
               <gridbag top="0" left="3" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text resource-bundle="org/jergometer/translation/jergometer" key="label.com_port"/>
+              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.com_port"/>
             </properties>
           </component>
           <vspacer id="d8352">
@@ -46,7 +46,7 @@
               <gridbag top="0" left="0" bottom="0" right="3" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text resource-bundle="org/jergometer/translation/jergometer" key="label.update"/>
+              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.update_ports"/>
             </properties>
           </component>
           <component id="4240d" class="javax.swing.JCheckBox" binding="enterPortNameCheckBox">
@@ -55,7 +55,7 @@
               <gridbag top="5" left="0" bottom="1" right="0" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text resource-bundle="org/jergometer/translation/jergometer" key="label.enter_port_name"/>
+              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.enter_port_name"/>
             </properties>
           </component>
           <component id="a9f22" class="javax.swing.JButton" binding="testPortButton">
@@ -64,7 +64,7 @@
               <gridbag top="0" left="0" bottom="1" right="3" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text resource-bundle="org/jergometer/translation/jergometer" key="label.test_port"/>
+              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.test_port"/>
             </properties>
           </component>
           <grid id="8675a" layout-manager="BorderLayout" hgap="0" vgap="0">
@@ -116,14 +116,43 @@
               <text resource-bundle="org/jergometer/translation/jergometer" key="label.file_choosing"/>
             </properties>
           </component>
+          <grid id="a60f" layout-manager="GridBagLayout">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="0" bottom="5" right="0" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <background color="-16777216"/>
+              <maximumSize width="2147483647" height="1"/>
+              <minimumSize width="1" height="1"/>
+              <preferredSize width="1" height="1"/>
+            </properties>
+            <border type="line">
+              <color swing-color="Button.shadow"/>
+            </border>
+            <children/>
+          </grid>
+          <component id="d3524" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="3" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.update"/>
+            </properties>
+          </component>
+          <component id="b2b8f" class="javax.swing.JCheckBox" binding="checkForUpdatesOnStartCheckBox" default-binding="true">
+            <constraints>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.check_for_updates_on_start"/>
+            </properties>
+          </component>
         </children>
       </grid>
-      <hspacer id="f70e4">
-        <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-      </hspacer>
       <grid id="2fb1f" layout-manager="GridBagLayout">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
