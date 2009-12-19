@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="jergometer" default="runJergometer" basedir=".">
+<project name="JErgometer" default="runJergometer" basedir=".">
+	<!-- Update if needed. -->
+	<property name="jergometer.version" value="0.7"/>
+
 	<!-- Locations -->
 	<property name="src"                location="src"/>
 	<property name="build"              location="build"/>
 	<property name="lib"                location="lib"/>
-	
+	<property name="dist"               location="dist"/>
+	<property name="upload"             location="${dist}/${ant.project.name}"/>
+	<property name="releases"           location="${dist}/releases"/>
+
 	<property name="buildClasses"       location="${build}/classes"/>
-	<property name="buildJar"           location="${build}/jergometer.jar"/>
+	<property name="buildJar"           location="${upload}/${ant.project.name}.jar"/>
 	<property name="rxtxJar"            location="${lib}/RXTXcomm.jar"/>
 	
 	<path id="libraries">
@@ -23,7 +29,7 @@
 	</target> 
 	
 	<!-- Run application. -->
-	<target name="runJergometer" depends="osInfo,compile">
+	<target name="runJErgometer" depends="osInfo,compile">
 		<java classname="org.jergometer.Jergometer" fork="true">
 			<classpath>
 				<pathelement location="${buildClasses}" /> 
