@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="JErgometer" default="runJergometer" basedir=".">
+<project name="JErgometer" default="runJErgometer" basedir=".">
 	<!-- Update if needed. -->
 	<property name="program.version"    value="0.7"/>
 
 	<!-- File names. -->
 	<property name="start.sh"           value="jergometer"/>
+	<property name="start.sh.version"   value="0.1"/>
 	<property name="start.bat"          value="jergometer.bat"/>
+	<property name="start.bat.version"  value="0.1"/>
 	<property name="program.jar"        value="jergometer.jar"/>
 
 	<!-- Locations -->
@@ -100,8 +102,10 @@
 		  <replacefilter token="@program.jar@" value="${program.jar}"/>
 			<replacefilter token="@program.jar.length@" value="${program.jar.length}"/>
 			<replacefilter token="@start.sh@" value="${start.sh}"/>
+			<replacefilter token="@start.sh.version@" value="${start.sh.version}"/>
 			<replacefilter token="@start.sh.length@" value="${start.sh.length}"/>
 			<replacefilter token="@start.bat@" value="${start.bat}"/>
+			<replacefilter token="@start.bat.version@" value="${start.bat.version}"/>
 			<replacefilter token="@start.bat.length@" value="${start.bat.length}"/>
 		  <replacefilter token="@build.number@" value="${build.number}"/>
 		</replace>
