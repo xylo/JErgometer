@@ -353,7 +353,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 				try {
 					// save session file
 					program.getSession().save(getCurrentSessionDir());
-					// add session to session tabel
+					// add session to session table
 					userData.getSessions().add(program.getSession());
 					userData.save();
 					// update session table
