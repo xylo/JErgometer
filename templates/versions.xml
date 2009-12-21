@@ -1,5 +1,0 @@
-<files>
-	<file name="@program.jar@" version="@program.version@.@build.number@" length="@program.jar.length@"/>
-	<file name="@start.sh@" version="@start.sh.version@" length="@start.sh.length@"/>
-	<file name="@start.bat@" version="@start.sh.version@" length="@start.bat.length@"/>
-</files>
