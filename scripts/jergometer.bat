@@ -2,8 +2,8 @@ goto START
 
 :UPDATE
 echo "UPDATE"
-xcopy /E /Y tmp .
-rmdir /S /Q tmp
+xcopy /E /Y update .
+rmdir /S /Q update
 
 :START
 if "%PROCESSOR_ARCHITECTURE%" == "x86" goto START_X86
