@@ -1,12 +1,7 @@
 #!/bin/zsh
 
-echo $ZSH_VERSION
-
-pwd
-
-print **/*~versions.xml(.)
-print **/*~versions.xml
-print **/*(.)
+setopt EXTENDED_GLOB
+# setopt KSH_GLOB
 
 echo '<file>'
 for file in `print **/(*~versions.xml)(.)`; do
