@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+echo $ZSH_VERSION
+
+pwd
+
+print **/*~versions.xml(.)
+print **/*~versions.xml
+print **/*(.)
+
+echo '<file>'
+for file in `print **/(*~versions.xml)(.)`; do
+	md5=`md5sum $file | cut -d " " -f 1`
+	len=`du --apparent-size -b $file | cut -f 1`
+	echo "\t<file name=\"$file\" version=\"$md5\" length=\"$len\"/>"
+done
+echo '</files>'

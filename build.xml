@@ -6,9 +6,7 @@
 
 	<!-- File names. -->
 	<property name="start.sh"           value="jergometer"/>
-	<property name="start.sh.version"   value="0.1"/>
 	<property name="start.bat"          value="jergometer.bat"/>
-	<property name="start.bat.version"  value="0.1"/>
 	<property name="program.jar"        value="jergometer.jar"/>
 
 	<!-- Locations -->
@@ -17,10 +15,11 @@
 	<property name="lib"                location="lib"/>
 	<property name="dist"               location="dist"/>
 	<property name="upload"             location="${dist}/${ant.project.name}"/>
+	<property name="uploadPrepare"      location="${dist}/${ant.project.name}_prepare"/>
 	<property name="releases"           location="${dist}/releases"/>
 
 	<property name="buildClasses"       location="${build}/classes"/>
-	<property name="programJar"         location="${upload}/${program.jar}"/>
+	<property name="programJar"         location="${uploadPrepare}/${program.jar}"/>
 	<property name="rxtxJar"            location="${lib}/RXTXcomm.jar"/>
 	
 	<path id="libraries">
@@ -76,8 +75,8 @@
 	
 	<!-- Builds the upload directory including the jar file. -->
 	<target name="jar" depends="compile,updateBuildNumber">
-		<delete dir="${upload}"/>
-		<mkdir dir="${upload}"/>
+		<delete dir="${uploadPrepare}"/>
+		<mkdir dir="${uploadPrepare}"/>
 
 		<!-- Build jar file. -->
 		<jar jarfile="${programJar}" basedir="${buildClasses}">
@@ -87,43 +86,24 @@
 		</jar>
 
 		<!-- Copy example programs and dlls. -->
-		<copy todir="${upload}/programs">
+		<copy todir="${uploadPrepare}/programs">
 			<fileset dir="programs"/>
 		</copy>
-		<mkdir dir="${upload}/lib"/>
-		<copy todir="${upload}/lib">
+		<mkdir dir="${uploadPrepare}/lib"/>
+		<copy todir="${uploadPrepare}/lib">
 			<fileset dir="${lib}">
 				<include name="*.jar"/>
 				<exclude name="annotations.jar"/>
 			</fileset>
 		</copy>
-		<copy todir="${upload}/lib/dlls">
+		<copy todir="${uploadPrepare}/lib/dlls">
 			<fileset dir="${lib}/dlls"/>
 		</copy>
 
 		<!-- Copy start scripts. -->
-		<copy todir="${upload}" file="scripts/${start.sh}"/>
-		<copy todir="${upload}" file="scripts/${start.bat}"/>
-		<chmod file="${upload}/${start.sh}" perm="ugo+x"/>
-
-		<length file="${programJar}" property="program.jar.length"/>
-		<length file="${upload}/${start.sh}" property="start.sh.length"/>
-		<length file="${upload}/${start.bat}" property="start.bat.length"/>
-
-		<!-- Create versions.xml. -->
-		<copy todir="${upload}" file="templates/versions.xml"/>
-		<replace file="${upload}/versions.xml">
-		  <replacefilter token="@program.version@" value="${program.version}"/>
-		  <replacefilter token="@program.jar@" value="${program.jar}"/>
-			<replacefilter token="@program.jar.length@" value="${program.jar.length}"/>
-			<replacefilter token="@start.sh@" value="${start.sh}"/>
-			<replacefilter token="@start.sh.version@" value="${start.sh.version}"/>
-			<replacefilter token="@start.sh.length@" value="${start.sh.length}"/>
-			<replacefilter token="@start.bat@" value="${start.bat}"/>
-			<replacefilter token="@start.bat.version@" value="${start.bat.version}"/>
-			<replacefilter token="@start.bat.length@" value="${start.bat.length}"/>
-		  <replacefilter token="@build.number@" value="${build.number}"/>
-		</replace>
+		<copy todir="${uploadPrepare}" file="scripts/${start.sh}"/>
+		<copy todir="${uploadPrepare}" file="scripts/${start.bat}"/>
+		<chmod file="${uploadPrepare}/${start.sh}" perm="ugo+x"/>
 	</target>
 
 	<!-- Build all files needed for deployment. -->

@@ -3,7 +3,16 @@
 DIR=`dirname $0`
 cd $DIR
 
-ARCH=uname -m
+# check for Linux or Mac
+OS=`uname -s`
+case $OS in
+	Darwin)
+		OS=MacOSX
+		;;
+esac
+
+# check for 32/64 bit
+ARCH=`uname -m`
 case $ARCH in
 	i686)
 		ARCH=i386
@@ -13,9 +22,10 @@ case $ARCH in
 		;;
 esac
 
+# start the application loop
 action=start
 while [ "$action" = "start" ]; do
-	java -Djava.library.path=lib/dlls/Linux/$ARCH -cp jergometer.jar:RXTXcomm.jar org.jergometer.Jergometer "$@"
+	java -Djava.library.path=lib/dlls/$OS/$ARCH -cp jergometer.jar:lib/RXTXcomm.jar org.jergometer.Jergometer "$@"
 	if [ "$?" != "255" ]; then
 		action=end
 	fi
