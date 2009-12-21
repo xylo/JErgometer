@@ -3,6 +3,7 @@ package org.jergometer;
 import de.endrullis.utils.ParamsExt;
 import de.endrullis.utils.ProgramUpdater;
 import de.endrullis.utils.ShellPrintStream;
+import de.endrullis.utils.StreamUtils;
 import org.jergometer.communication.*;
 import org.jergometer.control.BikeProgram;
 import org.jergometer.diagram.BikeProgramVisualizer;
@@ -37,7 +38,14 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 // static
 
-	public static final String VERSION = "0.7.2";
+	public static String version = "*Bleeding Edge*";
+	public static boolean devVersion = true;
+	static {
+		try {
+			version = StreamUtils.readFile("version.txt");
+			devVersion = false;
+		} catch (IOException ignored) {}
+	}
 
 	public enum State { notConnected, connected, reset, hello }
 	public enum SessionsVis { average, progression }
@@ -68,7 +76,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		}
 
 		if(params.isOptionAvailable("version")) {
-			System.out.println("JErgometer " + VERSION);
+			System.out.println("JErgometer " + version);
 			System.exit(0);
 		}
 
@@ -114,7 +122,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		jergometerSettings = new JergometerSettings();
 		programTree = new BikeProgramTree();
 
-		mainWindow = new MainWindow(I18n.getString("main_window.title", VERSION), this);
+		mainWindow = new MainWindow(I18n.getString("main_window.title", version), this);
 		mainWindow.getProgramTree().setModel(programTree);
 		// maximize the main window
 		mainWindow.pack();

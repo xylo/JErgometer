@@ -29,7 +29,7 @@ public class AboutDialog extends JFrame {
 		sb.append(System.getProperty("java.home"));
 		String vmString = sb.toString();
 
-		credits.setText(I18n.getString("about_dialog.text", Jergometer.VERSION, System.getProperty("java.version"), vmString));
+		credits.setText(I18n.getString("about_dialog.text", Jergometer.version, System.getProperty("java.version"), vmString));
 
 		pack();
 
