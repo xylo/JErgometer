@@ -7,7 +7,7 @@ version=$1
 prefix=$programName-$version
 
 # tag this release
-#svn copy . $svnRepo/tags/$version -m "released version $version"
+svn copy . $svnRepo/tags/$version -m "released version $version"
 
 mkdir -p dist/releases
 
