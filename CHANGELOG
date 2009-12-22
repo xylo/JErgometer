@@ -13,6 +13,7 @@ Changelog for JErgometer
                 - source code is automatically tagged in the svn repository
             * implemented feature #160: settings window should be closed when pressing escape
             * added DLLs for Windows i386 and amd64 and Mac OS X i386
+                - this should be the first release that supports Mac
             * improved the start scripts (allows a restart of the program, checks OS and architecture)
 
 == 0.7.2 ==
