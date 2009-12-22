@@ -112,14 +112,24 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	private ArrayList<BikeSession> selectedSessions = new ArrayList<BikeSession>();
 
 	/**
-	 * Creates the jergometer.
+	 * Creates an JErgometer instance.
 	 *
-	 * @param gui true if you want to have a gui.
+	 * @param gui true if you want to have a gui
 	 */
 	public Jergometer(boolean gui) {
 		this.gui = gui;
 
 		jergometerSettings = new JergometerSettings();
+
+		// search for updates in the background
+		if (!devVersion) {
+			new Thread(){
+				public void run() {
+					checkForUpdates(true);
+				}
+			}.start();
+		}
+
 		programTree = new BikeProgramTree();
 
 		mainWindow = new MainWindow(I18n.getString("main_window.title", version), this);
@@ -156,7 +166,12 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		*/
 	}
 
-	private void checkForUpdates(boolean startup) {
+	/**
+	 * Checks for JErgometer updates.
+	 *
+	 * @param start true if you want to check for updates without notifications in case there are no new versions
+	 */
+	private void checkForUpdates(boolean start) {
 		// check for new version
 		if (updater.isNewVersionAvailable()) {
 			// ask user if (s)he wants to update
@@ -170,7 +185,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 				}
 			}
 		} else {
-			if (!startup) {
+			if (!start) {
 				JOptionPane.showMessageDialog(mainWindow, "JErgometer is up-to-date.", "JErgometer - Updater", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
