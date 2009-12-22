@@ -1,0 +1,13 @@
+#!/bin/bash
+
+curr_version=$1
+
+if [ -e last_version ]; then
+	last_version=`cat last_version`
+
+	if [ "$last_version" != "$curr_version" ]; then
+		rm build.number
+	fi
+fi
+
+echo $curr_version >last_version
