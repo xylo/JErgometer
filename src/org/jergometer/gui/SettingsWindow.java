@@ -325,6 +325,16 @@ public class SettingsWindow extends JDialog {
 				JOptionPane.showMessageDialog(settingsWindow, I18n.getString("msg.not_implemented_yet"));
 			}
 		});
+
+		// allow closing the dialog with escape
+		final KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true);
+		final ActionListener listener = new ActionListener() {
+			public final void actionPerformed(final ActionEvent e) {
+				returnCode = ReturnCode.abort;
+				setVisible(false);
+			}
+		};
+		getRootPane().registerKeyboardAction(listener, keyStroke, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 	}
 
 	private void testComPort(final SettingsWindow settingsWindow) {
