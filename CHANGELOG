@@ -8,6 +8,9 @@ Changelog for JErgometer
 2009-12-22
 * [stefan]  * implemented feature #157: add an update mechanism
             * solved issue #158: automate release process
+                - version is automatically incremented
+                - zip and tar.gz are automatically created
+                - source code is automatically tagged in the svn repository
             * implemented feature #160: settings window should be closed when pressing escape
             * added DLLs for Windows i386 and amd64 and Mac OS X i386
             * improved the start scripts (allows a restart of the program, checks OS and architecture)
