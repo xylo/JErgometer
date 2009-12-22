@@ -117,6 +117,10 @@
 
 	<!-- Increments the build number. -->
 	<target name="updateBuildNumber">
+		<exec executable="scripts/check_version">
+			<arg value="${program.version}"/>
+		</exec>
+
 	  <buildnumber/>
 
 		<echo message="${program.version}.${build.number}" file="${buildClasses}/version.txt"/>

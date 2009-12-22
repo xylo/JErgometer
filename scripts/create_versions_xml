@@ -3,7 +3,8 @@
 setopt EXTENDED_GLOB
 # setopt KSH_GLOB
 
-echo '<file>'
+echo '<?xml version="1.0" encoding="UTF-8"?>'
+echo '<files>'
 for file in `print **/(*~versions.xml)(.)`; do
 	md5=`md5sum $file | cut -d " " -f 1`
 	len=`du --apparent-size -b $file | cut -f 1`
