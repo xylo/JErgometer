@@ -1,7 +1,9 @@
 Changelog for JErgometer
 """"""""""""""""""""""""
 
-//== 0.7.3 ==
+//== 0.7.4 ==
+
+== 0.7.3 ==
 
 2009-12-22
 * [stefan]  * implemented feature #157: add an update mechanism
