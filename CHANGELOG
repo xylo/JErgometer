@@ -4,10 +4,11 @@ Changelog for JErgometer
 //== 0.7.3 ==
 
 2009-12-22
-* [stefan]  * solved issue #158: automate release process
+* [stefan]  * implemented feature #157: add an update mechanism
+            * solved issue #158: automate release process
+            * implemented feature #160: settings window should be closed when pressing escape
             * added DLLs for Windows i386 and amd64 and Mac OS X i386
             * improved the start scripts (allows a restart of the program, checks OS and architecture)
-            * implemented feature #160: settings window should be closed when pressing escape
 
 == 0.7.2 ==
 
