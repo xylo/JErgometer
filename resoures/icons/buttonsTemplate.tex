@@ -1,0 +1,24 @@
+\documentclass[times,10pt,twocolumn]{article}
+\usepackage[english]{babel}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,amstext,amsthm}
+\usepackage{comment}
+\usepackage{color}
+\usepackage{wrapfig}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,backgrounds,calc,chains,fadings,folding,decorations.fractals,decorations.pathreplacing,fit,patterns,positioning,mindmap,shadows,shapes.geometric,shapes.symbols,through,trees,plotmarks}
+
+\newcommand{\drawButton}[2]{
+\input{#1}
+
+\begin{document}
+\pagestyle{empty}
+\scalebox{5}{
+  \begin{tikzpicture}[very thick]
+    #2
+  \end{tikzpicture}
+}
+\end{document}
+}
