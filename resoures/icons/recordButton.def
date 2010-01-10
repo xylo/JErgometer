@@ -3,7 +3,7 @@
   \begin{scope}[rounded corners=2mm,very thick]
   \fill [draw=none,top color=c!70,bottom color=c!15,shading=axis,shading angle=225] (.5cm,.5cm) circle (.5cm);
   \clip (.5cm,.5cm) circle (.5cm);
-  \fill [draw=none,fill=c!5,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
+%   \fill [draw=none,fill=c!5,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
   \draw [c!50!black] (.5cm,.5cm) circle (.5cm);
   \end{scope}
   #1
@@ -13,7 +13,7 @@
   \begin{scope}[rounded corners=2mm,very thick]
   \fill [draw=none,top color=c!50,bottom color=c!80,shading=axis,shading angle=225] (.5cm,.5cm) circle (.5cm);
   \clip (.5cm,.5cm) circle (.5cm);
-  \fill [draw=none,fill=c!10,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
+%   \fill [draw=none,fill=c!10,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
   \draw [c!50!black] (.5cm,.5cm) circle (.5cm);
   \end{scope}
   \begin{scope}[xshift=.5mm,yshift=0mm,scale=.9]

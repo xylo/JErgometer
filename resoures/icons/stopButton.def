@@ -1,9 +1,9 @@
 
 \newcommand{\mButton}[1]{
   \begin{scope}[rounded corners=2mm,very thick]
-  \fill [draw=none,top color=c!60,bottom color=c!25,shading=axis,shading angle=225] (0mm,0mm) rectangle (1cm,1cm);
+  \fill [draw=none,top color=c!70,bottom color=c!15,shading=axis,shading angle=225] (0mm,0mm) rectangle (1cm,1cm);
   \clip (0mm,0mm) rectangle (1cm,1cm);
-  \fill [draw=none,fill=c!10,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
+%   \fill [draw=none,fill=c!10,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
   \draw [c!50!black] (0,0) rectangle (1cm,1cm);
   \end{scope}
   #1
@@ -13,7 +13,7 @@
   \begin{scope}[rounded corners=2mm,very thick]
   \fill [draw=none,top color=c!50,bottom color=c!80,shading=axis,shading angle=225] (0mm,0mm) rectangle (1cm,1cm);
   \clip (0mm,0mm) rectangle (1cm,1cm);
-  \fill [draw=none,fill=c!10,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
+%   \fill [draw=none,fill=c!10,opacity=.4] (5mm,12mm) ellipse (.8cm and .5cm);
   \draw [c!50!black] (0,0) rectangle (1cm,1cm);
   \end{scope}
   \begin{scope}[xshift=.5mm,yshift=0mm,scale=.9]
