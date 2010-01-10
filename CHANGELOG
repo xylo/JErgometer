@@ -5,6 +5,7 @@ Changelog for JErgometer
 
 2010-01-10
 * [stefan]  * done enhancement #156: replace buttons with nicer ones
+            * fixed bug #169: exception is thrown when starting recording without selected program
 
 == 0.7.3 ==
 

@@ -333,6 +333,11 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	 */
 	public void startRecording() {
 		if (!recording) {
+			if (program == null) {
+				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.choose_a_program"));
+				return;
+			}
+
 			// clear diagram and draw the bike program
 			selectBikeProgram(program);
 
@@ -359,11 +364,6 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 			} catch (Exception e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.connection_failed"), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			if (program == null) {
-				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.choose_a_program"));
 				return;
 			}
 
