@@ -3,6 +3,9 @@ Changelog for JErgometer
 
 //== 0.7.4 ==
 
+2010-01-15
+* [stefan]  * implemented issue #170: update check needs to be deactivated for linux packages
+
 2010-01-10
 * [stefan]  * done enhancement #156: replace buttons with nicer ones
             * fixed bug #169: exception is thrown when starting recording without selected program

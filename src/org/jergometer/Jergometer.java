@@ -40,10 +40,13 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 	public static String version = "*Bleeding Edge*";
 	public static boolean devVersion = true;
+	public static boolean updatable = false;
 	static {
 		try {
 			version = StreamUtils.readFile("version.txt");
 			devVersion = false;
+			updatable = true;
+			updatable = Boolean.parseBoolean(StreamUtils.readFile("updatable"));
 		} catch (IOException ignored) {}
 	}
 
@@ -122,7 +125,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		jergometerSettings = new JergometerSettings();
 
 		// search for updates in the background
-		if (!devVersion) {
+		if (updatable) {
 			new Thread(){
 				public void run() {
 					checkForUpdates(true);
