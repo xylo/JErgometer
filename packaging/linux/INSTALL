@@ -1,0 +1,27 @@
+JErgometer
+""""""""""
+
+1. Dependencies
+
+JErgometer depends on the RXTX library used to communicate over a serial connection.
+Install the corresponding package of your distribution (Ubuntu/Debian: librxtx-java)
+or download the library from
+	http://rxtx.qbang.org/
+and "install" it manually.
+
+Afterwards configure the path to the RXTXcomm.jar in build.properties.
+Alternatively, you can run
+	./configure
+which tries to automatically detect the path.
+
+
+2. Compilation
+
+To compile JErgometer run
+	ant create_linux_package
+A jar file is generated and
+
+
+3. Installation
+
+TODO

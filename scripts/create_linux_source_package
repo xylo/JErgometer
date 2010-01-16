@@ -1,0 +1,12 @@
+#!/bin/bash
+
+programName=jergometer
+
+version=$1
+prefix=$programName-$version
+
+cd dist
+tar -czf $prefix-src.tar.gz $prefix
+mkdir -p releases/linux
+mv $prefix-src.tar.gz releases/linux/
+cd ..

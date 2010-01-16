@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="JErgometer" default="runJErgometer" basedir=".">
+	<!-- Overwrite default variables in this file -->
+	<property file="build.properties" />
+
 	<!-- Update if needed. -->
 	<property name="program.version"    value="0.7"/>
 
@@ -16,16 +19,21 @@
 	<property name="dist"               location="dist"/>
 	<property name="upload"             location="${dist}/${ant.project.name}"/>
 	<property name="uploadPrepare"      location="${dist}/${ant.project.name}_prepare"/>
+	<property name="linuxSrcPkg"        location="${dist}/jergometer"/>
 	<property name="releases"           location="${dist}/releases"/>
 
 	<property name="buildClasses"       location="${build}/classes"/>
 	<property name="programJar"         location="${uploadPrepare}/${program.jar}"/>
 	<property name="rxtxJar"            location="${lib}/RXTXcomm.jar"/>
-	
+	<property name="rxtxSoDir"          location="."/>
+
 	<path id="libraries">
 		<fileset dir="${lib}">
 			<include name="*.jar"/>
 		</fileset>
+		<filelist>
+			<file name="${rxtxJar}"/>
+		</filelist>
 	</path>
 	
 	<target name="osInfo">
@@ -106,7 +114,7 @@
 		<chmod file="${uploadPrepare}/${start.sh}" perm="ugo+x"/>
 	</target>
 
-	<!-- Build all files needed for deployment. -->
+	<!-- Build a new release version. -->
 	<target name="create_release" depends="jar">
 		<mkdir dir="${releases}"/>
 
@@ -131,5 +139,69 @@
 		<exec executable="scripts/create_remote_release">
 			<arg value="${ant.project.name}-${program.version}.${build.number}"/>
 		</exec>
+	</target>
+
+	<!-- Build the Linux source package. -->
+	<target name="create_linux_source_package" depends="jar">
+		<delete dir="${linuxSrcPkg}-${program.version}.${build.number}"/>
+		<mkdir dir="${linuxSrcPkg}-${program.version}.${build.number}"/>
+		<copy todir="${linuxSrcPkg}-${program.version}.${build.number}">
+			<fileset dir=".">
+				<include name="lib/annotations.jar"/>
+				<include name="programs/**"/>
+				<include name="scripts/create_linux_source_package"/>
+				<include name="src/**"/>
+				<include name="build.xml"/>
+				<include name="CHANGELOG"/>
+				<include name="COPYING"/>
+			</fileset>
+			<fileset dir="packaging/linux">
+				<include name="**"/>
+			</fileset>
+		</copy>
+		<copy todir="${linuxSrcPkg}-${program.version}.${build.number}/src">
+			<fileset dir="${buildClasses}">
+				<include name="version.txt"/>
+			</fileset>
+		</copy>
+		<chmod file="${linuxSrcPkg}-${program.version}.${build.number}/configure" perm="ugo+x"/>
+		<chmod file="${linuxSrcPkg}-${program.version}.${build.number}/scripts/*" perm="ugo+x"/>
+
+		<exec executable="scripts/create_linux_source_package" dir=".">
+			<arg value="${program.version}.${build.number}"/>
+		</exec>
+	</target>
+
+	<!-- Build the Linux package. -->
+	<target name="create_linux_package" depends="linux_jar">
+	</target>
+
+	<!-- Builds the upload directory including the jar file. -->
+	<target name="linux_jar" depends="compile">
+		<delete dir="${uploadPrepare}"/>
+		<mkdir dir="${uploadPrepare}"/>
+
+		<!-- Build jar file. -->
+		<echo message="false" file="${buildClasses}/updatable"/>
+		<jar jarfile="${programJar}" basedir="${buildClasses}">
+			<manifest>
+				<attribute name="Main-Class" value="org.jergometer.Jergometer"/>
+				<attribute name="Class-Path" value="${rxtxJar}"/>
+			</manifest>
+		</jar>
+
+		<!-- Copy example programs and dlls. -->
+		<copy todir="${uploadPrepare}/programs">
+			<fileset dir="programs"/>
+		</copy>
+
+		<!-- Copy start scripts. -->
+		<copy todir="${uploadPrepare}" file="scripts/${start.sh}">
+			<filterset>
+			  <filter token="rxtxJar" value="${rxtxJar}"/>
+			  <filter token="rxtxSoDir" value="${rxtxSoDir}"/>
+			</filterset>
+		</copy>
+		<chmod file="${uploadPrepare}/${start.sh}" perm="ugo+x"/>
 	</target>
 </project>

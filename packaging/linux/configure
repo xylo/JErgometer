@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo -n "checking for RXTXcomm.jar..."
+rxtxJar=`whereis RXTXcomm.jar | cut -d ":" -f 2 | cut -d " " -f 2`
+if [ "$rxtxJar" == "" ]; then
+	# check debian location
+	if [ -e /usr/share/java/RXTXcomm.jar ]; then
+		rxtxJar=/usr/share/java/RXTXcomm.jar
+	else
+		echo ' failed!'
+		echo "Could not find RXTXcomm.jar.  Please install the RXTX library." >&2
+		exit 1
+	fi
+fi
+echo ' yes'
+
+echo -n "checking for librxtxSerial.so..."
+rxtxSo=`whereis librxtxSerial.so | cut -d ":" -f 2 | cut -d " " -f 2`
+if [ "$rxtxSo" == "" ]; then
+	echo ' failed!'
+	echo "Could not find librxtxSerial.so.  Please reinstall the RXTX library." >&2
+	exit 1
+fi
+rxtxSoDir=`dirname $rxtxSo`
+echo ' yes'
+
+echo "configure.status: creating build.properties"
+cat >build.properties <<END
+# set path to RXTXcomm.jar
+rxtxJar=$rxtxJar
+# set directory where librxtxSerial.so is located in
+rxtxSoDir=$rxtxSoDir
+# directory distribution files are written to
+uploadPrepare=dist/jergometer
+END

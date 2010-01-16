@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DIR=`dirname $0`
+cd $DIR
+
+# start the application
+java -Djava.library.path=@rxtxSoDir@ -cp jergometer.jar:@rxtxJar@ org.jergometer.Jergometer "$@"
