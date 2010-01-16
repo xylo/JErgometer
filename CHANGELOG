@@ -1,7 +1,12 @@
 Changelog for JErgometer
 """"""""""""""""""""""""
 
-//== 0.7.4 ==
+//== 0.7.5 ==
+
+2010-01-16
+* [stefan]  * implemented feature #164: allow relative values (with prefix "+") in training programs (for time, pulse and power)
+
+== 0.7.4 ==
 
 2010-01-16
 * [stefan]  * implemented feature #171: create linux source package

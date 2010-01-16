@@ -135,7 +135,7 @@
 	</target>
 
 	<!-- Validates the source code and creates a new release on the remote server. -->
-	<target name="create_remote_release" depends="compile">
+	<target name="create_remote_release" depends="compile,create_linux_source_package">
 		<exec executable="scripts/create_remote_release">
 			<arg value="${ant.project.name}-${program.version}.${build.number}"/>
 		</exec>
