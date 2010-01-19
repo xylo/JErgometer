@@ -4,23 +4,23 @@
 		<timeEvent time="30"><action type="pulse" value="110"/></timeEvent>
 		<timeEvent time="1m"><action type="pulse" value="111"/></timeEvent>
 		<timeEvent time="2m"><action type="pulse" value="112"/></timeEvent>
-		<timeEvent time="4m"><action type="pulse" value="113"/></timeEvent>
-		<timeEvent time="6m"><action type="pulse" value="114"/></timeEvent>
-		<timeEvent time="8m"><action type="pulse" value="115"/></timeEvent>
-		<timeEvent time="10m"><action type="pulse" value="116"/></timeEvent>
-		<timeEvent time="12m"><action type="pulse" value="117"/></timeEvent>
-		<timeEvent time="14m"><action type="pulse" value="118"/></timeEvent>
-		<timeEvent time="16m"><action type="pulse" value="119"/></timeEvent>
-		<timeEvent time="18m"><action type="pulse" value="120"/></timeEvent>
-		<timeEvent time="20m"><action type="pulse" value="121"/></timeEvent>
-		<timeEvent time="24m"><action type="pulse" value="122"/></timeEvent>
-		<timeEvent time="28m"><action type="pulse" value="123"/></timeEvent>
-		<timeEvent time="32m"><action type="pulse" value="124"/></timeEvent>
-		<timeEvent time="36m"><action type="pulse" value="125"/></timeEvent>
-		<timeEvent time="40m"><action type="pulse" value="126"/></timeEvent>
-		<timeEvent time="44m"><action type="pulse" value="127"/></timeEvent>
-		<timeEvent time="48m"><action type="pulse" value="128"/></timeEvent>
-		<timeEvent time="52m"><action type="pulse" value="129"/></timeEvent>
-		<timeEvent time="56m"><action type="pulse" value="130"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+2m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
+		<timeEvent time="+4m"><action type="pulse" value="+1"/></timeEvent>
 	</timeEvents>
 </program>
