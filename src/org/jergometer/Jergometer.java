@@ -142,6 +142,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		mainWindow.setExtendedState(mainWindow.getExtendedState()|JFrame.MAXIMIZED_BOTH);
 		mainWindow.addWindowListener(this);
 		mainWindow.setVisible(true);
+		mainWindow.init();
 
 		setShowOnlyCompletedSessions(true);
 		setSessionsVis(SessionsVis.progression);

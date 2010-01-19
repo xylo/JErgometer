@@ -122,6 +122,13 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		programTree.addKeyListener(this);
 	}
 
+	public void init() {
+		// create a user if not already done
+		while (jergometer.getSettings().getLastUserName() == null) {
+			createNewUser();
+		}
+	}
+
 	public void setData(DataRecord dataRecord) {
 		pulseLabel.setText(dataRecord.getPulse() + "");
 		pedalRpmLabel.setText(dataRecord.getPedalRpm() + "");
@@ -355,10 +362,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		} else if (e.getSource() == stopButton) {
 			jergometer.stopRecording();
 		} else if (e.getSource() == newUserMenuItem) {
-			String userName = JOptionPane.showInputDialog(I18n.getString("msg.enter_username"));
-			if (userName != null) {
-				jergometer.newUser(userName);
-			}
+			createNewUser();
 		} else if (e.getSource() == settingsMenuItem) {
 			openSettingsWindow();
 		} else if (e.getSource() == quitMenuItem) {
@@ -404,6 +408,13 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			if (userName != null) {
 				jergometer.switchToUser(userName);
 			}
+		}
+	}
+
+	private void createNewUser() {
+		String userName = JOptionPane.showInputDialog(this, I18n.getString("msg.enter_username"), I18n.getString("label.create_new_user"), JOptionPane.QUESTION_MESSAGE);
+		if (userName != null && !userName.trim().equals("")) {
+			jergometer.newUser(userName);
 		}
 	}
 

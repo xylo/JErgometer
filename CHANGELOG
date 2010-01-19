@@ -6,6 +6,7 @@ Changelog for JErgometer
 2010-01-19
 * [stefan]  * simplified example programs (use relative values instead of absolute ones)
             * minor fixes
+            * implemented issue #172: ensure that a user is selected
 
 == 0.7.6 ==
 
