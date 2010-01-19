@@ -427,7 +427,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 						if (xmlEditor == null) {
 							try {
 								Desktop.getDesktop().edit(bikeProgram.getFile());
-							} catch (IOException e) {
+							} catch (Exception e) {
 								JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.could_not_open_file.please_configure_editor"),
 									I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
 								openSettingsWindow();

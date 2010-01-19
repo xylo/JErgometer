@@ -3,6 +3,10 @@ Changelog for JErgometer
 
 //== 0.7.7 ==
 
+2010-01-19
+* [stefan]  * simplified example programs (use relative values instead of absolute ones)
+            * minor fixes
+
 == 0.7.6 ==
 
 2010-01-16
