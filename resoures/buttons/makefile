@@ -5,7 +5,7 @@ pss  := $(texs:%.tex=%.ps)
 pdfs := $(texs:%.tex=%.pdf)
 pngs := $(texs:%.tex=%.png)
 
-size := 24x24
+size := 20x20
 
 default: pngs clean
 
