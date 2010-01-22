@@ -66,8 +66,8 @@ public class Diagram extends JPanel implements ComponentListener {
 
 	private static Color gridColorEven = new Color(160,160,160);
 	private static Color gridColorOdd = new Color(192,192,192);
-	private static Stroke gridStrokeEven = new BasicStroke(1);
-	private static Stroke gridStrokeOdd = new BasicStroke(0.5f);
+	private static Stroke gridStrokeEven = new BasicStroke(0.6f);
+	private static Stroke gridStrokeOdd = new BasicStroke(0.3f);
 
 	/*
 	private static Color gridColorEven = new Color(64,64,64);
@@ -76,7 +76,7 @@ public class Diagram extends JPanel implements ComponentListener {
 	private static Stroke gridStrokeOdd = new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 1, new float[] {0,6}, 0);
 	*/
 
-	private static HashMap<RenderingHints.Key,Object> renderingHintsNormal = new HashMap();
+	private static HashMap<RenderingHints.Key,Object> renderingHintsNormal = new HashMap<RenderingHints.Key, Object>();
 	static {
 		renderingHintsNormal.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		renderingHintsNormal.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -89,7 +89,7 @@ public class Diagram extends JPanel implements ComponentListener {
 		renderingHintsNormal.put(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 	}
 
-	private static HashMap<RenderingHints.Key,Object> renderingHintsGraph = new HashMap(renderingHintsNormal);
+	private static HashMap<RenderingHints.Key,Object> renderingHintsGraph = new HashMap<RenderingHints.Key, Object>(renderingHintsNormal);
 	static {
 		renderingHintsGraph.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		renderingHintsGraph.put(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -98,12 +98,24 @@ public class Diagram extends JPanel implements ComponentListener {
 	public Diagram() {
 		super(true);
 
-		addHighlightRange(new Range<Color>(125, 145, new Color(192,255,192)));
-		addHighlightRange(new Range<Color>(145, 165, new Color(192,230,255)));
-		addHighlightRange(new Range<Color>(165, 220, new Color(255,192,192)));
+		addHighlightRange(new Range<Color>(125, 145, brighter(0.5f, new Color(192,255,192))));
+		addHighlightRange(new Range<Color>(145, 165, brighter(0.5f, new Color(192,230,255))));
+		addHighlightRange(new Range<Color>(165, 220, brighter(0.5f, new Color(255,192,192))));
 
 		addComponentListener(this);
 		setPreferredSize(new Dimension(640, 480));
+	}
+
+	public Color brighter(double ratio, Color color) {
+		int r = color.getRed();
+		int g = color.getGreen();
+		int b = color.getBlue();
+
+		r = (int) ((255-r)*ratio + r);
+		g = (int) ((255-g)*ratio + g);
+		b = (int) ((255-b)*ratio + b);
+
+		return new Color(r, g, b);
 	}
 
 	public void addHighlightRange(Range<Color> range) {
@@ -118,7 +130,7 @@ public class Diagram extends JPanel implements ComponentListener {
 		return highlightRanges;
 	}
 
-	public void addGraph(Object key, String name, Color color, Side lr) {
+	public void addGraph(String key, String name, Color color, Side lr) {
 		Graph graph = new Graph(name, color);
 		graphs[lr.getInt()].add(graph);
 		key2Graph.put(key, graph);
@@ -134,7 +146,7 @@ public class Diagram extends JPanel implements ComponentListener {
 		repaint();
 	}
 
-	public synchronized void addValue(Object key, long time, int value) {
+	public synchronized void addValue(String key, long time, int value) {
 		Graph graph = key2Graph.get(key);
 		graph.timedValues.add(new Point(time, value));
 
