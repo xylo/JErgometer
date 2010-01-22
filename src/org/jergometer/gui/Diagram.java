@@ -98,24 +98,32 @@ public class Diagram extends JPanel implements ComponentListener {
 	public Diagram() {
 		super(true);
 
-		addHighlightRange(new Range<Color>(125, 145, brighter(0.5f, new Color(192,255,192))));
-		addHighlightRange(new Range<Color>(145, 165, brighter(0.5f, new Color(192,230,255))));
-		addHighlightRange(new Range<Color>(165, 220, brighter(0.5f, new Color(255,192,192))));
+		addHighlightRange(new Range<Color>(125, 145, brighten(0.5f, new Color(192,255,192))));
+		addHighlightRange(new Range<Color>(145, 165, brighten(0.5f, new Color(192,230,255))));
+		addHighlightRange(new Range<Color>(165, 220, brighten(0.5f, new Color(255,192,192))));
 
 		addComponentListener(this);
 		setPreferredSize(new Dimension(640, 480));
 	}
 
-	public Color brighter(double ratio, Color color) {
+	public static Color brighten(double ratio, Color color) {
 		int r = color.getRed();
 		int g = color.getGreen();
 		int b = color.getBlue();
+		int a = color.getAlpha();
 
-		r = (int) ((255-r)*ratio + r);
-		g = (int) ((255-g)*ratio + g);
-		b = (int) ((255-b)*ratio + b);
+		if (ratio >= 0) {
+			r = (int) ((255-r)*ratio + r);
+			g = (int) ((255-g)*ratio + g);
+			b = (int) ((255-b)*ratio + b);
+		} else {
+			ratio = 1+ratio;
+			r = (int) (r*ratio);
+			g = (int) (g*ratio);
+			b = (int) (b*ratio);
+		}
 
-		return new Color(r, g, b);
+		return new Color(r, g, b, a);
 	}
 
 	public void addHighlightRange(Range<Color> range) {
@@ -130,8 +138,7 @@ public class Diagram extends JPanel implements ComponentListener {
 		return highlightRanges;
 	}
 
-	public void addGraph(String key, String name, Color color, Side lr) {
-		Graph graph = new Graph(name, color);
+	public void addGraph(String key, Graph graph, Side lr) {
 		graphs[lr.getInt()].add(graph);
 		key2Graph.put(key, graph);
 	}
@@ -146,6 +153,11 @@ public class Diagram extends JPanel implements ComponentListener {
 		repaint();
 	}
 
+	private AlphaComposite makeComposite(float alpha) {
+	 int type = AlphaComposite.SRC_OVER;
+	 return(AlphaComposite.getInstance(type, alpha));
+	}
+	
 	public synchronized void addValue(String key, long time, int value) {
 		Graph graph = key2Graph.get(key);
 		graph.timedValues.add(new Point(time, value));
@@ -157,8 +169,9 @@ public class Diagram extends JPanel implements ComponentListener {
 		Point p2 = graph.timedValues.get(n-1);
 
 		Graphics2D g = backgroundImage.createGraphics();
-		g.setColor(graph.color);
-		g.setStroke(new BasicStroke(0.5f));  // 1.0 besser ???
+		//g.setComposite(makeComposite(0.4f));
+		g.setPaint(graph.color);
+		g.setStroke(graph.stroke);  // 1.0 besser ???
 		g.setRenderingHints(renderingHintsGraph);
 
 		drawGraphLine(g, p1, p2, Side.left);
@@ -429,12 +442,18 @@ public class Diagram extends JPanel implements ComponentListener {
 	public static class Graph {
 		public String name;
 		public Color color;
+		public Stroke stroke;
 		public ArrayList<Point> timedValues;
 
-		public Graph(String name, Color color) {
+		public Graph(String name, Color color, Stroke stroke) {
 			this.name = name;
 			this.color = color;
+			this.stroke = stroke;
 			timedValues = new ArrayList<Point>();
+		}
+
+		public Graph(String name, Color color) {
+			this(name, color, new BasicStroke(0.5f));
 		}
 	}
 

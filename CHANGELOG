@@ -4,8 +4,7 @@ Changelog for JErgometer
 //== 0.7.8 ==
 
 2010-01-22
-* [stefan]  * changed background color of the diagram
-            * changed size of record and stop buttons to 20x20
+* [stefan]  * several style changes (diagram, buttons)
 
 == 0.7.7 ==
 

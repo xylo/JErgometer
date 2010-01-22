@@ -29,9 +29,7 @@ public class BikeSessionVisualizer implements DiagramVisualizer {
 				diagram.setTimeAxisType(Diagram.TimeAxisType.minute);
 				diagram.clearGraphs();
 			}
-			diagram.addGraph("pulse", "Pulse", new Color(128,0,0), Diagram.Side.left);
-			diagram.addGraph("pedalRPM", "Pedal RPM", new Color(0,128,0), Diagram.Side.left);
-			diagram.addGraph("power", "Power", new Color(0,0,128), Diagram.Side.left);
+			BikeDiagram.createLegend(diagram, false, false);
 
 			int time = 0;
 			for (MiniDataRecord miniDataRecord : miniDataRecords) {

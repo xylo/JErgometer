@@ -17,16 +17,14 @@ public class BikeProgramVisualizer implements DiagramVisualizer {
 		this.diagram = diagram;
 	}
 
-	public void visualize(BikeProgram bikeProgram) {
+	public void visualize(BikeProgram bikeProgram, boolean bright) {
 		synchronized(diagram) {
 			BikeProgramData data = bikeProgram.getProgramData();
 			diagram.setTimeRange(new Diagram.Range(0,data.getDuration()));
 			diagram.setTimeAxisType(Diagram.TimeAxisType.minute);
 
 			diagram.clearGraphs();
-			diagram.addGraph("pulse-dest", "Dest. Pulse", new Color(255,0,0), Diagram.Side.left);
-			diagram.addGraph("pedalRPM-dest", "Dest. Pedal RPM", new Color(0,255,0), Diagram.Side.left);
-			diagram.addGraph("power-dest", "Dest. Power", new Color(0,0,255), Diagram.Side.left);
+			BikeDiagram.createLegend(diagram, true, bright);
 
 			BikeProgramData.Action lastAction = null;
 

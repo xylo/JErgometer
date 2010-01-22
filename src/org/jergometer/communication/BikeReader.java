@@ -74,14 +74,14 @@ public class BikeReader extends Thread {
 						System.err.print(dataString);
 					}
 					else if(printAvailable == PrintAvailable.decimals) {
-						for (int i = 0; i < bytes.length; i++) {
-							System.out.print("," + (bytes[i] & 0xFF));
+						for (byte aByte : bytes) {
+							System.out.print("," + (aByte & 0xFF));
 						}
 					}
 					else if(printAvailable == PrintAvailable.hexadecimal) {
 						// TODO
-						for (int i = 0; i < bytes.length; i++) {
-							System.out.print("," + (bytes[i] & 0xFF));
+						for (byte aByte : bytes) {
+							System.out.print("," + (aByte & 0xFF));
 						}
 					}
 				}
@@ -96,7 +96,7 @@ public class BikeReader extends Thread {
 		try {
 			inStream.close();
 			this.interrupt();
-		} catch (IOException e) {}
+		} catch (IOException ignored) {}
 		super.interrupt();
 	}
 

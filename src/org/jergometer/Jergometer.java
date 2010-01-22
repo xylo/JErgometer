@@ -6,10 +6,7 @@ import de.endrullis.utils.ShellPrintStream;
 import de.endrullis.utils.StreamUtils;
 import org.jergometer.communication.*;
 import org.jergometer.control.BikeProgram;
-import org.jergometer.diagram.BikeProgramVisualizer;
-import org.jergometer.diagram.BikeSessionVisualizer;
-import org.jergometer.diagram.DiagramVisualizer;
-import org.jergometer.diagram.ProgressionVisualizer;
+import org.jergometer.diagram.*;
 import org.jergometer.gui.ChooseNewProgramDialog;
 import org.jergometer.gui.Diagram;
 import org.jergometer.gui.MainWindow;
@@ -17,19 +14,15 @@ import org.jergometer.model.*;
 import org.jergometer.translation.I18n;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import gnu.io.UnsupportedCommOperationException;
-import gnu.io.PortInUseException;
 
 /**
  * Main class of JErgometer.
@@ -347,9 +340,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 			Diagram diagram = mainWindow.getDiagram();
 //			diagram.clearGraphs();
-			diagram.addGraph("pulse", "Pulse", new Color(128,0,0), Diagram.Side.left);
-			diagram.addGraph("pedalRPM", "Pedal RPM", new Color(0,128,0), Diagram.Side.left);
-			diagram.addGraph("power", "Power", new Color(0,0,128), Diagram.Side.left);
+			BikeDiagram.createLegend(diagram, false, false);
 
 			try {
 				connectToSerialPort();
@@ -425,7 +416,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		sessionFilter.setProgramFilter(bikeProgram);
 		diagramVisualizer.stopVisualization();
 		filterSessions();
-		visualizeBikeProgram(bikeProgram);
+		visualizeBikeProgram(bikeProgram, false);
 	}
 
 	public void selectBikeProgramDirectory(BikeProgramDir bikeProgramDir) {
@@ -438,10 +429,10 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		filterSessions();
 	}
 
-	private void visualizeBikeProgram(BikeProgram bikeProgram) {
+	private void visualizeBikeProgram(BikeProgram bikeProgram, boolean bright) {
 		BikeProgramVisualizer bikeProgramVisualizer = new BikeProgramVisualizer(mainWindow.getDiagram());
 		diagramVisualizer = bikeProgramVisualizer;
-		bikeProgramVisualizer.visualize(bikeProgram);
+		bikeProgramVisualizer.visualize(bikeProgram, bright);
 	}
 
 	public void selectBikeSession(BikeSession bikeSession) {
@@ -484,7 +475,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		BikeProgram bikeProgram = programTree.getProgram(bikeSession.getProgramName());
 		boolean programFound = bikeProgram != null;
 		if (programFound) {
-			visualizeBikeProgram(bikeProgram);
+			visualizeBikeProgram(bikeProgram, true);
 		}
 
 		// draw the session
