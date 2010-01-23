@@ -171,7 +171,7 @@ public class Diagram extends JPanel implements ComponentListener {
 		Graphics2D g = backgroundImage.createGraphics();
 		//g.setComposite(makeComposite(0.4f));
 		g.setPaint(graph.color);
-		g.setStroke(graph.stroke);  // 1.0 besser ???
+		g.setStroke(graph.stroke);
 		g.setRenderingHints(renderingHintsGraph);
 
 		drawGraphLine(g, p1, p2, Side.left);
@@ -346,9 +346,8 @@ public class Diagram extends JPanel implements ComponentListener {
 	}
 
 	private void drawGraph(Graphics2D g, Graph graph, Side lr) {
-		g.setColor(graph.color);
-
-		g.setStroke(new BasicStroke(0.5f));
+		g.setPaint(graph.color);
+		g.setStroke(graph.stroke);
 		g.setRenderingHints(renderingHintsGraph);
 
 		Point p1 = null;
