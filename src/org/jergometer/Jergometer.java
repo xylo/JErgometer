@@ -172,8 +172,8 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		// check for new version
 		if (updater.isNewVersionAvailable()) {
 			// ask user if (s)he wants to update
-			if (JOptionPane.showConfirmDialog(mainWindow, "A new version of JErgometer is available. Do you want to update?",
-					"JErgometer - Updater", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(mainWindow, I18n.getString("msg.new_version_available.want_to_update"),
+					I18n.getString("msg.updater.title"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 
 				// perform update
 				if (updater.performUpdate(true)) {
@@ -183,7 +183,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 			}
 		} else {
 			if (!start) {
-				JOptionPane.showMessageDialog(mainWindow, "JErgometer is up-to-date.", "JErgometer - Updater", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.jergometer_is_up-to-date"), I18n.getString("msg.updater.title"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

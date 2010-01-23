@@ -3,6 +3,9 @@ Changelog for JErgometer
 
 //== 0.7.8 ==
 
+2010-01-23
+* [stefan]  * fixed some I18N issues
+
 2010-01-22
 * [stefan]  * several style changes (diagram, buttons)
 
