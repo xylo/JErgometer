@@ -336,7 +336,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 			}
 
 			// clear diagram and draw the bike program
-			selectBikeProgram(program);
+			selectBikeProgram(program, true);
 
 			Diagram diagram = mainWindow.getDiagram();
 //			diagram.clearGraphs();
@@ -411,12 +411,16 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	}
 
 	public void selectBikeProgram(BikeProgram bikeProgram) {
+		selectBikeProgram(bikeProgram, false);
+	}
+
+	private void selectBikeProgram(BikeProgram bikeProgram, boolean bright) {
 		selectedSessions.clear();
 		program = bikeProgram;
 		sessionFilter.setProgramFilter(bikeProgram);
 		diagramVisualizer.stopVisualization();
 		filterSessions();
-		visualizeBikeProgram(bikeProgram, false);
+		visualizeBikeProgram(bikeProgram, bright);
 	}
 
 	public void selectBikeProgramDirectory(BikeProgramDir bikeProgramDir) {
