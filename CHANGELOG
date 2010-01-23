@@ -5,6 +5,7 @@ Changelog for JErgometer
 
 2010-01-23
 * [stefan]  * fixed some I18N issues
+            * solved issue #161: design an icon for JErgometer
 
 2010-01-22
 * [stefan]  * several style changes (diagram, buttons)

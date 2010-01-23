@@ -86,6 +86,13 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		setJMenuBar(createMenuBar());
 		createPopups();
 
+		// set icon
+		try {
+			setIconImage(new ImageIcon(StreamUtils.readBytesFromInputStream(StreamUtils.getInputStream("org/jergometer/images/icon_32.png"))).getImage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		// single selection for the program tree
 		programTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		// remove keystroke "control A" from program tree
@@ -494,9 +501,9 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 
 			Object node = selectedNode.getUserObject();
 			if (node instanceof BikeProgramDir) {
-			  BikeProgramDir bikeProgramDir = (BikeProgramDir) node;
-			  File dir = bikeProgramDir.getFile();
-				
+				BikeProgramDir bikeProgramDir = (BikeProgramDir) node;
+				File dir = bikeProgramDir.getFile();
+
 				// ask for renaming the file
 				String newFileName = JOptionPane.showInputDialog(this, I18n.getString("enter_new_file_or_directory_name"), "");
 				if (newFileName != null && !newFileName.trim().equals("")) {
