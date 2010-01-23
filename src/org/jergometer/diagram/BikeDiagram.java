@@ -1,10 +1,13 @@
 package org.jergometer.diagram;
 
 import org.jergometer.gui.Diagram;
+import org.jergometer.translation.I18n;
 
 import java.awt.*;
 
 /**
+ * Utility class for adding the legend to a diagram.
+ *
  * @author Stefan Endrullis
  */
 public class BikeDiagram {
@@ -16,9 +19,13 @@ public class BikeDiagram {
 		if (dest) {
 			suffix = "-dest";
 		}
-		diagram.addGraph("pulse" + suffix, new Diagram.Graph("Pulse", Diagram.brighten(b, new Color(255,0,0, a)), s, bright), Diagram.Side.left);
-		diagram.addGraph("pedalRPM" + suffix, new Diagram.Graph("Pedal RPM", Diagram.brighten(b, new Color(0,255,0, a)), s, bright), Diagram.Side.left);
-		diagram.addGraph("power" + suffix, new Diagram.Graph("Power", Diagram.brighten(b, new Color(0,0,255, a)), s, bright), Diagram.Side.left);
-		diagram.addGraph("performance" + suffix, new Diagram.Graph("Performance", Diagram.brighten(b, new Color(0,0,0, a)), s, bright), Diagram.Side.left);
+		addGraph(diagram, "pulse"       + suffix, Diagram.brighten(b, new Color(255,0,0, a)), s, Diagram.Side.left, bright);
+		addGraph(diagram, "pedalRPM"    + suffix, Diagram.brighten(b, new Color(0,255,0, a)), s, Diagram.Side.left, bright);
+		addGraph(diagram, "power"       + suffix, Diagram.brighten(b, new Color(0,0,255, a)), s, Diagram.Side.left, bright);
+		addGraph(diagram, "performance" + suffix, Diagram.brighten(b, new Color(0,0,0, a)),   s, Diagram.Side.left, bright);
+	}
+
+	public static void addGraph(Diagram diagram, String name, Color color, Stroke s, Diagram.Side side, boolean hideInLegend) {
+		diagram.addGraph(name, new Diagram.Graph(I18n.getString("legend." + name), color, s, hideInLegend), side);
 	}
 }
