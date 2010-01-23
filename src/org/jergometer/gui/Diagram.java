@@ -141,6 +141,11 @@ public class Diagram extends JPanel implements ComponentListener {
 	public void addGraph(String key, Graph graph, Side lr) {
 		graphs[lr.getInt()].add(graph);
 		key2Graph.put(key, graph);
+
+		drawLegend(backgroundImage.createGraphics());
+
+		redrawImage();
+		repaint();
 	}
 
 	public void clearGraphs() {
@@ -211,6 +216,7 @@ public class Diagram extends JPanel implements ComponentListener {
 		for(Side lr : new Side[] {Side.left, Side.right}) {
 			for(Graph graph : graphs[lr.getInt()]) drawGraph(g, graph, lr);
 		}
+		drawLegend(g);
 
 		// axis
 		g.drawLine(margin.left, margin.top, margin.left, height - margin.bottom + crossSize);
@@ -345,6 +351,49 @@ public class Diagram extends JPanel implements ComponentListener {
 		}
 	}
 
+	private void drawLegend(Graphics2D g) {
+		int width = backgroundImage.getWidth();
+		int height = backgroundImage.getHeight();
+
+		int y = height - margin.bottom + 22;
+		Range range = timeRange;
+		int minX = margin.left;
+		int maxX = width - margin.right;
+
+		// font metrics
+		FontMetrics fm = g.getFontMetrics();
+
+		int spacing = 30;
+
+		// determine total with of the legend
+		int totalWidth = -10;
+		for (ArrayList<Graph> graphs2 : graphs) {
+			for (Graph graph : graphs2) {
+				if (!graph.hideInLegend) {
+					Rectangle2D bounds = fm.getStringBounds(graph.name, g);
+					totalWidth += bounds.getWidth() + spacing;
+				}
+			}
+		}
+
+		// draw legend
+		int x = minX + ((maxX-minX) - totalWidth)/2;
+		for (ArrayList<Graph> graphs2 : graphs) {
+			for (Graph graph : graphs2) {
+				if (!graph.hideInLegend) {
+					Rectangle2D bounds = fm.getStringBounds(graph.name, g);
+					g.setColor(graph.color);
+					g.setStroke(normalStroke);
+					g.drawString(graph.name, x, y + (int) bounds.getHeight() + markerSize + 1);
+					g.setColor(Color.BLACK);
+					g.setStroke(normalStroke);
+
+					x += bounds.getWidth() + spacing;
+				}
+			}
+		}
+	}
+
 	private void drawGraph(Graphics2D g, Graph graph, Side lr) {
 		g.setPaint(graph.color);
 		g.setStroke(graph.stroke);
@@ -442,17 +491,19 @@ public class Diagram extends JPanel implements ComponentListener {
 		public String name;
 		public Color color;
 		public Stroke stroke;
+		public boolean hideInLegend;
 		public ArrayList<Point> timedValues;
 
-		public Graph(String name, Color color, Stroke stroke) {
+		public Graph(String name, Color color, Stroke stroke, boolean hideInLegend) {
 			this.name = name;
 			this.color = color;
 			this.stroke = stroke;
+			this.hideInLegend = hideInLegend;
 			timedValues = new ArrayList<Point>();
 		}
 
 		public Graph(String name, Color color) {
-			this(name, color, new BasicStroke(0.5f));
+			this(name, color, new BasicStroke(0.5f), false);
 		}
 	}
 

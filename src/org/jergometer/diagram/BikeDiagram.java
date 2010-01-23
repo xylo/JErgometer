@@ -16,9 +16,9 @@ public class BikeDiagram {
 		if (dest) {
 			suffix = "-dest";
 		}
-		diagram.addGraph("pulse" + suffix, new Diagram.Graph("Pulse", Diagram.brighten(b, new Color(255,0,0, a)), s), Diagram.Side.left);
-		diagram.addGraph("pedalRPM" + suffix, new Diagram.Graph("Pedal RPM", Diagram.brighten(b, new Color(0,255,0, a)), s), Diagram.Side.left);
-		diagram.addGraph("power" + suffix, new Diagram.Graph("Power", Diagram.brighten(b, new Color(0,0,255, a)), s), Diagram.Side.left);
-		diagram.addGraph("performance" + suffix, new Diagram.Graph("Performance", Diagram.brighten(b, new Color(0,0,0, a)), s), Diagram.Side.left);
+		diagram.addGraph("pulse" + suffix, new Diagram.Graph("Pulse", Diagram.brighten(b, new Color(255,0,0, a)), s, bright), Diagram.Side.left);
+		diagram.addGraph("pedalRPM" + suffix, new Diagram.Graph("Pedal RPM", Diagram.brighten(b, new Color(0,255,0, a)), s, bright), Diagram.Side.left);
+		diagram.addGraph("power" + suffix, new Diagram.Graph("Power", Diagram.brighten(b, new Color(0,0,255, a)), s, bright), Diagram.Side.left);
+		diagram.addGraph("performance" + suffix, new Diagram.Graph("Performance", Diagram.brighten(b, new Color(0,0,0, a)), s, bright), Diagram.Side.left);
 	}
 }
