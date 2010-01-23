@@ -14,7 +14,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.47pre4 r22446"
-   sodipodi:docname="icon128.svg">
+   sodipodi:docname="icon.svg">
   <defs
      id="defs2818">
     <inkscape:perspective
@@ -34,8 +34,8 @@
      inkscape:pageshadow="2"
      inkscape:zoom="8"
      inkscape:cx="56.673395"
-     inkscape:cy="39.755856"
-     inkscape:current-layer="layer1"
+     inkscape:cy="29.755856"
+     inkscape:current-layer="g3876"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
@@ -133,7 +133,7 @@
          height="1"
          width="32"
          id="rect3620"
-         style="opacity:0.01000001;fill:#000000;fill-opacity:1;stroke:none" />
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:none" />
       <path
          sodipodi:nodetypes="cc"
          id="path3634"
@@ -180,7 +180,7 @@
          id="path3673"
          sodipodi:nodetypes="ccc" />
       <rect
-         style="opacity:0.01000001;fill:#000000;fill-opacity:1;stroke:none"
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"
          id="rect3622"
          width="1"
          height="32"
