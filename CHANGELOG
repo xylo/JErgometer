@@ -5,6 +5,7 @@ Changelog for JErgometer
 
 2010-02-20
 * [stefan]  * implemented issue #178: save and restore last window position and size
+            * fixed issue #155: test connection sometime successful when using wrong COM port
 
 == 0.7.8 ==
 

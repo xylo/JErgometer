@@ -340,7 +340,7 @@ public class SettingsWindow extends JDialog {
 	private void testComPort(final SettingsWindow settingsWindow) {
 		BikeConnectionTester bikeConnectionTester = new BikeConnectionTester(settingsWindow, comPortComboBox.getSelectedItem().toString());
 		String id = bikeConnectionTester.test();
-		if (id == null) {
+		if (id == null || id.equals("ID")) {
 			JOptionPane.showMessageDialog(this, I18n.getString("msg.connection_failed"));
 		} else {
 			JOptionPane.showMessageDialog(this, I18n.getString("connection_tester.connection_successful", id));
