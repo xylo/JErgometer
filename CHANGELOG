@@ -3,6 +3,9 @@ Changelog for JErgometer
 
 //== 0.7.9 ==
 
+2010-02-20
+* [stefan]  * implemented issue #178: save and restore last window position and size
+
 == 0.7.8 ==
 
 2010-01-23

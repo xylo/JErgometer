@@ -5,7 +5,7 @@ setopt EXTENDED_GLOB
 
 echo '<?xml version="1.0" encoding="UTF-8"?>'
 echo '<files>'
-for file in `print **/(*~versions.xml)(.)`; do
+for file in `print **/(*~versions.xml)(.D)`; do
 	md5=`md5sum $file | cut -d " " -f 1`
 	len=`du --apparent-size -b $file | cut -f 1`
 	echo "\t<file name=\"$file\" version=\"$md5\" length=\"$len\"/>"

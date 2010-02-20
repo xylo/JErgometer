@@ -14,10 +14,8 @@ import org.jergometer.model.*;
 import org.jergometer.translation.I18n;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,8 +129,8 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		mainWindow = new MainWindow(I18n.getString("main_window.title", version), this);
 		mainWindow.getProgramTree().setModel(programTree);
 		// maximize the main window
-		mainWindow.pack();
-		mainWindow.setExtendedState(mainWindow.getExtendedState()|JFrame.MAXIMIZED_BOTH);
+		mainWindow.setBounds(jergometerSettings.getMainWindowBounds());
+		mainWindow.setExtendedState(mainWindow.getExtendedState() | jergometerSettings.getMainWindowMaximizedState());
 		mainWindow.addWindowListener(this);
 		mainWindow.setVisible(true);
 		mainWindow.init();
@@ -142,25 +140,12 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 		switchToUser(jergometerSettings.getLastUserName());
 
-		/*
-		int u = 130;
-		int v = 80;
-		int w = 100;
-		for(int i = 0; i < 3600; i++) {
-			u += Math.random() *3 - 1;
-			if(u < 30) u = 30;
-			if(u > 210) u = 210;
-			mainWindow.getDiagram().addValue("pulse", i, u);
-			v += Math.random() *3 - 1;
-			if(v < 30) v = 30;
-			if(v > 210) v = 210;
-			mainWindow.getDiagram().addValue("pedalRPM", i, v);
-			w += Math.random() *3 - 1;
-			if(w < 30) w = 30;
-			if(w > 210) w = 210;
-			mainWindow.getDiagram().addValue("power", i, w);
-		}
-		*/
+		Runtime.getRuntime().addShutdownHook(new Thread(){
+			@Override
+			public void run() {
+				quit();
+			}
+		});
 	}
 
 	/**
@@ -208,6 +193,8 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	 */
 	private void save() {
 		stopRecording();
+		jergometerSettings.setMainWindowBounds(mainWindow.getBounds());
+		jergometerSettings.setMainWindowMaximizedState(mainWindow.getExtendedState() & JFrame.MAXIMIZED_BOTH);
 		jergometerSettings.save();
 		userSettings.save();
 	}
@@ -574,9 +561,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	 */
 	public void quit() {
 		save();
-		mainWindow.dispose();
-
-		System.exit(0);
+		//mainWindow.dispose();
 	}
 
 
@@ -639,7 +624,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	}
 
 	public void windowClosing(WindowEvent e) {
-		quit();
+		System.exit(0);
 	}
 
 	public void windowClosed(WindowEvent e) {

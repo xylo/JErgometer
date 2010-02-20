@@ -373,7 +373,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		} else if (e.getSource() == settingsMenuItem) {
 			openSettingsWindow();
 		} else if (e.getSource() == quitMenuItem) {
-			jergometer.quit();
+			System.exit(0);
 		} else if (e.getSource() == aboutMenuItem) {
 			new AboutDialog().showMe();
 		} else if (e.getSource() == diagramAverageValuesMenuItem) {
