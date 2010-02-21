@@ -137,8 +137,8 @@ public class BikeSession {
 	public void save(String dir) throws IOException {
 		new File(dir).mkdirs();
 
-		String filename = getFileName(dir + "/", startTime);
-		DataOutputStream out = new DataOutputStream(new FileOutputStream(filename));
+		file = new File(getFileName(dir + "/", startTime));
+		DataOutputStream out = new DataOutputStream(new FileOutputStream(file));
 
 		toStream(out);
 
