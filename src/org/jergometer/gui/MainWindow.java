@@ -52,6 +52,13 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	private JRadioButtonMenuItem diagramProgressionMenuItem;
 	private JCheckBoxMenuItem showOnlyCompletedSessionsMenuItem;
 	private JCheckBoxMenuItem showFullSessionLength;
+	private JMenuItem editProgramMenuItem;
+	private JMenuItem renameProgramMenuItem;
+	private JMenuItem createNewProgramDirectory;
+	private JMenuItem copyProgramMenuItem;
+	private JMenuItem cutProgramDataMenuItem;
+	private JMenuItem deleteProgramMenuItem;
+	private JMenuItem updateProgramMenuItem;
 	private JMenu userMenu;
 	private ButtonGroup userButtonGroup;
 	private ArrayList<JMenuItem> userMenuItems = new ArrayList<JMenuItem>();
@@ -84,8 +91,8 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		super(title);
 		this.jergometer = jergometer;
 		setContentPane(mainPanel);
-		setJMenuBar(createMenuBar());
 		createPopups();
+		setJMenuBar(createMenuBar());
 
 		// set icon
 		try {
@@ -180,6 +187,21 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			menuBar.add(userMenu);
 		}
 
+		// Programs
+		{
+			JMenu programsMenu = new JMenu(I18n.getString("menu.programs"));
+			programsMenu.setMnemonic(I18n.getMnemonic("menu.programs_mn"));
+			menuBar.add(programsMenu);
+			programsMenu.add(editProgramMenuItem);
+			programsMenu.add(renameProgramMenuItem);
+			programsMenu.add(createNewProgramDirectory);
+			programsMenu.add(copyProgramMenuItem);
+			programsMenu.add(cutProgramDataMenuItem);
+			programsMenu.add(insertProgramMenuItem);
+			programsMenu.add(deleteProgramMenuItem);
+			programsMenu.add(updateProgramMenuItem);
+		}
+
 		// Sessions
 		{
 			JMenu sessionsMenu = new JMenu(I18n.getString("menu.sessions"));
@@ -272,31 +294,31 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		// program tree popup
 		{
 			programTreePopup = new JPopupMenu();
-			JMenuItem editProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.edit"));
+			editProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.edit"));
 			editProgramMenuItem.setActionCommand(AC_EDIT_PROGRAM);
 			editProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.edit_mn"));
 			editProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.edit_ks")));
 			editProgramMenuItem.addActionListener(this);
 			programTreePopup.add(editProgramMenuItem);
-			JMenuItem renameProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.rename"));
+			renameProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.rename"));
 			renameProgramMenuItem.setActionCommand(AC_RENAME_PROGRAM);
 			renameProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.rename_mn"));
 			renameProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.rename_ks")));
 			renameProgramMenuItem.addActionListener(this);
 			programTreePopup.add(renameProgramMenuItem);
-			JMenuItem createNewProgramDirectory = new JMenuItem(I18n.getString("menu.programs.create_new_directory"));
+			createNewProgramDirectory = new JMenuItem(I18n.getString("menu.programs.create_new_directory"));
 			createNewProgramDirectory.setActionCommand(AC_CREATE_NEW_PROGRAM_DIRECTORY);
 			createNewProgramDirectory.setMnemonic(I18n.getMnemonic("menu.programs.create_new_directory_mn"));
 			createNewProgramDirectory.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.create_new_directory_ks")));
 			createNewProgramDirectory.addActionListener(this);
 			programTreePopup.add(createNewProgramDirectory);
-			JMenuItem copyProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.copy"));
+			copyProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.copy"));
 			copyProgramMenuItem.setActionCommand(AC_COPY_PROGRAM);
 			copyProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.copy_mn"));
 			copyProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.copy_ks")));
 			copyProgramMenuItem.addActionListener(this);
 			programTreePopup.add(copyProgramMenuItem);
-			JMenuItem cutProgramDataMenuItem = new JMenuItem(I18n.getString("menu.programs.cut"));
+			cutProgramDataMenuItem = new JMenuItem(I18n.getString("menu.programs.cut"));
 			cutProgramDataMenuItem.setActionCommand(AC_CUT_PROGRAM);
 			cutProgramDataMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.cut_mn"));
 			cutProgramDataMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.cut_ks")));
@@ -309,13 +331,13 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			insertProgramMenuItem.setEnabled(false);
 			insertProgramMenuItem.addActionListener(this);
 			programTreePopup.add(insertProgramMenuItem);
-			JMenuItem deleteProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.delete"));
+			deleteProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.delete"));
 			deleteProgramMenuItem.setActionCommand(AC_DELETE_PROGRAM);
 			deleteProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.delete_mn"));
 //			deleteProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.delete_ks")));
 			deleteProgramMenuItem.addActionListener(this);
 			programTreePopup.add(deleteProgramMenuItem);
-			JMenuItem updateProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.update"));
+			updateProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.update"));
 			updateProgramMenuItem.setActionCommand(AC_UPDATE_PROGRAM);
 			updateProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.update_mn"));
 			updateProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.update_ks")));
@@ -727,22 +749,24 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		if (src == sessionTable) {
 			if (e.getKeyCode() == KeyEvent.VK_DELETE && e.getModifiers() == 0) {
 				deleteSelectedSessions();
+				e.consume();
 			}
 		} else if (src == programTree) {
-			if (e.getKeyCode() == KeyEvent.VK_F4) {
-				editProgram();
+			if (e.getKeyCode() == KeyEvent.VK_DELETE && e.getModifiers() == 0) {
+				deleteProgram();
+				e.consume();
 			} else if (e.getKeyCode() == KeyEvent.VK_F2) {
 				renameProgram();
+				e.consume();
 			} else if (e.getKeyCode() == KeyEvent.VK_C && e.getModifiers() == KeyEvent.CTRL_MASK) {
 				copyProgram();
+				e.consume();
 			} else if (e.getKeyCode() == KeyEvent.VK_X && e.getModifiers() == KeyEvent.CTRL_MASK) {
 				cutProgram();
+				e.consume();
 			} else if (e.getKeyCode() == KeyEvent.VK_V && e.getModifiers() == KeyEvent.CTRL_MASK) {
 				insertProgram();
-			} else if (e.getKeyCode() == KeyEvent.VK_DELETE && e.getModifiers() == 0) {
-				deleteProgram();
-			} else if (e.getKeyCode() == KeyEvent.VK_F5) {
-				updateProgram();
+				e.consume();
 			}
 		}
 	}
