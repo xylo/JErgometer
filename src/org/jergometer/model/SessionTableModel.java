@@ -28,8 +28,8 @@ public class SessionTableModel extends AbstractTableModel {
 		switch(col) {
 			case 0: return String.format("%1$td.%1$tm.%1$ty %1$tH:%1$tM", bikeSession.getStartTime());
 			case 1: return bikeSession.getProgramName();
-			case 2: return String.format("%.1f", bikeSession.getAveragePulse());
-			case 3: return String.format("%.1f", bikeSession.getAveragePower());
+			case 2: return String.format("%.1f", bikeSession.getStatsRegular().getAveragePulse());
+			case 3: return String.format("%.1f", bikeSession.getStatsRegular().getAveragePower());
 			case 4:
 				int duration = Math.min(bikeSession.getDuration(), bikeSession.getProgramDuration());
 				int sec = duration % 60;

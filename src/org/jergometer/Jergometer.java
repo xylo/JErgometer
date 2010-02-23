@@ -15,7 +15,6 @@ import org.jergometer.translation.I18n;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,6 +138,8 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		setSessionsVis(SessionsVis.progression);
 
 		switchToUser(jergometerSettings.getLastUserName());
+
+		new JergometerConsole(this).start();
 
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override
@@ -327,7 +328,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 			Diagram diagram = mainWindow.getDiagram();
 //			diagram.clearGraphs();
-			BikeDiagram.createLegend(diagram, false, false);
+			BikeDiagram.createLegend(diagram, false, false, program.getProgramData().getDuration());
 
 			try {
 				connectToSerialPort();
@@ -407,7 +408,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		sessionFilter.setProgramFilter(bikeProgram);
 		diagramVisualizer.stopVisualization();
 		filterSessions();
-		visualizeBikeProgram(bikeProgram, bright);
+		visualizeBikeProgram(bikeProgram, bright, -1);
 	}
 
 	public void selectBikeProgramDirectory(BikeProgramDir bikeProgramDir) {
@@ -420,10 +421,10 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		filterSessions();
 	}
 
-	private void visualizeBikeProgram(BikeProgram bikeProgram, boolean bright) {
+	private void visualizeBikeProgram(BikeProgram bikeProgram, boolean bright, long duration) {
 		BikeProgramVisualizer bikeProgramVisualizer = new BikeProgramVisualizer(mainWindow.getDiagram());
 		diagramVisualizer = bikeProgramVisualizer;
-		bikeProgramVisualizer.visualize(bikeProgram, bright);
+		bikeProgramVisualizer.visualize(bikeProgram, bright, duration);
 	}
 
 	public void selectBikeSession(BikeSession bikeSession) {
@@ -462,17 +463,19 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	private void visualizeBikeSession(BikeSession bikeSession) throws IOException {
 		diagramVisualizer.stopVisualization();
 
+		int duration = mainWindow.isShowFullSessionLength() ? bikeSession.getStatsTotal().getDuration() : bikeSession.getProgramDuration();
+
 		// draw the program
 		BikeProgram bikeProgram = programTree.getProgram(bikeSession.getProgramName());
 		boolean programFound = bikeProgram != null;
 		if (programFound) {
-			visualizeBikeProgram(bikeProgram, true);
+			visualizeBikeProgram(bikeProgram, true, duration);
 		}
 
 		// draw the session
 		BikeSessionVisualizer bikeSessionVisualizer = new BikeSessionVisualizer(mainWindow.getDiagram());
 		diagramVisualizer = bikeSessionVisualizer;
-		bikeSessionVisualizer.visualize(bikeSession, !programFound);
+		bikeSessionVisualizer.visualize(bikeSession, !programFound, mainWindow.isShowFullSessionLength());
 	}
 
 	private void visualizeBikeSessions(ArrayList<BikeSession> bikeSessions) throws IOException {
@@ -480,9 +483,13 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 		switch (sessionsVis) {
 			case average:
+				boolean fullLength = mainWindow.isShowFullSessionLength();
+
+				// calculate minimal duration
 				int duration = Integer.MAX_VALUE;
 				for (BikeSession bikeSession : bikeSessions) {
-					duration = Math.min(duration,bikeSession.getProgramDuration());
+					int thisDuration = fullLength ? bikeSession.getStatsTotal().getDuration() : bikeSession.getProgramDuration();
+					duration = Math.min(duration, thisDuration);
 				}
 
 				BikeSession virtualBikeSession = new BikeSession(bikeSessions.get(0).getProgramName(), duration);
@@ -544,6 +551,21 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		filterSessions();
 	}
 
+	public void setShowFullSessionLength(boolean value) {
+		mainWindow.setShowFullSessionLength(value);
+
+		if (selectedSessions.size() == 1) {
+			selectBikeSession(selectedSessions.get(0));
+		} else
+		if (selectedSessions.size() > 1) {
+			selectBikeSessions(selectedSessions);
+		}
+	}
+
+	public BikeProgram getProgram() {
+		return program;
+	}
+
 	public ArrayList<BikeSession> getSelectedBikeSessions() {
 		return selectedSessions;
 	}
@@ -579,10 +601,21 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 	public void bikeData(DataRecord data) {
 		mainWindow.setData(data);
-		if (program.getSession().getDuration() < program.getSession().getProgramDuration()) {
-			mainWindow.getDiagram().addValue("pulse", program.getSession().getDuration(), data.getPulse());
-			mainWindow.getDiagram().addValue("pedalRPM", program.getSession().getDuration(), data.getPedalRpm());
-			mainWindow.getDiagram().addValue("power", program.getSession().getDuration(), data.getRealPower());
+
+		Diagram diagram = mainWindow.getDiagram();
+
+		// extends time range when we are at the end
+		if (program.getSession().getDuration() >= diagram.getTimeRange().max) {
+			long newMax = diagram.getTimeRange().max + (program.getProgramData().getDuration() / 2);
+			diagram.setTimeRange(new Diagram.Range(0, newMax));
+			diagram.redrawImage();
+		}
+
+		if (program.getSession().getDuration() < diagram.getTimeRange().max) {
+			int time = program.getSession().getDuration();
+			diagram.addValue("pulse", time, data.getPulse());
+			diagram.addValue("pedalRPM", time, data.getPedalRpm());
+			diagram.addValue("power", time, data.getRealPower());
 		}
 
 		program.update(data);

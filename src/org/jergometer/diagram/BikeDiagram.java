@@ -11,6 +11,12 @@ import java.awt.*;
  * @author Stefan Endrullis
  */
 public class BikeDiagram {
+	public static void createLegend(Diagram diagram, boolean dest, boolean bright, long programLength) {
+		diagram.addVerticalMarker(programLength, Color.BLACK, new BasicStroke(), "End of program");
+
+		createLegend(diagram, dest, bright);
+	}
+
 	public static void createLegend(Diagram diagram, boolean dest, boolean bright) {
 		String suffix = "";
 		Stroke s = dest ? new BasicStroke(2f) : new BasicStroke(0.5f);

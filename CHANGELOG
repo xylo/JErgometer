@@ -3,6 +3,9 @@ Changelog for JErgometer
 
 //== 0.7.9 ==
 
+2010-02-23
+* [stefan]  * implemented feature #177: extend timeline automatically when reaching end of traning program
+
 2010-02-20
 * [stefan]  * implemented issue #178: save and restore last window position and size
             * fixed issue #155: test connection sometime successful when using wrong COM port

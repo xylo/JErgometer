@@ -3,6 +3,7 @@ package org.jergometer.diagram;
 import org.jergometer.gui.Diagram;
 import org.jergometer.model.BikeSession;
 import org.jergometer.model.MiniDataRecord;
+import org.jergometer.model.StatsRecord;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,16 +42,16 @@ public class ProgressionVisualizer implements DiagramVisualizer {
 
 				long time = bikeSession.getStartTime().getTime() - start;
 				int programDuration = bikeSession.getProgramDuration();
-				MiniDataRecord sum = bikeSession.getSum();
+				StatsRecord sum = bikeSession.getStatsRegular();
 
-				if (bikeSession.getPulseCount() != 0) {
-					diagram.addValue("pulse", time, sum.getPulse()/bikeSession.getPulseCount());
+				if (sum.getPulseCount() != 0) {
+					diagram.addValue("pulse", time, (int) (sum.getAveragePulse() + 0.5));
 				}
 				if (programDuration != 0) {
-					diagram.addValue("pedalRPM", time, sum.getPedalRpm()/programDuration);
-					diagram.addValue("power", time, sum.getPower()/programDuration);
-					double performance = ((double) sum.getPower()/programDuration * sum.getPedalRpm()/programDuration / 60);
-					diagram.addValue("performance", time, (int) performance);
+					diagram.addValue("pedalRPM", time, (int) (sum.getAveragePedalRPM() + 0.5));
+					diagram.addValue("power", time, (int) (sum.getAveragePower() + 0.5));
+					double performance = (sum.getAveragePower() * sum.getAveragePedalRPM() / 60);
+					diagram.addValue("performance", time, (int) (performance + 0.5));
 				}
 			}
 		}

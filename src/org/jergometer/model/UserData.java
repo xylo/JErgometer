@@ -79,17 +79,32 @@ public class UserData {
 							programduration = programTree.getProgram(programName).getProgramData().getDuration();
 						}
 					}
-					int duration = Integer.parseInt(sessionXml.getAttribute("duration"));
-					int sumPulse = Integer.parseInt(sessionXml.getAttribute("sumPulse"));
-					int sumPower = Integer.parseInt(sessionXml.getAttribute("sumPower"));
-					int sumPedalRpm = Integer.parseInt(sessionXml.getAttribute("sumPedalRpm"));
-					int pulseCount = Integer.parseInt(sessionXml.getAttribute("pulseCount"));
+
+					StatsRecord statsRegular, statsTotal;
+					XMLElement statsRegularXml = sessionXml.getChildElement("statsRegular");
+					if (statsRegularXml != null) {
+						statsRegular = new StatsRecord(statsRegularXml);
+					} else {
+						int duration = Integer.parseInt(sessionXml.getAttribute("duration"));
+						int sumPulse = Integer.parseInt(sessionXml.getAttribute("sumPulse"));
+						int sumPower = Integer.parseInt(sessionXml.getAttribute("sumPower"));
+						int sumPedalRpm = Integer.parseInt(sessionXml.getAttribute("sumPedalRpm"));
+						int pulseCount = Integer.parseInt(sessionXml.getAttribute("pulseCount"));
+						statsRegular = new StatsRecord(sumPulse, sumPower, sumPedalRpm, duration, pulseCount);
+					}
+
+					XMLElement statsTotalXml = sessionXml.getChildElement("statsTotal");
+					if (statsTotalXml != null) {
+						statsTotal = new StatsRecord(statsTotalXml);
+					} else {
+						statsTotal = statsRegular;
+					}
 
 					sessions.add(new BikeSession(sessionsDirName, new Date(time), programName, programduration,
-							duration, sumPulse, sumPower, sumPedalRpm, pulseCount));
+							statsRegular, statsTotal));
 				}
 
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 			}
 		} else {
 			try {
@@ -118,7 +133,7 @@ public class UserData {
 
 	public void save() {
 		XMLElement root = new XMLElement("sessions");
-		root.setAttribute("version", "2");
+		root.setAttribute("version", "3");
 
 		{
 			XMLElement sessionsXml = new XMLElement("sessions");
@@ -129,11 +144,8 @@ public class UserData {
 				sessionXml.setAttribute("date", "" + session.getStartTime().getTime());
 				sessionXml.setAttribute("programName", "" + session.getProgramName());
 				sessionXml.setAttribute("programDuration", "" + session.getProgramDuration());
-				sessionXml.setAttribute("duration", "" + session.getDuration());
-				sessionXml.setAttribute("sumPulse", "" + session.getSum().getPulse());
-				sessionXml.setAttribute("sumPower", "" + session.getSum().getPower());
-				sessionXml.setAttribute("sumPedalRpm", "" + session.getSum().getPedalRpm());
-				sessionXml.setAttribute("pulseCount", "" + session.getPulseCount());
+				sessionXml.addChildElement(session.getStatsRegular().toXml("statsRegular"));
+				sessionXml.addChildElement(session.getStatsTotal().toXml("statsTotal"));
 
 				sessionsXml.addChildElement(sessionXml);
 			}
@@ -151,7 +163,7 @@ public class UserData {
 			FileWriter writer = new FileWriter(JergometerSettings.jergometerUsersDirName + "/" + userName + "/sessions.xml");
 			writer.write(doc.toString());
 			writer.close();
-		} catch (IOException e) {
+		} catch (IOException ignored) {
 		}
 	}
 

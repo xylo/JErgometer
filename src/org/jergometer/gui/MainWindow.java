@@ -51,6 +51,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	private JRadioButtonMenuItem diagramAverageValuesMenuItem;
 	private JRadioButtonMenuItem diagramProgressionMenuItem;
 	private JCheckBoxMenuItem showOnlyCompletedSessionsMenuItem;
+	private JCheckBoxMenuItem showFullSessionLength;
 	private JMenu userMenu;
 	private ButtonGroup userButtonGroup;
 	private ArrayList<JMenuItem> userMenuItems = new ArrayList<JMenuItem>();
@@ -204,6 +205,11 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			showOnlyCompletedSessionsMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.show_only_completed_ks")));
 			showOnlyCompletedSessionsMenuItem.addActionListener(this);
 			sessionsMenu.add(showOnlyCompletedSessionsMenuItem);
+			showFullSessionLength = new JCheckBoxMenuItem(I18n.getString("menu.sessions.show_full_length"));
+			showFullSessionLength.setMnemonic(I18n.getMnemonic("menu.sessions.show_full_length_mn"));
+			showFullSessionLength.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.show_full_length_ks")));
+			showFullSessionLength.addActionListener(this);
+			sessionsMenu.add(showFullSessionLength);
 			JMenuItem selectAllSessionsMenuItem = new JMenuItem(I18n.getString("menu.sessions.select_all"));
 			selectAllSessionsMenuItem.setActionCommand(AC_SELECT_ALL_SESSIONS);
 			selectAllSessionsMenuItem.setMnemonic(I18n.getMnemonic("menu.sessions.select_all_mn"));
@@ -381,8 +387,9 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		} else if (e.getSource() == diagramProgressionMenuItem) {
 			jergometer.setSessionsVis(Jergometer.SessionsVis.progression);
 		} else if (e.getSource() == showOnlyCompletedSessionsMenuItem) {
-			System.out.println(showOnlyCompletedSessionsMenuItem.isSelected());
 			jergometer.setShowOnlyCompletedSessions(showOnlyCompletedSessionsMenuItem.isSelected());
+		} else if (e.getSource() == showFullSessionLength) {
+			jergometer.setShowFullSessionLength(showFullSessionLength.isSelected());
 		} else if (e.getActionCommand() == AC_SELECT_ALL_SESSIONS) {
 			sessionTable.selectAll();
 		} else if (e.getActionCommand() == AC_DELETE_SELECTED_SESSIONS) {
@@ -447,7 +454,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 								Desktop.getDesktop().edit(bikeProgram.getFile());
 							} catch (Exception e) {
 								JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.could_not_open_file.please_configure_editor"),
-									I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
+										I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
 								openSettingsWindow();
 							}
 						} else {
@@ -456,7 +463,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 								SystemUtils.exec(command);
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.error_during_execution_of", command),
-									I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
+										I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
 							} catch (InterruptedException ignored) {
 							}
 						}
@@ -756,6 +763,14 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 
 	public void setShowOnlyCompletedSessions(boolean value) {
 		showOnlyCompletedSessionsMenuItem.setSelected(value);
+	}
+
+	public void setShowFullSessionLength(boolean value) {
+		showFullSessionLength.setSelected(value);
+	}
+
+	public boolean isShowFullSessionLength() {
+		return showFullSessionLength.isSelected();
 	}
 
 	{

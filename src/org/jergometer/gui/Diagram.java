@@ -52,6 +52,7 @@ public class Diagram extends JPanel implements ComponentListener {
 	/** Graphs. */
 	private ArrayList<Graph>[] graphs = new ArrayList[] { new ArrayList<Graph>(), new ArrayList<Graph>() };
 	private HashMap<Object,Graph> key2Graph = new HashMap<Object, Graph>();
+	private ArrayList<Marker> verticalMarkers = new ArrayList<Marker>();
 
 	/** Background image. */
 	private BufferedImage backgroundImage = null;
@@ -145,17 +146,17 @@ public class Diagram extends JPanel implements ComponentListener {
 		drawLegend(backgroundImage.createGraphics());
 
 		redrawImage();
-		repaint();
 	}
 
 	public void clearGraphs() {
+		verticalMarkers.clear();
+
 		for (ArrayList<Graph> graph : graphs) {
 			graph.clear();
 		}
 		key2Graph.clear();
 
 		redrawImage();
-		repaint();
 	}
 
 	private AlphaComposite makeComposite(float alpha) {
@@ -190,12 +191,16 @@ public class Diagram extends JPanel implements ComponentListener {
 		repaint(x, 0, width, backgroundImage.getHeight());
 	}
 
+	public synchronized void addVerticalMarker(long time, Color color, Stroke stroke, String msg) {
+		verticalMarkers.add(new Marker(time, color, stroke, msg));
+	}
+
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.drawImage(backgroundImage,0,0,null);
 	}
 
-	private void redrawImage() {
+	public void redrawImage() {
 		Graphics2D g = backgroundImage.createGraphics();
 		int width = backgroundImage.getWidth();
 		int height = backgroundImage.getHeight();
@@ -212,6 +217,9 @@ public class Diagram extends JPanel implements ComponentListener {
 		// draw highlights
 		drawHighlights(g);
 
+		// draw marker lines
+		drawVerticalMarkers(g);
+
 		// draw graph
 		for(Side lr : new Side[] {Side.left, Side.right}) {
 			for(Graph graph : graphs[lr.getInt()]) drawGraph(g, graph, lr);
@@ -226,6 +234,23 @@ public class Diagram extends JPanel implements ComponentListener {
 		// left axis markers
 		drawVerticalAxisMarkers(g, Side.left, true);
 		drawTimeAxisMarkers(g, true);
+
+		repaint();
+	}
+
+	private void drawVerticalMarkers(Graphics2D g) {
+		int height = backgroundImage.getHeight();
+
+		Color oldColor = g.getColor();
+		Stroke oldStroke = g.getStroke();
+		for (Marker verticalMarker : verticalMarkers) {
+			if (verticalMarker.color != null) g.setColor(verticalMarker.color);
+			if (verticalMarker.stroke != null) g.setStroke(verticalMarker.stroke);
+			long x = verticalMarker.x;
+			g.draw(new Line2D.Float(getX(x), margin.top, getX(x), height - margin.bottom + crossSize));
+		}
+		g.setColor(oldColor);
+		g.setStroke(oldStroke);
 	}
 
 	private float getDiagramX(long value) {
@@ -424,7 +449,6 @@ public class Diagram extends JPanel implements ComponentListener {
 	public void componentShown(ComponentEvent e) {
 		backgroundImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 		redrawImage();
-		repaint();
 	}
 
 	public Range getTimeRange() {
@@ -515,6 +539,20 @@ public class Diagram extends JPanel implements ComponentListener {
 		public Point(long x, int y) {
 			this.x = x;
 			this.y = y;
+		}
+	}
+
+	public static class Marker {
+		private long x;
+		public Color color;
+		public Stroke stroke;
+		private String msg;
+
+		public Marker(long x, Color color, Stroke stroke, String msg) {
+			this.x = x;
+			this.color = color;
+			this.stroke = stroke;
+			this.msg = msg;
 		}
 	}
 }

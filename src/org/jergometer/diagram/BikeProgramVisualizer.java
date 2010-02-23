@@ -17,14 +17,16 @@ public class BikeProgramVisualizer implements DiagramVisualizer {
 		this.diagram = diagram;
 	}
 
-	public void visualize(BikeProgram bikeProgram, boolean bright) {
+	public void visualize(BikeProgram bikeProgram, boolean bright, long duration) {
 		synchronized(diagram) {
 			BikeProgramData data = bikeProgram.getProgramData();
-			diagram.setTimeRange(new Diagram.Range(0,data.getDuration()));
+			duration = duration == -1 ? data.getDuration() : duration;
+
+			diagram.setTimeRange(new Diagram.Range(0, duration));
 			diagram.setTimeAxisType(Diagram.TimeAxisType.minute);
 
 			diagram.clearGraphs();
-			BikeDiagram.createLegend(diagram, true, bright);
+			BikeDiagram.createLegend(diagram, true, bright, data.getDuration());
 
 			BikeProgramData.Action lastAction = null;
 

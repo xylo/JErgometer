@@ -20,21 +20,23 @@ public class BikeSessionVisualizer implements DiagramVisualizer {
 		this.diagram = diagram;
 	}
 
-	public void visualize(BikeSession bikeSession, boolean clearBefore) throws IOException {
+	public void visualize(BikeSession bikeSession, boolean clearBefore, boolean fullSessionLength) throws IOException {
 		synchronized(diagram) {
 			ArrayList<MiniDataRecord> miniDataRecords = bikeSession.getData();
 
+			int duration = fullSessionLength ? bikeSession.getStatsTotal().getDuration() : bikeSession.getProgramDuration();
+
 			if (clearBefore) {
-				diagram.setTimeRange(new Diagram.Range(0,bikeSession.getProgramDuration()));
+				diagram.setTimeRange(new Diagram.Range(0, duration));
 				diagram.setTimeAxisType(Diagram.TimeAxisType.minute);
 				diagram.clearGraphs();
 			}
-			BikeDiagram.createLegend(diagram, false, false);
+			BikeDiagram.createLegend(diagram, false, false, bikeSession.getProgramDuration());
 
 			int time = 0;
 			for (MiniDataRecord miniDataRecord : miniDataRecords) {
 				if (stopped) return;
-				if (time == bikeSession.getProgramDuration()) break;
+				if (time == duration) break;
 
 				diagram.addValue("pulse", time, miniDataRecord.getPulse());
 				diagram.addValue("pedalRPM", time, miniDataRecord.getPedalRpm());
