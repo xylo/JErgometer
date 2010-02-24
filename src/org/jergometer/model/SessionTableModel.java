@@ -31,13 +31,32 @@ public class SessionTableModel extends AbstractTableModel {
 			case 2: return String.format("%.1f", bikeSession.getStatsRegular().getAveragePulse());
 			case 3: return String.format("%.1f", bikeSession.getStatsRegular().getAveragePower());
 			case 4:
-				int duration = Math.min(bikeSession.getDuration(), bikeSession.getProgramDuration());
-				int sec = duration % 60;
-				int min = (duration / 60) % 60;
-				int h = (duration / 3600);
-				return String.format("%1$d:%2$02d:%3$02d", h, min, sec);
+				int durationRegular = Math.min(bikeSession.getDuration(), bikeSession.getProgramDuration());
+				int durationTotal = bikeSession.getStatsTotal().getDuration();
+				return formatTime(durationRegular, durationTotal);
 			default: return "";
 		}
+	}
+
+	private String formatTime(int durationRegular, int durationTotal) {
+		if (durationRegular == durationTotal) {
+			return formatTime(durationRegular, true);
+		} else {
+			return formatTime(durationRegular, true) + " +" + formatTime(durationTotal-durationRegular, false);
+		}
+	}
+
+	public static String formatTime(int duration, boolean full) {
+		int sec = duration % 60;
+		int min = (duration / 60) % 60;
+		int h = (duration / 3600);
+
+		if (full || h > 0)
+			return String.format("%1$d:%2$02d:%3$02d", h, min, sec);
+		if (min > 0)
+			return String.format("%1$d:%2$02d", min, sec);
+		else
+			return String.format("%1$d", sec);
 	}
 
 	public BikeSession getSessionAtRow(int row) {
