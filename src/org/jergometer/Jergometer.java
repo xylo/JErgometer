@@ -14,6 +14,7 @@ import org.jergometer.model.*;
 import org.jergometer.translation.I18n;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	private BikeSessionFilter sessionFilter = new BikeSessionFilter();
 	private SessionsVis sessionsVis = SessionsVis.average;
 	private ArrayList<BikeSession> selectedSessions = new ArrayList<BikeSession>();
+	private Diagram.Marker sessionEndMarker = null;
 
 	/**
 	 * Creates an JErgometer instance.
@@ -605,21 +607,59 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		Diagram diagram = mainWindow.getDiagram();
 
 		// extends time range when we are at the end
-		if (program.getSession().getDuration() >= diagram.getTimeRange().max) {
+		if (program.getSession().getDurationPulse() >= diagram.getTimeRange().max) {
 			long newMax = diagram.getTimeRange().max + (program.getProgramData().getDuration() / 2);
 			diagram.setTimeRange(new Diagram.Range(0, newMax));
 			diagram.redrawImage();
 		}
 
+		/*
 		if (program.getSession().getDuration() < diagram.getTimeRange().max) {
 			int time = program.getSession().getDuration();
 			diagram.addValue("pulse", time, data.getPulse());
 			diagram.addValue("pedalRPM", time, data.getPedalRpm());
 			diagram.addValue("power", time, data.getRealPower());
 		}
+		*/
 
-		program.update(data);
-		power = program.getPower();
+		// add new data record to session
+		switch (program.update(data)) {
+			case cycle:
+				// user is cycling -> remove session end marker if added
+				if (sessionEndMarker != null) {
+					diagram.removeVerticalMarker(sessionEndMarker);
+					diagram.clearGraph("pulse-end");
+					diagram.redrawImage();
+					diagram.repaint();
+					sessionEndMarker = null;
+				}
+
+				int time = program.getSession().getDuration();
+				diagram.addValue("pulse", time, data.getPulse());
+				diagram.addValue("pedalRPM", time, data.getPedalRpm());
+				diagram.addValue("power", time, data.getRealPower());
+
+				power = program.getPower();
+				break;
+
+			case pulse:
+				// user is not cycling -> add session end marker if not already added
+				if (sessionEndMarker == null) {
+					int endTime = program.getSession().getStatsTotal().getDuration();
+					sessionEndMarker = new Diagram.Marker(endTime, new Color(196, 196, 0), new BasicStroke(), "session end");
+					diagram.addVerticalMarker(sessionEndMarker);
+					diagram.repaint();
+					
+					time = program.getSession().getDuration();
+					for (Integer pulse : program.getSession().getPulseAfterSession()) {
+						diagram.addValue("pulse-end", ++time, pulse);
+					}
+				} else {
+					time = program.getSession().getDurationPulse();
+					diagram.addValue("pulse-end", time, data.getPulse());
+				}
+				break;
+		}
 	}
 
 	public void bikeError() {

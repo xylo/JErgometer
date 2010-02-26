@@ -7,13 +7,14 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * Collection of the nessessary input data of a bike session.
+ * Collection of the necessary input data of a bike session.
  */
 public class BikeSession {
 	private Date startTime;
 	private String programName;
 	private int programDuration;
 	private ArrayList<MiniDataRecord> data;
+	private ArrayList<Integer> pulseAfterSession = new ArrayList<Integer>();
 	private StatsRecord statsRegular = new StatsRecord(0, 0, 0, 0, 0);
 	private StatsRecord statsTotal = statsRegular;
 	private StatsRecord currentStats = statsRegular;
@@ -92,7 +93,7 @@ public class BikeSession {
 	}
 
 	public boolean update(DataRecord record) {
-		if(!record.time.equals(lastRecordRegular.time)) {
+		if(!record.time.equals(lastRecordTotal.time)) {
 			// ergometer is not paused -> add the data record to my list
 			data.add(new MiniDataRecord(record.pulse, record.realPower, record.pedalRpm));
 
@@ -116,10 +117,14 @@ public class BikeSession {
 				currentStats = statsTotal;
 			}
 
-			return true;
-		}
+			pulseAfterSession.clear();
 
-		return false;
+			return true;
+		} else {
+			pulseAfterSession.add(record.pulse);
+
+			return false;
+		}
 	}
 
 	public void recalculateMiniInfo() {
@@ -288,5 +293,13 @@ public class BikeSession {
 
 	public File getFile() {
 		return file;
+	}
+
+	public ArrayList<Integer> getPulseAfterSession() {
+		return pulseAfterSession;
+	}
+	
+	public int getDurationPulse() {
+		return statsTotal.duration + (pulseAfterSession.size() + 1) / 2;
 	}
 }

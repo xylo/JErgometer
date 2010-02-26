@@ -1,9 +1,6 @@
 package org.jergometer.control;
 
-import org.jergometer.model.BikeProgramData;
-import org.jergometer.model.BikeSession;
-import org.jergometer.model.DataRecord;
-import org.jergometer.model.HoldsFile;
+import org.jergometer.model.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +18,7 @@ public class BikeProgram extends HoldsFile {
 	private SubProgram subProgram;
 	private Iterator<BikeProgramData.TimeEvent> eventIterator;
 	private BikeProgramData.TimeEvent nextEvent;
+	private int idleCounter = 0;
 
 	public BikeProgram(File file, String programName, BikeProgramData programData) {
 		super(file);
@@ -32,13 +30,27 @@ public class BikeProgram extends HoldsFile {
 		nextEvent = eventIterator.hasNext() ? eventIterator.next() : null;
 	}
 
-	public void update(DataRecord dataRecord) {
+	/**
+	 * Adds the new data record to the session and returns true if user is not cycling anymore.
+	 *
+	 * @param dataRecord new data record
+	 * @return true if user does not cycle anymore
+	 */
+	public UpdateStatus update(DataRecord dataRecord) {
 		if(session.update(dataRecord)) {
 			if(nextEvent != null && nextEvent.getTime() == session.getDuration()) {
 				doActions(nextEvent.getActions());
 				nextEvent = eventIterator.hasNext() ? eventIterator.next() : null;
 			} else {
 				subProgram.update(dataRecord);
+			}
+			idleCounter = 0;
+			return UpdateStatus.cycle;
+		} else {
+			if (++idleCounter >= 4) {
+				return UpdateStatus.pulse;
+			} else {
+				return UpdateStatus.idle;
 			}
 		}
 	}

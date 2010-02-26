@@ -12,7 +12,7 @@ import java.awt.*;
  */
 public class BikeDiagram {
 	public static void createLegend(Diagram diagram, boolean dest, boolean bright, long programLength) {
-		diagram.addVerticalMarker(programLength, Color.BLACK, new BasicStroke(), "End of program");
+		diagram.addVerticalMarker(new Diagram.Marker(programLength, Color.BLACK, new BasicStroke(), "End of program"));
 
 		createLegend(diagram, dest, bright);
 	}
@@ -24,6 +24,8 @@ public class BikeDiagram {
 		double b = -0.5; //bright ? 0 : -0.5;
 		if (dest) {
 			suffix = "-dest";
+		} else {
+			addGraph(diagram, "pulse-end", Diagram.brighten(0.5, new Color(255,0,0, a)), s, Diagram.Side.left, true);
 		}
 		addGraph(diagram, "pulse"       + suffix, Diagram.brighten(b, new Color(255,0,0, a)), s, Diagram.Side.left, bright);
 		addGraph(diagram, "pedalRPM"    + suffix, Diagram.brighten(b, new Color(0,255,0, a)), s, Diagram.Side.left, bright);
@@ -32,6 +34,6 @@ public class BikeDiagram {
 	}
 
 	public static void addGraph(Diagram diagram, String name, Color color, Stroke s, Diagram.Side side, boolean hideInLegend) {
-		diagram.addGraph(name, new Diagram.Graph(I18n.getString("legend." + name), color, s, hideInLegend), side);
+		diagram.addGraph(name, new Diagram.Graph(hideInLegend ? "" : I18n.getString("legend." + name), color, s, hideInLegend), side);
 	}
 }

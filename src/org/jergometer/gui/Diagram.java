@@ -36,6 +36,7 @@ public class Diagram extends JPanel implements ComponentListener {
 		}
 	}
 
+	// todo: make configurable
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
 
 	public enum TimeAxisType { minute, date }
@@ -99,6 +100,7 @@ public class Diagram extends JPanel implements ComponentListener {
 	public Diagram() {
 		super(true);
 
+		// todo: make configurable
 		addHighlightRange(new Range<Color>(125, 145, brighten(0.5f, new Color(192,255,192))));
 		addHighlightRange(new Range<Color>(145, 165, brighten(0.5f, new Color(192,230,255))));
 		addHighlightRange(new Range<Color>(165, 220, brighten(0.5f, new Color(255,192,192))));
@@ -148,6 +150,10 @@ public class Diagram extends JPanel implements ComponentListener {
 		redrawImage();
 	}
 
+	public void clearGraph(String key) {
+		key2Graph.get(key).timedValues.clear();
+	}
+
 	public void clearGraphs() {
 		verticalMarkers.clear();
 
@@ -191,8 +197,13 @@ public class Diagram extends JPanel implements ComponentListener {
 		repaint(x, 0, width, backgroundImage.getHeight());
 	}
 
-	public synchronized void addVerticalMarker(long time, Color color, Stroke stroke, String msg) {
-		verticalMarkers.add(new Marker(time, color, stroke, msg));
+	public synchronized void addVerticalMarker(Marker marker) {
+		verticalMarkers.add(marker);
+		drawVerticalMarker(marker);
+	}
+
+	public synchronized void removeVerticalMarker(Marker marker) {
+		verticalMarkers.remove(marker);
 	}
 
 	public void paint(Graphics g) {
@@ -249,6 +260,23 @@ public class Diagram extends JPanel implements ComponentListener {
 			long x = verticalMarker.x;
 			g.draw(new Line2D.Float(getX(x), margin.top, getX(x), height - margin.bottom + crossSize));
 		}
+		g.setColor(oldColor);
+		g.setStroke(oldStroke);
+	}
+
+	private void drawVerticalMarker(Marker verticalMarker) {
+		int height = backgroundImage.getHeight();
+
+		Graphics2D g = backgroundImage.createGraphics();
+
+		Color oldColor = g.getColor();
+		Stroke oldStroke = g.getStroke();
+		if (verticalMarker.color != null) g.setColor(verticalMarker.color);
+		if (verticalMarker.stroke != null) g.setStroke(verticalMarker.stroke);
+		long x = verticalMarker.x;
+		Line2D.Float line = new Line2D.Float(getX(x), margin.top, getX(x), height - margin.bottom + crossSize);
+		g.draw(line);
+		repaint(line.getBounds());
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);
 	}
@@ -524,10 +552,6 @@ public class Diagram extends JPanel implements ComponentListener {
 			this.stroke = stroke;
 			this.hideInLegend = hideInLegend;
 			timedValues = new ArrayList<Point>();
-		}
-
-		public Graph(String name, Color color) {
-			this(name, color, new BasicStroke(0.5f), false);
 		}
 	}
 
