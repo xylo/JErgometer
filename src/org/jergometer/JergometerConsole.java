@@ -61,6 +61,11 @@ public class JergometerConsole extends Thread {
 						sleep(10);
 					}
 					lastTime = time;
+					for (int idleTime = 0; idleTime < 20; idleTime++) {
+						pulse     += random.nextInt(2)-1;
+						jergometer.bikeData(new DataRecord(pulse, 0, 0, distance, destPower, energy, "" + time, realPower));
+						sleep(10);
+					}
 				} else
 				if (line.equals("quit")) {
 					System.exit(0);

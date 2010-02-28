@@ -186,48 +186,61 @@ public class BikeSession {
 		for (MiniDataRecord miniDataRecord : data) {
 			miniDataRecord.toStream(out);
 		}
+		out.writeInt(pulseAfterSession.size());
+		for (Integer pulse : pulseAfterSession) {
+			out.writeInt(pulse);
+		}
 	}
 
 	private void fromStream(DataInputStream in) throws IOException {
-		String type = in.readUTF();
-		if (type.equals("jergometer session")) {
-			int format = Integer.parseInt(in.readUTF());
+		try {
+			String type = in.readUTF();
+			if (type.equals("jergometer session")) {
+				int format = Integer.parseInt(in.readUTF());
 
-			if (format <= 2) {
-				startTime = new Time(in.readLong());
-				programName = in.readUTF();
-				MiniDataRecord regularSum = new MiniDataRecord(in);
-				int pulseCount = in.readInt();
-				lastRecordRegular = new DataRecord(in);
-				if (format >= 2) {
+				if (format <= 2) {
+					startTime = new Time(in.readLong());
+					programName = in.readUTF();
+					MiniDataRecord regularSum = new MiniDataRecord(in);
+					int pulseCount = in.readInt();
+					lastRecordRegular = new DataRecord(in);
+					if (format >= 2) {
+						programDuration = in.readInt();
+					}
+					int duration = in.readInt();
+					data = new ArrayList<MiniDataRecord>(duration);
+					for (int i = 0; i < duration; i++) {
+						data.add(new MiniDataRecord(in));
+					}
+					statsRegular = new StatsRecord(regularSum.getPulse(), regularSum.getPower(), regularSum.getPedalRpm(), duration, pulseCount);
+					statsTotal = statsRegular;
+					currentStats = null;
+				} else
+				if (format == 3) {
+					startTime = new Time(in.readLong());
+					programName = in.readUTF();
 					programDuration = in.readInt();
+					lastRecordRegular = new DataRecord(in);
+					lastRecordTotal = new DataRecord(in);
+					statsRegular = new StatsRecord(in);
+					statsTotal = new StatsRecord(in);
+					int dataSize = in.readInt();
+					data = new ArrayList<MiniDataRecord>(dataSize);
+					for (int i = 0; i < dataSize; i++) {
+						data.add(new MiniDataRecord(in));
+					}
+					int pulseSize = in.readInt();
+					for (int i = 0; i < pulseSize; i++) {
+						pulseAfterSession.add(in.readInt());
+					}
+				} else {
+					throw new IOException("Session format " + format + " too new for this version of JErgometer.  Seems you need to update JErgometer.");
 				}
-				int duration = in.readInt();
-				data = new ArrayList<MiniDataRecord>(duration);
-				for (int i = 0; i < duration; i++) {
-					data.add(new MiniDataRecord(in));
-				}
-				statsRegular = new StatsRecord(regularSum.getPulse(), regularSum.getPower(), regularSum.getPedalRpm(), duration, pulseCount);
-				statsTotal = statsRegular;
-				currentStats = null;
-			} else
-			if (format == 3) {
-				startTime = new Time(in.readLong());
-				programName = in.readUTF();
-				programDuration = in.readInt();
-				lastRecordRegular = new DataRecord(in);
-				lastRecordTotal = new DataRecord(in);
-				statsRegular = new StatsRecord(in);
-				statsTotal = new StatsRecord(in);
-				int size = in.readInt();
-				data = new ArrayList<MiniDataRecord>(size);
-				for (int i = 0; i < size; i++) {
-					data.add(new MiniDataRecord(in));
-				}
+			} else {
+				throw new IOException("File \"" + file.getName() + "\" is not a valid session file.");
 			}
-		}
-		else {
-			throw new IOException("File \"" + file.getName() + "\" is not a valid session file.");
+		} catch (EOFException e) {
+			throw new IOException("Session file corrupted (too short).  Please report this bug at jergometer.org.");
 		}
 	}
 
