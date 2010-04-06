@@ -8,6 +8,7 @@ OS=`uname -s`
 case $OS in
 	Darwin)
 		OS=MacOSX
+		JFLAGS=-d32
 		;;
 esac
 
@@ -25,7 +26,7 @@ esac
 # start the application loop
 action=start
 while [ "$action" = "start" ]; do
-	java -Djava.library.path=lib/dlls/$OS/$ARCH -cp jergometer.jar:lib/RXTXcomm.jar org.jergometer.Jergometer "$@"
+	java $JFLAGS -Djava.library.path=lib/dlls/$OS/$ARCH -cp jergometer.jar:lib/RXTXcomm.jar org.jergometer.Jergometer "$@"
 	if [ "$?" != "255" ]; then
 		action=end
 	fi
