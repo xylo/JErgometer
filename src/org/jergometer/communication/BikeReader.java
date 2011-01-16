@@ -79,9 +79,8 @@ public class BikeReader extends Thread {
 						}
 					}
 					else if(printAvailable == PrintAvailable.hexadecimal) {
-						// TODO
 						for (byte aByte : bytes) {
-							System.out.print("," + (aByte & 0xFF));
+							System.out.format(",%X", (aByte & 0xFF));
 						}
 					}
 				}

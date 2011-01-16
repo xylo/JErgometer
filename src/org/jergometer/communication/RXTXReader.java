@@ -35,7 +35,11 @@ public class RXTXReader extends InputStream implements SerialPortEventListener {
 
 	public synchronized int read() throws IOException {
 		try {
-			while (!Thread.interrupted()) {
+			while (true) {
+				if (Thread.interrupted()) {
+					throw new IOException("interrupted");
+				}
+
 				if (in.available() == 0) {
 					wait();
 				}
@@ -45,8 +49,6 @@ public class RXTXReader extends InputStream implements SerialPortEventListener {
 		} catch (InterruptedException e) {
 			throw new IOException("interrupted");
 		}
-
-		return -1;
 	}
 
 	public int available() throws IOException {
@@ -64,11 +66,11 @@ public class RXTXReader extends InputStream implements SerialPortEventListener {
 		}
 
 		try {
-			if (in.available() == 0) {
+			if (available() == 0) {
 				wait();
 			}
 
-			len = Math.min(len, off + in.available());
+			len = Math.min(len, off + available());
 
 			int c = read();
 			if (c == -1) {
@@ -81,11 +83,9 @@ public class RXTXReader extends InputStream implements SerialPortEventListener {
 				for (; i < len ; i++) {
 					c = read();
 					if (c == -1) {
-							break;
+						break;
 					}
-					if (b != null) {
-							b[off + i] = (byte)c;
-					}
+					b[off + i] = (byte)c;
 				}
 			} catch (IOException ee) {
 			}
@@ -102,7 +102,7 @@ public class RXTXReader extends InputStream implements SerialPortEventListener {
 			try {
 				synchronized(this) {
 //					while (true) {
-						if (in.available() <= 0) return;
+						if (available() <= 0) return;
 						notify();
 					}
 //				}
