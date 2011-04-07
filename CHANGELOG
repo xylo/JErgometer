@@ -3,6 +3,12 @@ Changelog for JErgometer
 
 == coming 0.7.10 ==
 
+2011-04-07
+* [stefan]  * fixed bug #249: incorrect distance and speed displayed (has to be devided by 10)
+            * implemented issue #167: mark real pulse red when pulse information is missing
+            * implemented issue #250: display units for distance, speed, power, ...
+            * implemented issue #251: select last training program after start
+
 2010-09-05
 * [stefan]  * fixed bug #198: "Waiting auf Reset-Ende" needs to be translated completely
 

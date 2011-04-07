@@ -14,6 +14,8 @@ import org.jergometer.model.*;
 import org.jergometer.translation.I18n;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -223,6 +225,18 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	public void switchToUser(String userName) {
 		jergometerSettings.setLastUserName(userName);
 		userSettings = new UserSettings(jergometerSettings.getLastUserName());
+		if (userSettings.getLastProgram() != null) {
+			DefaultMutableTreeNode programNode = programTree.getProgramNode(userSettings.getLastProgram());
+			final TreePath path = new TreePath(programNode.getPath());
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					mainWindow.getProgramTree().expandPath(path);
+					mainWindow.getProgramTree().getSelectionModel().setSelectionPath(path);
+					mainWindow.getProgramTree().scrollPathToVisible(path);
+				}
+			});
+		}
 		userData = new UserData(jergometerSettings.getLastUserName(), programTree);
 		String[] userNames = jergometerSettings.getUserNames().toArray(new String[jergometerSettings.getUserNames().size()]);
 		mainWindow.setUserList(userNames, jergometerSettings.getLastUserName());
@@ -411,6 +425,10 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		diagramVisualizer.stopVisualization();
 		filterSessions();
 		visualizeBikeProgram(bikeProgram, bright, -1);
+
+		if (userSettings != null) {
+			userSettings.setLastProgram(bikeProgram.getProgramName());
+		}
 	}
 
 	public void selectBikeProgramDirectory(BikeProgramDir bikeProgramDir) {

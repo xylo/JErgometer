@@ -6,6 +6,7 @@ import de.endrullis.xml.XMLParser;
 import org.jergometer.JergometerSettings;
 import org.jergometer.translation.I18n;
 import org.jergometer.control.BikeProgram;
+import sun.security.action.GetPropertyAction;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -23,7 +24,7 @@ import java.util.*;
 public class BikeProgramTree extends DefaultTreeModel {
 	/** Root element of the tree. */
 	private DefaultMutableTreeNode root;
-	private HashMap<String,BikeProgram> allPrograms = new HashMap<String, BikeProgram>();
+	private HashMap<String,DefaultMutableTreeNode> allProgramNodes = new HashMap<String, DefaultMutableTreeNode>();
 	private static final FileFilter FILE_FILTER = new FileFilter() {
 		public boolean accept(File file) {
 			return !file.isHidden() && (file.isDirectory() || file.getName().endsWith(".xml"));
@@ -66,7 +67,7 @@ public class BikeProgramTree extends DefaultTreeModel {
 				XMLDocument doc = parser.parse(StreamUtils.readXmlStream(new FileInputStream(file)));
 				BikeProgram program = new BikeProgram(file, relativePath, new BikeProgramData(doc.getRootElement()));
 				newNode.setUserObject(program);
-				allPrograms.put(program.getProgramName(), program);
+				allProgramNodes.put(program.getProgramName(), newNode);
 			} catch (Exception e) {
 				System.err.println("Error parsing bike program.");
 			}
@@ -144,6 +145,10 @@ public class BikeProgramTree extends DefaultTreeModel {
 		}
 	}
 
+	public DefaultMutableTreeNode getProgramNode(String name) {
+		return allProgramNodes.get(name);
+	}
+
 	/**
 	 * Returns the bike program by name.
 	 *
@@ -151,7 +156,7 @@ public class BikeProgramTree extends DefaultTreeModel {
 	 * @return bike program
 	 */
 	public BikeProgram getProgram(String name) {
-		return allPrograms.get(name);
+		return (BikeProgram) allProgramNodes.get(name).getUserObject();
 	}
 
 	/**
@@ -205,7 +210,7 @@ public class BikeProgramTree extends DefaultTreeModel {
 		if (node.getUserObject() instanceof BikeProgram) {
 			BikeProgram bikeProgram = (BikeProgram) node.getUserObject();
 
-			allPrograms.remove(bikeProgram.getProgramName());
+			allProgramNodes.remove(bikeProgram.getProgramName());
 
 			// delete the program file
 			bikeProgram.getFile().delete();

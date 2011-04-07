@@ -26,7 +26,7 @@ public class UserSettings {
 
 	private void load() {
 		File settingsFile = new File(JergometerSettings.jergometerUsersDirName + "/" + userName + "/settings.xml");
-		if (!settingsFile.exists()) {
+		if (settingsFile.exists()) {
 			// default settings
 			XMLParser parser = new XMLParser();
 			try {
@@ -35,7 +35,7 @@ public class UserSettings {
 
 				XMLElement users = root.getChildElement("programs");
 				lastProgram = users.getAttribute("lastprogram");
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public class UserSettings {
 			FileWriter writer = new FileWriter(JergometerSettings.jergometerUsersDirName + "/" + userName + "/settings.xml");
 			writer.write(doc.toString());
 			writer.close();
-		} catch (IOException e) {
+		} catch (IOException ignored) {
 		}
 	}
 

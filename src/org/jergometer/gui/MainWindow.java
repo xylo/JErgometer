@@ -145,14 +145,20 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	}
 
 	public void setData(DataRecord dataRecord) {
-		pulseLabel.setText(dataRecord.getPulse() + "");
-		pedalRpmLabel.setText(dataRecord.getPedalRpm() + "");
-		speedLabel.setText(dataRecord.getSpeed() + "");
-		distanceLabel.setText(dataRecord.getDistance() + "");
-		destPowerLabel.setText(dataRecord.getDestPower() + "");
-		energyLabel.setText(dataRecord.getEnergy() + "");
+		if (dataRecord.getPulse() != 0) {
+			pulseLabel.setText(dataRecord.getPulse() + "");
+			pulseLabel.setForeground(Color.black);
+		} else {
+			pulseLabel.setText("?");
+			pulseLabel.setForeground(Color.red);
+		}
+		pedalRpmLabel.setText(dataRecord.getPedalRpm() + " rpm");
+		speedLabel.setText(String.format("%.1f km/h", (double) dataRecord.getSpeed() / 10));
+		distanceLabel.setText(String.format("%.1f km", (double) dataRecord.getDistance() / 10));
+		destPowerLabel.setText(dataRecord.getDestPower() + " W");
+		energyLabel.setText(dataRecord.getEnergy() + " kJ");
 		timeLabel.setText(dataRecord.getTime());
-		realPowerLabel.setText(dataRecord.getRealPower() + "");
+		realPowerLabel.setText(dataRecord.getRealPower() + " W");
 	}
 
 	private JMenuBar createMenuBar() {
@@ -476,7 +482,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 								Desktop.getDesktop().edit(bikeProgram.getFile());
 							} catch (Exception e) {
 								JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.could_not_open_file.please_configure_editor"),
-										I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
+									I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
 								openSettingsWindow();
 							}
 						} else {
@@ -485,7 +491,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 								SystemUtils.exec(command);
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.error_during_execution_of", command),
-										I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
+									I18n.getString("msg.could_not_open_xml_editor"), JOptionPane.ERROR_MESSAGE);
 							} catch (InterruptedException ignored) {
 							}
 						}
