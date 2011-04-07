@@ -1,7 +1,7 @@
 Changelog for JErgometer
 """"""""""""""""""""""""
 
-== 0.7.10 ==
+== 0.7.11 ==
 
 2011-04-07
 * [stefan]  * fixed bug #249: incorrect distance and speed displayed (has to be devided by 10)
@@ -14,6 +14,10 @@ Changelog for JErgometer
 
 2010-04-06
 * [stefan]  * applied patch from Benedikt Heinen to fix 32 bit issue on MacOS X
+
+== 0.7.10 ==
+
+* skipped :)
 
 == 0.7.9 ==
 
