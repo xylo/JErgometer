@@ -30,7 +30,7 @@ Changelog for JErgometer
 * [stefan]  * towards feature #168: pulse after session can be recorded
 
 2010-02-23
-* [stefan]  * implemented feature #177: extend timeline automatically when reaching end of traning program
+* [stefan]  * implemented feature #177: extend timeline automatically when reaching end of training program
             * implemented issue #176: add a menu for managing programs
 
 2010-02-20
