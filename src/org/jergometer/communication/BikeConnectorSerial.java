@@ -9,10 +9,10 @@ import java.util.Enumeration;
 import org.jergometer.translation.I18n;
 
 /**
- * BikeConnectorCOM connects to the bike via COM port.
+ * BikeConnectorSerial connects to the bike via serial port (e.g. RS232 or USB).
  * It is used to receive data from the bike and to control it.
  */
-public class BikeConnectorCOM implements BikeConnector {
+public class BikeConnectorSerial implements BikeConnector {
 
 // static
 
@@ -50,7 +50,7 @@ public class BikeConnectorCOM implements BikeConnector {
 	private BikeReader reader = null;
 	private BikeWriter writer = null;
 
-	public BikeConnectorCOM(String serialName) throws BikeException, UnsupportedCommOperationException, IOException {
+	public BikeConnectorSerial(String serialName) throws BikeException, UnsupportedCommOperationException, IOException {
 		connect(serialName);
 	}
 

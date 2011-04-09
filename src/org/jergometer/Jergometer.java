@@ -193,7 +193,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		if (comPort == null) {
 			throw new UnconfiguredComPortException();
 		}
-		bikeConnector = new BikeConnectorCOM(comPort);
+		bikeConnector = new BikeConnectorSerial(comPort);
 
 		BikeReader bikeReader = bikeConnector.getReader();
 		bikeReader.addBikeReaderListener(this);

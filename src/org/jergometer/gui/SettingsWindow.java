@@ -1,7 +1,7 @@
 package org.jergometer.gui;
 
 import org.jergometer.translation.I18n;
-import org.jergometer.communication.BikeConnectorCOM;
+import org.jergometer.communication.BikeConnectorSerial;
 import org.jergometer.communication.BikeConnectionTester;
 import org.jergometer.JergometerSettings;
 
@@ -379,7 +379,7 @@ public class SettingsWindow extends JDialog {
 
 		DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
 		int i = 0;
-		for (String s : BikeConnectorCOM.getPortNames()) {
+		for (String s : BikeConnectorSerial.getPortNames()) {
 			comboBoxModel.addElement(s);
 			// check if this comport this the current comport
 			if (comPort != null && s.equals(comPort)) {

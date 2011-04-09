@@ -29,10 +29,10 @@ public class JergometerTestConsole implements BikeReaderListener {
 			String osName = System.getProperty("os.name");
 
 			if(osName.toLowerCase().startsWith("windows")) {
-				bikeConnector = new BikeConnectorCOM("COM1");
+				bikeConnector = new BikeConnectorSerial("COM1");
 			} else {
-				bikeConnector = new BikeConnectorCOM("/dev/ttyUSB0");
-//				bikeConnector = new BikeConnectorCOM("/dev/ttyS0");
+				bikeConnector = new BikeConnectorSerial("/dev/ttyUSB0");
+//				bikeConnector = new BikeConnectorSerial("/dev/ttyS0");
 			}
 
 			BikeWriter bikeWriter = bikeConnector.getWriter();

@@ -88,6 +88,7 @@ public class RXTXReader extends InputStream implements SerialPortEventListener {
 					b[off + i] = (byte)c;
 				}
 			} catch (IOException ee) {
+				ee.printStackTrace();
 			}
 
 			return i;
