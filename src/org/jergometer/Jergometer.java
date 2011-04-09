@@ -187,11 +187,16 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 
 	/**
 	 * Connects to the serial port.
+	 *
+	 * @throws gnu.io.UnsupportedCommOperationException if communication operation is not supported
+	 * @throws java.io.IOException if an I/O error occurs
+	 * @throws org.jergometer.communication.BikeException if the bike communication fails
+	 * @throws org.jergometer.communication.UnconfiguredSerialPortException if the serial port is not configured yet
 	 */
-	private void connectToSerialPort() throws BikeException, UnsupportedCommOperationException, IOException, UnconfiguredComPortException {
-		String comPort = jergometerSettings.getComPort();
+	private void connectToSerialPort() throws BikeException, UnsupportedCommOperationException, IOException, UnconfiguredSerialPortException {
+		String comPort = jergometerSettings.getSerialPort();
 		if (comPort == null) {
-			throw new UnconfiguredComPortException();
+			throw new UnconfiguredSerialPortException();
 		}
 		bikeConnector = new BikeConnectorSerial(comPort);
 
@@ -359,7 +364,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(mainWindow, e.getMessage(), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
 				return;
-			} catch (UnconfiguredComPortException e) {
+			} catch (UnconfiguredSerialPortException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.configure_comport_first"));
 				mainWindow.openSettingsWindow();
@@ -479,6 +484,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	public void deleteSelectedBikeSessions() {
 		for (BikeSession selectedSession : selectedSessions) {
 			this.userData.getSessions().remove(selectedSession);
+			//noinspection ResultOfMethodCallIgnored
 			selectedSession.getFile().delete();
 		}
 		userData.save();
@@ -489,6 +495,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	 * Shows a bike session in the diagram.
 	 *
 	 * @param bikeSession bike session
+	 * @throws java.io.IOException if an I/O error occurs
 	 */
 	private void visualizeBikeSession(BikeSession bikeSession) throws IOException {
 		diagramVisualizer.stopVisualization();

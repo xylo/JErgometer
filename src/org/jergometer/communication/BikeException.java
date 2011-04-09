@@ -3,7 +3,7 @@ package org.jergometer.communication;
 import java.io.IOException;
 
 /**
- * Special IO exception related to the COM port connection to the ergometer.
+ * Special IO exception related to the serial port connection to the ergometer.
  */
 public class BikeException extends Exception {
 	public BikeException(String message) {

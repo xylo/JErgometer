@@ -14,6 +14,7 @@ import java.util.ArrayList;
 /**
  * Jergometer settings.
  */
+@SuppressWarnings({"ResultOfMethodCallIgnored"})
 public class JergometerSettings {
 
 // static
@@ -46,7 +47,7 @@ public class JergometerSettings {
 	private int mainWindowMaximizedState;
 	private ArrayList<String> userNames = new ArrayList<String>();
 	private String lastUserName;
-	private String comPort;
+	private String serialPort;
 	private String xmlEditor;
 
 	public JergometerSettings() {
@@ -137,7 +138,7 @@ public class JergometerSettings {
 		mainWindowMaximizedState = properties.getInt("main_window.maximized");
 
 		lastUserName = properties.getString("last_user");
-		comPort = properties.getString("comport");
+		serialPort = properties.getString("comport");
 		xmlEditor = properties.getString("xml_editor");
 
 		if (oldSettingsFile.exists()) {
@@ -151,7 +152,7 @@ public class JergometerSettings {
 				XMLElement users = root.getChildElement("users");
 				if (users != null) lastUserName = users.getAttribute("lastUser");
 				XMLElement comport = root.getChildElement("comport");
-				if (comport != null) comPort = comport.getAttribute("name");
+				if (comport != null) serialPort = comport.getAttribute("name");
 				XMLElement xmlEditor = root.getChildElement("xmlEditor");
 				if (xmlEditor != null) this.xmlEditor = xmlEditor.getAttribute("name");
 			} catch (Exception ignored) {
@@ -173,7 +174,7 @@ public class JergometerSettings {
 		properties.setInt("main_window.maximized", mainWindowMaximizedState);
 
 		properties.setString("last_user", lastUserName);
-		properties.setString("comport", comPort);
+		properties.setString("comport", serialPort);
 		properties.setString("xml_editor", xmlEditor);
 
 		settingsFile.getParentFile().mkdirs();
@@ -240,12 +241,12 @@ public class JergometerSettings {
 		this.lastUserName = lastUserName;
 	}
 
-	public String getComPort() {
-		return comPort;
+	public String getSerialPort() {
+		return serialPort;
 	}
 
-	public void setComPort(String comPort) {
-		this.comPort = comPort;
+	public void setSerialPort(String serialPort) {
+		this.serialPort = serialPort;
 	}
 
 	public String getXmlEditor() {

@@ -21,7 +21,7 @@
               <gridbag top="0" left="3" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.com_port"/>
+              <text resource-bundle="org/jergometer/translation/jergometer" key="settings.serial_port"/>
             </properties>
           </component>
           <vspacer id="d8352">

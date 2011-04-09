@@ -45,7 +45,7 @@ public class SettingsWindow extends JDialog {
 		mainPanel.add(panel1, gbc);
 		panel1.setBorder(BorderFactory.createTitledBorder(ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.global_settings")));
 		final JLabel label1 = new JLabel();
-		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.com_port"));
+		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.serial_port"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -295,7 +295,7 @@ public class SettingsWindow extends JDialog {
 		});
 		updatePortsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateComPorts(null);
+				updateSerialPorts(null);
 			}
 		});
 		saveButton.addActionListener(new ActionListener() {
@@ -315,7 +315,7 @@ public class SettingsWindow extends JDialog {
 				new Thread() {
 					@Override
 					public void run() {
-						testComPort(settingsWindow);
+						testSerialPort(settingsWindow);
 					}
 				}.start();
 			}
@@ -338,7 +338,7 @@ public class SettingsWindow extends JDialog {
 		getRootPane().registerKeyboardAction(listener, keyStroke, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 	}
 
-	private void testComPort(final SettingsWindow settingsWindow) {
+	private void testSerialPort(final SettingsWindow settingsWindow) {
 		BikeConnectionTester bikeConnectionTester = new BikeConnectionTester(settingsWindow, comPortComboBox.getSelectedItem().toString());
 		String id = bikeConnectionTester.test();
 		if (id == null || id.equals("ID")) {
@@ -355,7 +355,7 @@ public class SettingsWindow extends JDialog {
 	 * @return return code
 	 */
 	public ReturnCode showDialog(JergometerSettings settings) {
-		updateComPorts(settings);
+		updateSerialPorts(settings);
 
 		if (settings != null) {
 			if (settings.getXmlEditor() != null) {
@@ -371,10 +371,10 @@ public class SettingsWindow extends JDialog {
 		return returnCode;
 	}
 
-	private void updateComPorts(JergometerSettings settings) {
+	private void updateSerialPorts(JergometerSettings settings) {
 		String comPort = null;
 		if (settings != null) {
-			comPort = settings.getComPort();
+			comPort = settings.getSerialPort();
 		}
 		int comPortIndex = -1;
 
@@ -412,7 +412,7 @@ public class SettingsWindow extends JDialog {
 
 	public void saveSettings(JergometerSettings settings) {
 		settings.setCheckForUpdatesOnStart(checkForUpdatesOnStartCheckBox.isSelected());
-		settings.setComPort((String) comPortComboBox.getSelectedItem());
+		settings.setSerialPort((String) comPortComboBox.getSelectedItem());
 		settings.setXmlEditor(xmlEditorTextField.getText());
 	}
 }

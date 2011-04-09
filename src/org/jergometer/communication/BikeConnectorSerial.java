@@ -48,7 +48,6 @@ public class BikeConnectorSerial implements BikeConnector {
 
 // dynamic
 
-	private String serialName;
 	private SerialPort serialPort;
 	private BikeReader reader = null;
 	private BikeWriter writer = null;
@@ -58,8 +57,6 @@ public class BikeConnectorSerial implements BikeConnector {
 	}
 
 	public void connect(String serialName) throws BikeException, UnsupportedCommOperationException, IOException {
-		this.serialName = serialName;
-
 		Enumeration portList = CommPortIdentifier.getPortIdentifiers();
 
 		while (portList.hasMoreElements()) {
@@ -68,12 +65,12 @@ public class BikeConnectorSerial implements BikeConnector {
 			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 				if(portId.getName().equals(serialName)) {
 					if(portId.isCurrentlyOwned()) {
-						throw new BikeException(I18n.getString("msg.com_port_used_by_the_following_application", portId.getCurrentOwner()));
+						throw new BikeException(I18n.getString("msg.serial_port_used_by_the_following_application", portId.getCurrentOwner()));
 					}
 					try {
 						serialPort = (SerialPort) portId.open("JErgometer", 2000);
 					} catch (PortInUseException e) {
-						throw new BikeException(I18n.getString("msg.com_port_used_by_the_following_application", portId.getCurrentOwner()));
+						throw new BikeException(I18n.getString("msg.serial_port_used_by_the_following_application", portId.getCurrentOwner()));
 					}
 
 					connect(serialPort);

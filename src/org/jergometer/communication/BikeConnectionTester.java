@@ -49,7 +49,7 @@ public class BikeConnectionTester extends Thread {
 				if(portId.getName().equals(serialName)) {
 					try {
 						if(portId.isCurrentlyOwned()) {
-							System.out.println("COM port is currently owned by another application!");
+							System.out.println("Serial port is currently owned by another application!");
 						}
 						serialPort = (SerialPort) portId.open("BikeConnector", 2000);
 
