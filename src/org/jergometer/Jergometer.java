@@ -197,8 +197,17 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		String comPort = jergometerSettings.getSerialPort();
 		if (comPort == null) {
 			throw new UnconfiguredSerialPortException();
+		} else
+		if (comPort.equals("replay")) {
+			bikeConnector = new BikeConnectorSimulator();
+		} else
+		if (comPort.startsWith("record:")) {
+			comPort = comPort.substring("record:".length());
+			bikeConnector = new KetterBikeConnector(comPort);
+			bikeConnector.getReader().addBikeReaderListener(new FileRecorder(BikeConnectorSimulator.SIMULATOR_SESSION));
+		} else {
+			bikeConnector = new KetterBikeConnector(comPort);
 		}
-		bikeConnector = new BikeConnectorSerial(comPort);
 
 		BikeReader bikeReader = bikeConnector.getReader();
 		bikeReader.addBikeReaderListener(this);

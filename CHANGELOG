@@ -5,6 +5,7 @@ Changelog for JErgometer
 * [stefan]  * fixed bug #182: JErgometer wants to update even if it's a bleeding edge version
             * implemented issue #247: display error message when JErgometer is started without RXTX library
             * implemented issue #252: rename all occurrences of "COM port" to "serial port"
+            * implemented issue #253: allow to switch between kJ and kcal
 
 == 0.7.11 ==
 

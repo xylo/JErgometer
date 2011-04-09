@@ -1,0 +1,30 @@
+#* @vtlvariable name="bgColor" type="java.lang.String" *###
+#* @vtlvariable name="timeString" type="java.lang.String" *###
+#* @vtlvariable name="destPower" type="int" *###
+#* @vtlvariable name="destPowerString" type="java.lang.String" *###
+#* @vtlvariable name="actPower" type="int" *###
+#* @vtlvariable name="actPowerString" type="java.lang.String" *###
+#* @vtlvariable name="pulse" type="int" *###
+#* @vtlvariable name="pulseString" type="java.lang.String" *###
+#* @vtlvariable name="pedalRpm" type="int" *###
+#* @vtlvariable name="pedalRpmString" type="java.lang.String" *###
+#* @vtlvariable name="speed" type="int" *###
+#* @vtlvariable name="speedString" type="java.lang.String" *###
+#* @vtlvariable name="distance" type="int" *###
+#* @vtlvariable name="distanceString" type="java.lang.String" *###
+#* @vtlvariable name="energy" type="int" *###
+#* @vtlvariable name="energyString" type="java.lang.String" *###
+<html>
+<body bgcolor="#$bgColor" style="font-weight:bold">
+<table cellpadding="5">
+	<tr><td>Zeit: </td><td>$timeString</td></tr>
+	<tr><td>Leistungsziel: </td><td>$destPowerString</td></tr>
+	<tr><td>tat. Leistung: </td><td>$actPowerString</td></tr>
+	<tr><td>Puls: </td><td>#if($pulse != 0)$pulseString#else<span style="color: red">$pulseString</span>#end</td></tr>
+	<tr><td>Pedalum./Min.: </td><td>$pedalRpmString</td></tr>
+	<tr><td>Geschwindigkeit: </td><td>$speedString</td></tr>
+	<tr><td>Strecke: </td><td>$distanceString</td></tr>
+	<tr><td>Energie: </td><td><a href="energy">$energyString</a></td></tr>
+</table>
+</body>
+</html>

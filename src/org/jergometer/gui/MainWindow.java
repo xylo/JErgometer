@@ -1,5 +1,11 @@
 package org.jergometer.gui;
 
+import de.endrullis.utils.VelocityUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.jergometer.Jergometer;
 import org.jergometer.control.BikeProgram;
 import org.jergometer.model.*;
@@ -15,6 +21,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Enumeration;
 import java.io.IOException;
@@ -27,21 +34,16 @@ import de.endrullis.utils.StreamUtils;
  * Main window.
  */
 public class MainWindow extends JFrame implements ActionListener, TreeSelectionListener, ListSelectionListener, KeyListener {
+	private static double kcalFactor = 0.239005736;
+
 	private JPanel mainPanel;
-	private JLabel pulseLabel;
-	private JLabel speedLabel;
-	private JLabel distanceLabel;
-	private JLabel destPowerLabel;
-	private JLabel pedalRpmLabel;
-	private JLabel energyLabel;
-	private JLabel timeLabel;
-	private JLabel realPowerLabel;
 	private Diagram diagram;
 	private JTable sessionTable;
 	private JTree programTree;
 	private JLabel welcomeLabel;
 	private JButton recordButton;
 	private JButton stopButton;
+	private BikeInfoPane bikeInfoPane;
 
 	// menu items
 	private JMenuItem newUserMenuItem;
@@ -70,6 +72,8 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 
 	private DefaultMutableTreeNode copiedProgramNode = null;
 	private boolean movePrograms = false;
+	private DataRecord lastDataRecord;
+	private boolean kcal = false;
 
 	/**
 	 * Main class.
@@ -90,6 +94,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	public MainWindow(String title, final Jergometer jergometer) throws HeadlessException {
 		super(title);
 		this.jergometer = jergometer;
+		$$$setupUI$$$();
 		setContentPane(mainPanel);
 		createPopups();
 		setJMenuBar(createMenuBar());
@@ -106,6 +111,9 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		// remove keystroke "control A" from program tree
 		programTree.getInputMap().getParent().remove(KeyStroke.getKeyStroke("control A"));
 		programTree.setCellRenderer(new BetterTreeCellRenderer());
+
+		// reset bikeInfoPane
+		bikeInfoPane.resetValues();
 
 		// add listener
 		recordButton.addActionListener(this);
@@ -145,20 +153,43 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	}
 
 	public void setData(DataRecord dataRecord) {
-		if (dataRecord.getPulse() != 0) {
-			pulseLabel.setText(dataRecord.getPulse() + "");
-			pulseLabel.setForeground(Color.black);
-		} else {
-			pulseLabel.setText("?");
-			pulseLabel.setForeground(Color.red);
+		lastDataRecord = dataRecord;
+
+		updateBikeInfoPane(dataRecord);
+	}
+
+	public void updateBikeInfoPane(DataRecord dataRecord) {
+		if (dataRecord == null) return;
+
+		VelocityContext context = new VelocityContext();
+		context.put("pulse", dataRecord.getPulse());
+		context.put("pulseString", dataRecord.getPulse() == 0 ? "?" : "" + dataRecord.getPulse());
+		context.put("pedalRpm", dataRecord.getPedalRpm());
+		context.put("pedalRpmString", dataRecord.getPedalRpm() + "&nbsp;rpm");
+		context.put("speed", dataRecord.getSpeed());
+		context.put("speedString", String.format("%.1f&nbsp;km/h", (double) dataRecord.getSpeed() / 10));
+		context.put("distance", dataRecord.getDistance());
+		context.put("distanceString", dataRecord.getDistance() + "&nbsp;km");
+		context.put("destPower", dataRecord.getDestPower());
+		context.put("destPowerString", dataRecord.getDestPower() + "&nbsp;W");
+		context.put("actPower", dataRecord.getRealPower());
+		context.put("actPowerString", dataRecord.getRealPower() + "&nbsp;W");
+		context.put("energy", dataRecord.getEnergy());
+		String energyString = dataRecord.getEnergy() + "&nbsp;kJ";
+		if (kcal) {
+			energyString = ((int) (dataRecord.getEnergy() * kcalFactor)) + "&nbsp;kcal";
 		}
-		pedalRpmLabel.setText(dataRecord.getPedalRpm() + " rpm");
-		speedLabel.setText(String.format("%.1f km/h", (double) dataRecord.getSpeed() / 10));
-		distanceLabel.setText(String.format("%.1f km", (double) dataRecord.getDistance() / 10));
-		destPowerLabel.setText(dataRecord.getDestPower() + " W");
-		energyLabel.setText(dataRecord.getEnergy() + " kJ");
-		timeLabel.setText(dataRecord.getTime());
-		realPowerLabel.setText(dataRecord.getRealPower() + " W");
+		context.put("energyString", energyString);
+		context.put("timeString", dataRecord.getTime());
+
+		bikeInfoPane.setContext(context);
+	}
+
+	public void bikeInfoPaneAction(String action) {
+		if (action.equals("energy")) {
+			kcal = !kcal;
+			updateBikeInfoPane(lastDataRecord);
+		}
 	}
 
 	private JMenuBar createMenuBar() {
@@ -803,11 +834,21 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		return showFullSessionLength.isSelected();
 	}
 
-	{
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-		$$$setupUI$$$();
+	public void createUIComponents() {
+		try {
+			bikeInfoPane = new BikeInfoPane(this, getLangTemplate("org/jergometer/gui/templates/default"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Template getLangTemplate(String templateName) throws Exception {
+		String cc = Locale.getDefault().getCountry().toLowerCase();
+		try {
+			return VelocityUtils.getTemplate(templateName + "_" + cc + ".vm");
+		} catch (ResourceNotFoundException e) {
+			return VelocityUtils.getTemplate(templateName + ".vm");
+		}
 	}
 
 	/**
@@ -818,6 +859,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	 * @noinspection ALL
 	 */
 	private void $$$setupUI$$$() {
+		createUIComponents();
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		final JSplitPane splitPane1 = new JSplitPane();
@@ -894,139 +936,11 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		final JPanel panel4 = new JPanel();
 		panel4.setLayout(new GridBagLayout());
 		gbc = new GridBagConstraints();
-		gbc.gridx = 2;
+		gbc.gridx = 3;
 		gbc.gridy = 0;
 		gbc.gridheight = 3;
 		gbc.insets = new Insets(0, 0, 0, 10);
 		panel1.add(panel4, gbc);
-		final JLabel label1 = new JLabel();
-		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.pulse"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label1, gbc);
-		final JLabel label2 = new JLabel();
-		this.$$$loadLabelText$$$(label2, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.pedal_rpm"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label2, gbc);
-		final JLabel label3 = new JLabel();
-		this.$$$loadLabelText$$$(label3, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.speed"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label3, gbc);
-		final JLabel label4 = new JLabel();
-		this.$$$loadLabelText$$$(label4, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.distance"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label4, gbc);
-		final JLabel label5 = new JLabel();
-		this.$$$loadLabelText$$$(label5, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.dest_power"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label5, gbc);
-		final JLabel label6 = new JLabel();
-		this.$$$loadLabelText$$$(label6, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.energy"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 5;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label6, gbc);
-		final JLabel label7 = new JLabel();
-		this.$$$loadLabelText$$$(label7, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.time"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 6;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label7, gbc);
-		final JLabel label8 = new JLabel();
-		this.$$$loadLabelText$$$(label8, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("property.real_power"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 7;
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(label8, gbc);
-		destPowerLabel = new JLabel();
-		destPowerLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 4;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(destPowerLabel, gbc);
-		pulseLabel = new JLabel();
-		pulseLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(pulseLabel, gbc);
-		pedalRpmLabel = new JLabel();
-		pedalRpmLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(pedalRpmLabel, gbc);
-		speedLabel = new JLabel();
-		speedLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(speedLabel, gbc);
-		distanceLabel = new JLabel();
-		distanceLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(distanceLabel, gbc);
-		energyLabel = new JLabel();
-		energyLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 5;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(energyLabel, gbc);
-		timeLabel = new JLabel();
-		timeLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 6;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(timeLabel, gbc);
-		realPowerLabel = new JLabel();
-		realPowerLabel.setText("-");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 7;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		panel4.add(realPowerLabel, gbc);
 		welcomeLabel = new JLabel();
 		welcomeLabel.setFont(new Font("Bitstream Vera Serif", Font.BOLD, 16));
 		this.$$$loadLabelText$$$(welcomeLabel, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.welcome"));
@@ -1059,6 +973,18 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		panel5.add(scrollPane2, gbc);
 		sessionTable = new JTable();
 		scrollPane2.setViewportView(sessionTable);
+		bikeInfoPane.setBackground(UIManager.getColor("Label.background"));
+		bikeInfoPane.setContentType("text/html");
+		bikeInfoPane.setEditable(false);
+		bikeInfoPane.setEnabled(true);
+		bikeInfoPane.setText("<html>\n  <head>\n\n  </head>\n  <body>\n    <p style=\"margin-top: 0\">\n      \n    </p>\n  </body>\n</html>\n");
+		bikeInfoPane.putClientProperty("JEditorPane.honorDisplayProperties", Boolean.TRUE);
+		gbc = new GridBagConstraints();
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		gbc.gridheight = 3;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel1.add(bikeInfoPane, gbc);
 	}
 
 	/**

@@ -1,0 +1,2 @@
+#* @vtlvariable name="message" type="java.lang.String" *###
+<li>$message</li>

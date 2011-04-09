@@ -22,21 +22,21 @@ public class JergometerTestConsole implements BikeReaderListener {
 
 // dynamic  
 
-	private BikeConnector bikeConnector;
+	private KetterBikeConnector bikeConnector;
 
 	public JergometerTestConsole() throws UnsupportedCommOperationException, BikeException {
 		try {
 			String osName = System.getProperty("os.name");
 
 			if(osName.toLowerCase().startsWith("windows")) {
-				bikeConnector = new BikeConnectorSerial("COM1");
+				bikeConnector = new KetterBikeConnector("COM1");
 			} else {
-				bikeConnector = new BikeConnectorSerial("/dev/ttyUSB0");
-//				bikeConnector = new BikeConnectorSerial("/dev/ttyS0");
+				bikeConnector = new KetterBikeConnector("/dev/ttyUSB0");
+//				bikeConnector = new KetterBikeConnector("/dev/ttyS0");
 			}
 
-			BikeWriter bikeWriter = bikeConnector.getWriter();
-			BikeReader bikeReader = bikeConnector.getReader();
+			KettlerBikeWriter bikeWriter = bikeConnector.getWriter();
+			KettlerBikeReader bikeReader = bikeConnector.getReader();
 			bikeReader.addBikeReaderListener(this);
 			bikeReader.start();
 
@@ -121,11 +121,11 @@ public class JergometerTestConsole implements BikeReaderListener {
 						return;
 
 					case 11:
-						bikeReader.setPrintAvailable(BikeReader.PrintAvailable.characters);
+						bikeReader.setPrintAvailable(KettlerBikeReader.PrintAvailable.characters);
 						break;
 
 					case 12:
-						bikeReader.setPrintAvailable(BikeReader.PrintAvailable.decimals);
+						bikeReader.setPrintAvailable(KettlerBikeReader.PrintAvailable.decimals);
 						break;
 
 					default:

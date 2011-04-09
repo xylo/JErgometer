@@ -9,21 +9,21 @@ import java.io.Closeable;
  */
 public interface BikeConnector extends Closeable {
 	/**
-	 * Returns the reader reading receiving from the XUP board.
+	 * Returns the reader receiving messages from the ergometer.
 	 *
 	 * @return reader
 	 */
 	public BikeReader getReader();
 
 	/**
-	 * Returns the writer sending messages to the the XUP board.
+	 * Returns the writer sending messages to the ergometer.
 	 *
 	 * @return writer
 	 */
 	public BikeWriter getWriter();
 
 	/**
-	 * Closes the connection to the XUP board.
+	 * Closes the connection to the ergometer.
 	 */
 	public void close() throws IOException;
 }

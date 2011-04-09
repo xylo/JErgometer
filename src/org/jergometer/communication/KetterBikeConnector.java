@@ -8,13 +8,11 @@ import java.util.Enumeration;
 
 import org.jergometer.translation.I18n;
 
-import javax.swing.*;
-
 /**
- * BikeConnectorSerial connects to the bike via serial port (e.g. RS232 or USB).
+ * KetterBikeConnector connects to the bike via serial port (e.g. RS232 or USB).
  * It is used to receive data from the bike and to control it.
  */
-public class BikeConnectorSerial implements BikeConnector {
+public class KetterBikeConnector implements BikeConnector {
 
 // static
 
@@ -49,10 +47,10 @@ public class BikeConnectorSerial implements BikeConnector {
 // dynamic
 
 	private SerialPort serialPort;
-	private BikeReader reader = null;
-	private BikeWriter writer = null;
+	private KettlerBikeReader reader = null;
+	private KettlerBikeWriter writer = null;
 
-	public BikeConnectorSerial(String serialName) throws BikeException, UnsupportedCommOperationException, IOException {
+	public KetterBikeConnector(String serialName) throws BikeException, UnsupportedCommOperationException, IOException {
 		connect(serialName);
 	}
 
@@ -85,9 +83,9 @@ public class BikeConnectorSerial implements BikeConnector {
 																	 SerialPort.PARITY_NONE);
 
 		// set reader and writer
-		writer = new BikeWriter(serialPort.getOutputStream());
+		writer = new KettlerBikeWriter(serialPort.getOutputStream());
 		RXTXReader rxtxReader = new RXTXReader(serialPort);
-		reader = new BikeReader(rxtxReader);
+		reader = new KettlerBikeReader(rxtxReader);
 	}
 
 	public void close() throws IOException {
@@ -111,11 +109,11 @@ public class BikeConnectorSerial implements BikeConnector {
 
 
 // getters and setters
-	public BikeReader getReader() {
+	public KettlerBikeReader getReader() {
 		return reader;
 	}
 
-	public BikeWriter getWriter() {
+	public KettlerBikeWriter getWriter() {
 		return writer;
 	}
 }
