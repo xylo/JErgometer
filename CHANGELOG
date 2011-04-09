@@ -3,6 +3,7 @@ Changelog for JErgometer
 
 == coming 0.7.12 ==
 * [stefan]  * fixed bug #182: JErgometer wants to update even if it's a bleeding edge version
+            * implemented issue #247: display error message when JErgometer is started without RXTX library
 
 == 0.7.11 ==
 

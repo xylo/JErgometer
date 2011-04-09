@@ -8,6 +8,8 @@ import java.util.Enumeration;
 
 import org.jergometer.translation.I18n;
 
+import javax.swing.*;
+
 /**
  * BikeConnectorSerial connects to the bike via serial port (e.g. RS232 or USB).
  * It is used to receive data from the bike and to control it.
@@ -22,7 +24,8 @@ public class BikeConnectorSerial implements BikeConnector {
 			CommDriver driver = (CommDriver) Class.forName(driverName).newInstance();
 			driver.initialize();
 		} catch (Exception e) {
-			System.out.println("Didn't find " + driverName);
+			System.err.println("Could not load serial port driver \"" + driverName + "\".");
+			e.printStackTrace();
 		}
 	}
 

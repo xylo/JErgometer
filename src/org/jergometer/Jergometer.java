@@ -363,6 +363,9 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.configure_comport_first"));
 				mainWindow.openSettingsWindow();
+			} catch (NoClassDefFoundError e) {
+				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.unsatisfied_link_error"), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
+				return;
 			} catch (UnsatisfiedLinkError e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.unsatisfied_link_error"), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
