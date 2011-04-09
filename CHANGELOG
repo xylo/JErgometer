@@ -2,7 +2,7 @@ Changelog for JErgometer
 """"""""""""""""""""""""
 
 == coming 0.7.12 ==
-
+* [stefan]  * fixed bug #182: JErgometer wants to update even if it's a bleeding edge version
 
 == 0.7.11 ==
 

@@ -51,6 +51,7 @@
 			</classpath>
 			<jvmarg value="-Djava.library.path=${lib}/dlls/${os.name}/${os.arch}" />
 <!--			<jvmarg value="-Djava.util.logging.config.file=conf/logging.properties" />-->
+			<arg value="--bleeding-edge"/>
 		</java>
 	</target>
 	

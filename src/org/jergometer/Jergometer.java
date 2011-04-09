@@ -54,6 +54,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		ParamsExt.Option[] options = new ParamsExt.Option[]{
 				new ParamsExt.Option("help",     'h', I18n.getString("args.show_help")),
 				new ParamsExt.Option("nogui",    'G', I18n.getString("args.disable_gui")),
+				new ParamsExt.Option("bleeding-edge", null, I18n.getString("args.bleeding_edge")),
 				new ParamsExt.Option("color",    'c', I18n.getString("args.color", bold("on"), bold("off"))),
 				new ParamsExt.Option("version",  'v', I18n.getString("args.show_version"))
 		};
@@ -69,6 +70,12 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		if(params.isOptionAvailable("help")) {
 			params.printHelp();
 			System.exit(0);
+		}
+
+		if (params.isOptionAvailable("bleeding-edge")) {
+			version = "*Bleeding Edge*";
+			devVersion = true;
+			updatable = false;
 		}
 
 		if(params.isOptionAvailable("version")) {
