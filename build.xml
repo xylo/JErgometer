@@ -15,7 +15,7 @@
 	<!-- Locations -->
 	<property name="src"                location="src"/>
 	<property name="build"              location="build"/>
-	<property name="lib"                location="lib"/>
+	<property name="lib"                value="lib"/>
 	<property name="dist"               location="dist"/>
 	<property name="upload"             location="${dist}/${ant.project.name}"/>
 	<property name="uploadPrepare"      location="${dist}/${ant.project.name}_prepare"/>
@@ -24,7 +24,8 @@
 
 	<property name="buildClasses"       location="${build}/classes"/>
 	<property name="programJar"         location="${uploadPrepare}/${program.jar}"/>
-	<property name="rxtxJar"            location="${lib}/RXTXcomm.jar"/>
+	<property name="velocityJar"        value="${lib}/velocity-1.7-dep.jar"/>
+	<property name="rxtxJar"            value="${lib}/RXTXcomm.jar"/>
 	<property name="rxtxSoDir"          location="."/>
 
 	<path id="libraries">
@@ -32,6 +33,7 @@
 			<include name="*.jar"/>
 		</fileset>
 		<filelist>
+			<file name="${velocityJar}"/>
 			<file name="${rxtxJar}"/>
 		</filelist>
 	</path>
@@ -112,7 +114,11 @@
 		<!-- Copy start scripts. -->
 		<copy todir="${uploadPrepare}" file="scripts/${start.sh}"/>
 		<copy todir="${uploadPrepare}" file="scripts/${start.bat}"/>
+		<copy todir="${uploadPrepare}/start">
+			<fileset dir="scripts/start"/>
+		</copy>
 		<chmod file="${uploadPrepare}/${start.sh}" perm="ugo+x"/>
+		<chmod file="${uploadPrepare}/start/unix_start.sh" perm="ugo+x"/>
 	</target>
 
 	<!-- Build a new release version. -->
@@ -187,6 +193,7 @@
 		<jar jarfile="${programJar}" basedir="${buildClasses}">
 			<manifest>
 				<attribute name="Main-Class" value="org.jergometer.Jergometer"/>
+				<attribute name="Class-Path" value="${velocityJar}"/>
 				<attribute name="Class-Path" value="${rxtxJar}"/>
 			</manifest>
 		</jar>
@@ -199,10 +206,15 @@
 		<!-- Copy start scripts. -->
 		<copy todir="${uploadPrepare}" file="scripts/${start.sh}">
 			<filterset>
+			  <filter token="velocityJar" value="${velocityJar}"/>
 			  <filter token="rxtxJar" value="${rxtxJar}"/>
 			  <filter token="rxtxSoDir" value="${rxtxSoDir}"/>
 			</filterset>
 		</copy>
+		<copy todir="${uploadPrepare}/start">
+			<fileset dir="scripts/start"/>
+		</copy>
 		<chmod file="${uploadPrepare}/${start.sh}" perm="ugo+x"/>
+		<chmod file="${uploadPrepare}/start/unix_start.sh" perm="ugo+x"/>
 	</target>
 </project>

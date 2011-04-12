@@ -6,6 +6,7 @@ Changelog for JErgometer
             * implemented issue #247: display error message when JErgometer is started without RXTX library
             * implemented issue #252: rename all occurrences of "COM port" to "serial port"
             * implemented issue #253: allow to switch between kJ and kcal
+            * improved start scripts (manuel update needed under Windows)
 
 == 0.7.11 ==
 
