@@ -5,7 +5,10 @@
 	<property file="build.properties" />
 
 	<!-- Update if needed. -->
-	<property name="program.version"    value="0.7"/>
+	<property name="program.version"    value="0.8"/>
+
+	<!-- Main class. -->
+	<property name="main.class"         value="org.jergometer.Jergometer"/>
 
 	<!-- File names. -->
 	<property name="start.sh"           value="jergometer"/>
@@ -46,7 +49,7 @@
 	
 	<!-- Run application. -->
 	<target name="runJErgometer" depends="osInfo,compile">
-		<java classname="org.jergometer.Jergometer" fork="true">
+		<java classname="${main.class}" fork="true">
 			<classpath>
 				<pathelement location="${buildClasses}" /> 
 				<path refid="libraries"/>
@@ -92,7 +95,7 @@
 		<!-- Build jar file. -->
 		<jar jarfile="${programJar}" basedir="${buildClasses}">
 			<manifest>
-				<attribute name="Main-Class" value="org.jergometer.Jergometer"/>
+				<attribute name="Main-Class" value="${main.class}"/>
 			</manifest>
 		</jar>
 
@@ -155,6 +158,7 @@
 		<copy todir="${linuxSrcPkg}-${program.version}.${build.number}">
 			<fileset dir=".">
 				<include name="lib/annotations.jar"/>
+				<include name="lib/velocity-1.7-dep.jar"/>
 				<include name="programs/**"/>
 				<include name="scripts/create_linux_source_package"/>
 				<include name="src/**"/>
@@ -192,7 +196,7 @@
 		<echo message="false" file="${buildClasses}/updatable"/>
 		<jar jarfile="${programJar}" basedir="${buildClasses}">
 			<manifest>
-				<attribute name="Main-Class" value="org.jergometer.Jergometer"/>
+				<attribute name="Main-Class" value="${main.class}"/>
 				<attribute name="Class-Path" value="${velocityJar}"/>
 				<attribute name="Class-Path" value="${rxtxJar}"/>
 			</manifest>
