@@ -20,12 +20,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Enumeration;
+import java.util.*;
 import java.io.IOException;
 import java.io.File;
+import java.util.List;
 
 import de.endrullis.utils.SystemUtils;
 import de.endrullis.utils.StreamUtils;
@@ -54,17 +52,17 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	private JRadioButtonMenuItem diagramProgressionMenuItem;
 	private JCheckBoxMenuItem showOnlyCompletedSessionsMenuItem;
 	private JCheckBoxMenuItem showFullSessionLength;
-	private JMenuItem editProgramMenuItem;
-	private JMenuItem renameProgramMenuItem;
-	private JMenuItem createNewProgramDirectory;
-	private JMenuItem copyProgramMenuItem;
-	private JMenuItem cutProgramDataMenuItem;
-	private JMenuItem deleteProgramMenuItem;
-	private JMenuItem updateProgramMenuItem;
+	private JMenuItemSet editProgramMenuItem;
+	private JMenuItemSet renameProgramMenuItem;
+	private JMenuItemSet createNewProgramDirectory;
+	private JMenuItemSet copyProgramMenuItem;
+	private JMenuItemSet cutProgramDataMenuItem;
+	private JMenuItemSet deleteProgramMenuItem;
+	private JMenuItemSet updateProgramMenuItem;
 	private JMenu userMenu;
 	private ButtonGroup userButtonGroup;
 	private ArrayList<JMenuItem> userMenuItems = new ArrayList<JMenuItem>();
-	private JMenuItem insertProgramMenuItem;
+	private JMenuItemSet insertProgramMenuItem;
 
 	// popup menus
 	private JPopupMenu sessionTablePopup;
@@ -134,11 +132,22 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		//programTree.setComponentPopupMenu(programTreePopup);
 		programTree.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(final MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON3) {
-					int row = programTree.getRowForLocation(e.getX(), e.getY());
-					programTree.setSelectionRow(row);
-					programTreePopup.show(programTree, e.getX(), e.getY());
+					/*
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+					*/
+							System.out.println(1);
+							int row = programTree.getRowForLocation(e.getX(), e.getY());
+							programTree.setSelectionRow(row);
+							programTreePopup.show(programTree, e.getX(), e.getY());
+							System.out.println(2);
+					/*
+						}
+					});
+					*/
 				}
 			}
 		});
@@ -200,21 +209,9 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			JMenu menu = new JMenu(I18n.getString("menu.file"));
 			menu.setMnemonic(I18n.getMnemonic("menu.file_mn"));
 			menuBar.add(menu);
-			newUserMenuItem = new JMenuItem(I18n.getString("menu.file.new_user"));
-			newUserMenuItem.setMnemonic(I18n.getMnemonic("menu.file.new_user_mn"));
-			newUserMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.file.new_user_ks")));
-			newUserMenuItem.addActionListener(this);
-			menu.add(newUserMenuItem);
-			settingsMenuItem = new JMenuItem(I18n.getString("menu.file.settings"));
-			settingsMenuItem.setMnemonic(I18n.getMnemonic("menu.file.settings_mn"));
-			settingsMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.file.settings_ks")));
-			settingsMenuItem.addActionListener(this);
-			menu.add(settingsMenuItem);
-			quitMenuItem = new JMenuItem(I18n.getString("menu.file.quit"));
-			quitMenuItem.setMnemonic(I18n.getMnemonic("menu.file.quit_mn"));
-			quitMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.file.quit_ks")));
-			quitMenuItem.addActionListener(this);
-			menu.add(quitMenuItem);
+			menu.add(newUserMenuItem = createMenuItem("menu.file.new_user"));
+			menu.add(settingsMenuItem = createMenuItem("menu.file.settings"));
+			menu.add(quitMenuItem = createMenuItem("menu.file.quit"));
 		}
 
 		// User
@@ -229,14 +226,14 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			JMenu programsMenu = new JMenu(I18n.getString("menu.programs"));
 			programsMenu.setMnemonic(I18n.getMnemonic("menu.programs_mn"));
 			menuBar.add(programsMenu);
-			programsMenu.add(editProgramMenuItem);
-			programsMenu.add(renameProgramMenuItem);
-			programsMenu.add(createNewProgramDirectory);
-			programsMenu.add(copyProgramMenuItem);
-			programsMenu.add(cutProgramDataMenuItem);
-			programsMenu.add(insertProgramMenuItem);
-			programsMenu.add(deleteProgramMenuItem);
-			programsMenu.add(updateProgramMenuItem);
+			programsMenu.add(editProgramMenuItem.next());
+			programsMenu.add(renameProgramMenuItem.next());
+			programsMenu.add(createNewProgramDirectory.next());
+			programsMenu.add(copyProgramMenuItem.next());
+			programsMenu.add(cutProgramDataMenuItem.next());
+			programsMenu.add(insertProgramMenuItem.next());
+			programsMenu.add(deleteProgramMenuItem.next());
+			programsMenu.add(updateProgramMenuItem.next());
 		}
 
 		// Sessions
@@ -244,48 +241,23 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			JMenu sessionsMenu = new JMenu(I18n.getString("menu.sessions"));
 			sessionsMenu.setMnemonic(I18n.getMnemonic("menu.sessions_mn"));
 			menuBar.add(sessionsMenu);
+
 			ButtonGroup group = new ButtonGroup();
-			diagramAverageValuesMenuItem = new JRadioButtonMenuItem(I18n.getString("menu.sessions.diagram_average_values"));
-			diagramAverageValuesMenuItem.setMnemonic(I18n.getMnemonic("menu.sessions.diagram_average_values_mn"));
+			sessionsMenu.add(diagramAverageValuesMenuItem = createRadioButtonMenuItem("menu.sessions.diagram_average_values", group));
 			diagramAverageValuesMenuItem.setSelected(true);
-			diagramAverageValuesMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.diagram_average_values_ks")));
-			diagramAverageValuesMenuItem.addActionListener(this);
-			group.add(diagramAverageValuesMenuItem);
-			sessionsMenu.add(diagramAverageValuesMenuItem);
-			diagramProgressionMenuItem = new JRadioButtonMenuItem(I18n.getString("menu.sessions.diagram_progression"));
-			diagramProgressionMenuItem.setMnemonic(I18n.getMnemonic("menu.sessions.diagram_progression_mn"));
-			diagramProgressionMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.diagram_progression_ks")));
-			diagramProgressionMenuItem.addActionListener(this);
-			group.add(diagramProgressionMenuItem);
-			sessionsMenu.add(diagramProgressionMenuItem);
+			sessionsMenu.add(diagramProgressionMenuItem = createRadioButtonMenuItem("menu.sessions.diagram_progression", group));
 			sessionsMenu.addSeparator();
-			showOnlyCompletedSessionsMenuItem = new JCheckBoxMenuItem(I18n.getString("menu.sessions.show_only_completed"));
-			showOnlyCompletedSessionsMenuItem.setMnemonic(I18n.getMnemonic("menu.sessions.show_only_completed_mn"));
-			showOnlyCompletedSessionsMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.show_only_completed_ks")));
-			showOnlyCompletedSessionsMenuItem.addActionListener(this);
-			sessionsMenu.add(showOnlyCompletedSessionsMenuItem);
-			showFullSessionLength = new JCheckBoxMenuItem(I18n.getString("menu.sessions.show_full_length"));
-			showFullSessionLength.setMnemonic(I18n.getMnemonic("menu.sessions.show_full_length_mn"));
-			showFullSessionLength.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.show_full_length_ks")));
-			showFullSessionLength.addActionListener(this);
-			sessionsMenu.add(showFullSessionLength);
-			JMenuItem selectAllSessionsMenuItem = new JMenuItem(I18n.getString("menu.sessions.select_all"));
+			sessionsMenu.add(showOnlyCompletedSessionsMenuItem = createCheckBoxMenuItem("menu.sessions.show_only_completed"));
+			sessionsMenu.add(showFullSessionLength = createCheckBoxMenuItem("menu.sessions.show_full_length"));
+			sessionsMenu.addSeparator();
+			JMenuItem selectAllSessionsMenuItem = createMenuItem("menu.sessions.select_all");
 			selectAllSessionsMenuItem.setActionCommand(AC_SELECT_ALL_SESSIONS);
-			selectAllSessionsMenuItem.setMnemonic(I18n.getMnemonic("menu.sessions.select_all_mn"));
-			selectAllSessionsMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.select_all_ks")));
-			selectAllSessionsMenuItem.addActionListener(this);
 			sessionsMenu.add(selectAllSessionsMenuItem);
-			JMenuItem deleteSelectedSessionsMenuItem = new JMenuItem(I18n.getString("menu.sessions.delete_selected"));
+			JMenuItem deleteSelectedSessionsMenuItem = createMenuItem("menu.sessions.delete_selected");
 			deleteSelectedSessionsMenuItem.setActionCommand(AC_DELETE_SELECTED_SESSIONS);
-			deleteSelectedSessionsMenuItem.setMnemonic(I18n.getMnemonic("menu.sessions.delete_selected_mn"));
-//			deleteSelectedSessionsMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.delete_selected_all_ks")));
-			deleteSelectedSessionsMenuItem.addActionListener(this);
 			sessionsMenu.add(deleteSelectedSessionsMenuItem);
-			JMenuItem reparseUserDataMenuItem = new JMenuItem(I18n.getString("menu.sessions.reparse_user_data"));
+			JMenuItem reparseUserDataMenuItem = createMenuItem("menu.sessions.reparse_user_data");
 			reparseUserDataMenuItem.setActionCommand(AC_REPARSE_USER_DATA);
-			reparseUserDataMenuItem.setMnemonic(I18n.getMnemonic("menu.sessions.reparse_user_data_mn"));
-			reparseUserDataMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.sessions.reparse_user_data_ks")));
-			reparseUserDataMenuItem.addActionListener(this);
 			sessionsMenu.add(reparseUserDataMenuItem);
 		}
 
@@ -294,14 +266,46 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			JMenu menu = new JMenu(I18n.getString("menu.help"));
 			menu.setMnemonic(I18n.getMnemonic("menu.help_mn"));
 			menuBar.add(menu);
-			aboutMenuItem = new JMenuItem(I18n.getString("menu.help.about"));
-			aboutMenuItem.setMnemonic(I18n.getMnemonic("menu.help.about_mn"));
-			aboutMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.help.about_ks")));
-			aboutMenuItem.addActionListener(this);
-			menu.add(aboutMenuItem);
+			menu.add(aboutMenuItem = createMenuItem("menu.help.about"));
 		}
 
 		return menuBar;
+	}
+
+	private JMenuItem createMenuItem(String command) {
+		return assignProperties(new JMenuItem(I18n.getString(command)), command);
+	}
+
+	private JCheckBoxMenuItem createCheckBoxMenuItem(String command) {
+		return (JCheckBoxMenuItem) assignProperties(new JCheckBoxMenuItem(I18n.getString(command)), command);
+	}
+
+	private JRadioButtonMenuItem createRadioButtonMenuItem(String command, ButtonGroup buttonGroup) {
+		JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(I18n.getString(command));
+		assignProperties(menuItem, command);
+		buttonGroup.add(menuItem);
+		return menuItem;
+	}
+
+	private JMenuItem assignProperties(JMenuItem menuItem, String command) {
+		menuItem.setActionCommand(command);
+		try {
+			char mnemonic = I18n.getMnemonic(command + "_mn");
+			if (mnemonic != '!') {
+				menuItem.setMnemonic(mnemonic);
+			}
+		} catch (MissingResourceException ignored) {
+		}
+		try {
+			String shorcutString = I18n.getString(command + "_ks");
+			if (shorcutString != null && !shorcutString.equals("")) {
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(shorcutString));
+			}
+		} catch (MissingResourceException ignored) {
+		}
+		menuItem.addActionListener(this);
+
+		return menuItem;
 	}
 
 	private void createPopups() {
@@ -331,55 +335,23 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		// program tree popup
 		{
 			programTreePopup = new JPopupMenu();
-			editProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.edit"));
-			editProgramMenuItem.setActionCommand(AC_EDIT_PROGRAM);
-			editProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.edit_mn"));
-			editProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.edit_ks")));
-			editProgramMenuItem.addActionListener(this);
-			programTreePopup.add(editProgramMenuItem);
-			renameProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.rename"));
-			renameProgramMenuItem.setActionCommand(AC_RENAME_PROGRAM);
-			renameProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.rename_mn"));
-			renameProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.rename_ks")));
-			renameProgramMenuItem.addActionListener(this);
-			programTreePopup.add(renameProgramMenuItem);
-			createNewProgramDirectory = new JMenuItem(I18n.getString("menu.programs.create_new_directory"));
-			createNewProgramDirectory.setActionCommand(AC_CREATE_NEW_PROGRAM_DIRECTORY);
-			createNewProgramDirectory.setMnemonic(I18n.getMnemonic("menu.programs.create_new_directory_mn"));
-			createNewProgramDirectory.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.create_new_directory_ks")));
-			createNewProgramDirectory.addActionListener(this);
-			programTreePopup.add(createNewProgramDirectory);
-			copyProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.copy"));
-			copyProgramMenuItem.setActionCommand(AC_COPY_PROGRAM);
-			copyProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.copy_mn"));
-			copyProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.copy_ks")));
-			copyProgramMenuItem.addActionListener(this);
-			programTreePopup.add(copyProgramMenuItem);
-			cutProgramDataMenuItem = new JMenuItem(I18n.getString("menu.programs.cut"));
-			cutProgramDataMenuItem.setActionCommand(AC_CUT_PROGRAM);
-			cutProgramDataMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.cut_mn"));
-			cutProgramDataMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.cut_ks")));
-			cutProgramDataMenuItem.addActionListener(this);
-			programTreePopup.add(cutProgramDataMenuItem);
-			insertProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.insert"));
-			insertProgramMenuItem.setActionCommand(AC_INSERT_PROGRAM);
-			insertProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.insert_mn"));
-			insertProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.insert_ks")));
+			editProgramMenuItem = new JMenuItemSet("menu.programs.edit", AC_EDIT_PROGRAM);
+			programTreePopup.add(editProgramMenuItem.next());
+			renameProgramMenuItem = new JMenuItemSet("menu.programs.rename", AC_RENAME_PROGRAM);
+			programTreePopup.add(renameProgramMenuItem.next());
+			createNewProgramDirectory = new JMenuItemSet("menu.programs.create_new_directory", AC_CREATE_NEW_PROGRAM_DIRECTORY);
+			programTreePopup.add(createNewProgramDirectory.next());
+			copyProgramMenuItem = new JMenuItemSet("menu.programs.copy", AC_COPY_PROGRAM);
+			programTreePopup.add(copyProgramMenuItem.next());
+			cutProgramDataMenuItem = new JMenuItemSet("menu.programs.cut", AC_CUT_PROGRAM);
+			programTreePopup.add(cutProgramDataMenuItem.next());
+			insertProgramMenuItem = new JMenuItemSet("menu.programs.insert", AC_INSERT_PROGRAM);
 			insertProgramMenuItem.setEnabled(false);
-			insertProgramMenuItem.addActionListener(this);
-			programTreePopup.add(insertProgramMenuItem);
-			deleteProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.delete"));
-			deleteProgramMenuItem.setActionCommand(AC_DELETE_PROGRAM);
-			deleteProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.delete_mn"));
-//			deleteProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.delete_ks")));
-			deleteProgramMenuItem.addActionListener(this);
-			programTreePopup.add(deleteProgramMenuItem);
-			updateProgramMenuItem = new JMenuItem(I18n.getString("menu.programs.update"));
-			updateProgramMenuItem.setActionCommand(AC_UPDATE_PROGRAM);
-			updateProgramMenuItem.setMnemonic(I18n.getMnemonic("menu.programs.update_mn"));
-			updateProgramMenuItem.setAccelerator(KeyStroke.getKeyStroke(I18n.getString("menu.programs.update_ks")));
-			updateProgramMenuItem.addActionListener(this);
-			programTreePopup.add(updateProgramMenuItem);
+			programTreePopup.add(insertProgramMenuItem.next());
+			deleteProgramMenuItem = new JMenuItemSet("menu.programs.delete", AC_DELETE_PROGRAM);
+			programTreePopup.add(deleteProgramMenuItem.next());
+			updateProgramMenuItem = new JMenuItemSet("menu.programs.update", AC_UPDATE_PROGRAM);
+			programTreePopup.add(updateProgramMenuItem.next());
 		}
 	}
 
@@ -743,10 +715,13 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) programTree.getSelectionPath().getLastPathComponent();
 				if (node == programTree.getModel().getRoot()) {
 					jergometer.selectBikeProgramRoot();
+					editProgramMenuItem.setEnabled(false);
 				} else if (node.getUserObject() instanceof BikeProgramDir) {
 					jergometer.selectBikeProgramDirectory((BikeProgramDir) node.getUserObject());
+					editProgramMenuItem.setEnabled(false);
 				} else if (node.getUserObject() instanceof BikeProgram) {
 					jergometer.selectBikeProgram((BikeProgram) node.getUserObject());
+					editProgramMenuItem.setEnabled(true);
 				}
 			}
 		}
@@ -1019,5 +994,29 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	 */
 	public JComponent $$$getRootComponent$$$() {
 		return mainPanel;
+	}
+
+	class JMenuItemSet {
+		private String key;
+		private String command;
+		private List<JMenuItem> menuItems = new LinkedList<JMenuItem>();
+
+		JMenuItemSet(String key, String command) {
+			this.key = key;
+			this.command = command;
+		}
+
+		public JMenuItem next() {
+			JMenuItem menuItem = createMenuItem(key);
+			menuItem.setActionCommand(command);
+			menuItems.add(menuItem);
+			return menuItem;
+		}
+
+		public void setEnabled(boolean b) {
+			for (JMenuItem menuItem : menuItems) {
+				menuItem.setEnabled(b);
+			}
+		}
 	}
 }
