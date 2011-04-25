@@ -134,20 +134,11 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			@Override
 			public void mousePressed(final MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON3) {
-					/*
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-					*/
-							System.out.println(1);
-							int row = programTree.getRowForLocation(e.getX(), e.getY());
-							programTree.setSelectionRow(row);
-							programTreePopup.show(programTree, e.getX(), e.getY());
-							System.out.println(2);
-					/*
-						}
-					});
-					*/
+					System.out.println(1);
+					int row = programTree.getRowForLocation(e.getX(), e.getY());
+					programTree.setSelectionRow(row);
+					programTreePopup.show(programTree, e.getX(), e.getY());
+					System.out.println(2);
 				}
 			}
 		});
