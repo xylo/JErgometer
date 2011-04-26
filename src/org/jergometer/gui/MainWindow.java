@@ -34,6 +34,14 @@ import de.endrullis.utils.StreamUtils;
 public class MainWindow extends JFrame implements ActionListener, TreeSelectionListener, ListSelectionListener, KeyListener {
 	private static double kcalFactor = 0.239005736;
 
+	private Properties iconMap = new Properties();
+	{
+		try {
+			iconMap.load(StreamUtils.getInputStream("org/jergometer/images/icon_map.properties"));
+		} catch (IOException ignored) {
+		}
+	}
+
 	private JPanel mainPanel;
 	private Diagram diagram;
 	private JTable sessionTable;
@@ -280,6 +288,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 
 	private JMenuItem assignProperties(JMenuItem menuItem, String command) {
 		menuItem.setActionCommand(command);
+		// set mnemonic
 		try {
 			char mnemonic = I18n.getMnemonic(command + "_mn");
 			if (mnemonic != '!') {
@@ -287,12 +296,19 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			}
 		} catch (MissingResourceException ignored) {
 		}
+		// set shortcut
 		try {
 			String shorcutString = I18n.getString(command + "_ks");
 			if (shorcutString != null && !shorcutString.equals("")) {
 				menuItem.setAccelerator(KeyStroke.getKeyStroke(shorcutString));
 			}
 		} catch (MissingResourceException ignored) {
+		}
+		// set icon
+		try {
+			String filename = iconMap.getProperty(command);
+			menuItem.setIcon(new ImageIcon(StreamUtils.readBytesFromInputStream(StreamUtils.getInputStream(filename))));
+		} catch (Exception ignored) {
 		}
 		menuItem.addActionListener(this);
 
