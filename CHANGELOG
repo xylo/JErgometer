@@ -2,6 +2,12 @@ Changelog for JErgometer
 """"""""""""""""""""""""
 
 == coming 0.7.12 ==
+
+2011-04-26
+* [stefan]  * fixed popup menu of program tree
+            * added menu icons (tanks to Tango Desktop Project)
+
+2011-04-09
 * [stefan]  * fixed bug #182: JErgometer wants to update even if it's a bleeding edge version
             * implemented issue #247: display error message when JErgometer is started without RXTX library
             * implemented issue #252: rename all occurrences of "COM port" to "serial port"
