@@ -8,6 +8,7 @@ import sun.applet.Main;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import java.awt.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -21,6 +22,8 @@ import java.net.URL;
 public class BikeInfoPane extends JEditorPane implements HyperlinkListener {
 	private MainWindow mainWindow;
 	private Template template;
+
+	private Dimension maxMinimumSize = new Dimension(0, 0);
 
 	public BikeInfoPane(MainWindow mainWindow, Template template) {
 		this.mainWindow = mainWindow;
@@ -63,5 +66,15 @@ public class BikeInfoPane extends JEditorPane implements HyperlinkListener {
 		context.put("distanceString", "-");
 		context.put("energyString", "-");
 		setContext(context);
+	}
+
+	@Override
+	public Dimension getMinimumSize() {
+		Dimension minimumSize = super.getMinimumSize();
+
+		maxMinimumSize.height = Math.max(maxMinimumSize.height, minimumSize.height);
+		maxMinimumSize.width = Math.max(maxMinimumSize.width, minimumSize.width);
+
+		return maxMinimumSize;
 	}
 }
