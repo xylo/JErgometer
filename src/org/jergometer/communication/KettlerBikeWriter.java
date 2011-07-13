@@ -51,6 +51,10 @@ public class KettlerBikeWriter implements BikeWriter {
 	 */
 	public void sendReset() throws IOException {
 		writeRawBytes(CMD_RESET.getBytes());
+		try {
+			// wait 5s after bike reset (avoids problems with X3)
+			Thread.sleep(5000);
+		} catch (InterruptedException ignored) {}
 	}
 
 	/**
