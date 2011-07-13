@@ -20,6 +20,7 @@ public class KettlerBikeReader extends Thread implements BikeReader {
 	/** Client commands. */
 	public static final String CMD_ACK      = "ACK";
 	public static final String CMD_ERROR    = "ERROR";
+	public static final String CMD_RUN      = "RUN";
 
 	/** Input stream. */
 	private InputStream inStream;
@@ -49,8 +50,7 @@ public class KettlerBikeReader extends Thread implements BikeReader {
 				}
 
 				if(printAvailable == PrintAvailable.none) {
-
-					if (dataString.equals(CMD_ACK)) {
+					if (dataString.contains(CMD_ACK)) {
 						for (BikeReaderListener listener : bikeReaderListeners) {
 							listener.bikeAck();
 						}
@@ -58,6 +58,11 @@ public class KettlerBikeReader extends Thread implements BikeReader {
 					else if (dataString.equals(CMD_ERROR)) {
 						for (BikeReaderListener listener : bikeReaderListeners) {
 							listener.bikeError();
+						}
+					}
+					else if (dataString.equals(CMD_RUN)) {
+						for (BikeReaderListener listener : bikeReaderListeners) {
+							listener.bikeAck();
 						}
 					}
 					else {
