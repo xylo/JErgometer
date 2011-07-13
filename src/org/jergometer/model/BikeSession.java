@@ -1,7 +1,13 @@
 package org.jergometer.model;
 
+import de.endrullis.utils.VelocityUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+
 import java.io.*;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -162,14 +168,57 @@ public class BikeSession {
 
 	public void save(String dir) throws IOException {
 		new File(dir).mkdirs();
-
+		String filename = getFileName(dir + "/", startTime);
+		String filenameHRM = filename + ".hrm";
 		file = new File(getFileName(dir + "/", startTime));
 		DataOutputStream out = new DataOutputStream(new FileOutputStream(file));
 
 		toStream(out);
 		out.close();
 
+		toHRM(filenameHRM);
 		needToBeSaved = false;
+	}
+
+	private void toHRM(String filename) {
+		VelocityContext context = new VelocityContext();
+		try {
+			Template template = VelocityUtils.getTemplate("org/jergometer/model/templates/hrm.template");
+			FileWriter fstream = new FileWriter(filename);
+			BufferedWriter out = new BufferedWriter(fstream);
+			int secs = statsTotal.duration;
+			int hours = secs / 3600,
+			    remainder = secs % 3600,
+			    minutes = remainder / 60,
+			    seconds = remainder % 60;
+
+			String disHour = (hours < 10 ? "0" : "") + hours,
+			       disMinu = (minutes < 10 ? "0" : "") + minutes,
+			       disSec = (seconds < 10 ? "0" : "") + seconds;
+			String length = disHour +":"+ disMinu+":"+disSec + ".0";
+
+			DateFormat formatter;
+			formatter = new SimpleDateFormat("yyyyMMdd");
+			String date = formatter.format(startTime);
+			formatter = new SimpleDateFormat("hh:mm:ss.S");
+			String time = formatter.format(startTime);
+
+			context.put("length", length);
+			context.put("date", date);
+			context.put("starttime", time);
+			context.put("note", programName);
+			context.put("distance", lastRecordRegular.getDistance());
+			context.put("seconds", secs);
+			context.put("hrdata", data);
+
+			Writer writer = new StringWriter();
+			template.merge(context, writer);
+			out.write(writer.toString());
+
+			out.close();
+		} catch (Exception e){
+			System.err.println("Error: " + e.getMessage());
+		}
 	}
 
 	private void toStream(DataOutputStream out) throws IOException {
