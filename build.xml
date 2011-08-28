@@ -17,6 +17,7 @@
 
 	<!-- Locations -->
 	<property name="src"                location="src"/>
+	<property name="src-test"           location="test/src"/>
 	<property name="build"              location="build"/>
 	<property name="lib"                value="lib"/>
 	<property name="dist"               location="dist"/>
@@ -26,6 +27,7 @@
 	<property name="releases"           location="${dist}/releases"/>
 
 	<property name="buildClasses"       location="${build}/classes"/>
+	<property name="buildClasses-test"  location="${build}/classes-test"/>
 	<property name="programJar"         location="${uploadPrepare}/${program.jar}"/>
 	<property name="velocityJar"        value="${lib}/velocity-1.7-dep.jar"/>
 	<property name="rxtxJar"            value="${lib}/RXTXcomm.jar"/>
@@ -41,6 +43,12 @@
 		</filelist>
 	</path>
 	
+	<path id="libraries-test">
+	  <fileset dir="test/lib">
+	    <include name="*.jar"/>
+	  </fileset>
+	</path>
+
 	<target name="osInfo">
 		<echo message="os.name: ${os.name}"/>
 		<echo message="os.arch: ${os.arch}"/>
@@ -86,7 +94,39 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
+	<!-- Compile application. -->
+	<target name="compile-test" depends="compile">
+	  <mkdir dir="${buildClasses-test}"/>
+
+	  <!-- Compile the project. -->
+	  <javac srcdir="${src-test}" destdir="${buildClasses-test}" target="1.5" source="1.5" encoding="UTF-8" debug="on">
+	    <classpath>
+	      <pathelement location="${buildClasses}"/>
+	      <pathelement location="${buildClasses-test}"/>
+		    <path refid="libraries"/>
+		    <path refid="libraries-test"/>
+	    </classpath>
+	  </javac>
+	</target>
+
+	<!-- Run tests. -->
+	<target name="test" depends="compile-test">
+    <junit>
+	    <classpath>
+		    <pathelement location="${buildClasses}"/>
+		    <pathelement location="${buildClasses-test}"/>
+			  <path refid="libraries"/>
+			  <path refid="libraries-test"/>
+			</classpath>
+
+      <formatter type="brief" usefile="false" />
+      <batchtest>
+        <fileset dir="${buildClasses-test}" includes="**/*Test.class" />
+      </batchtest>
+    </junit>
+  </target>
+
 	<!-- Builds the upload directory including the jar file. -->
 	<target name="jar" depends="compile,updateBuildNumber">
 		<delete dir="${uploadPrepare}"/>
