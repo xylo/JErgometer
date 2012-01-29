@@ -181,7 +181,7 @@ public class BikeConnectionTester extends Thread {
 					case doReset:
 						pm.setProgress(20);
 						pm.setNote(I18n.getString("connection_tester.send_reset"));
-						waitForChild(1000);
+						waitForChild(5000);
 						if (state == State.doReset) abort = true;
 						break;
 
