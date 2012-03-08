@@ -727,7 +727,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 						bikeConnector.getWriter().sendReset();
 						break;
 					case connected:
-						bikeConnector.getWriter().sendGetData(power);
+						bikeConnector.getWriter().sendSetPower(power);
 						break;
 				}
 			} catch (IOException e1) {

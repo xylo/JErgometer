@@ -70,7 +70,7 @@ public class JergometerTestConsole implements BikeReaderListener {
 						break;
 
 					case 1:
-						bikeWriter.sendGetData(80);
+						bikeWriter.sendSetPower(80);
 						break;
 
 					case 2:

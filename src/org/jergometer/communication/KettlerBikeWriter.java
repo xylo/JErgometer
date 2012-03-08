@@ -12,11 +12,12 @@ public class KettlerBikeWriter implements BikeWriter {
 // static
 
 	/** Bike commands. */
-	public static final String CMD_UNKNOWN1 = "CD";
-	public static final String CMD_HELLO    = "CM";
-	public static final String CMD_GET_ID   = "ID";
-	public static final String CMD_RESET    = "RS";
-	public static final String CMD_GET_DATA = "PW ";
+	public static final String CMD_UNKNOWN1   = "CD";
+	public static final String CMD_HELLO      = "CM";
+	public static final String CMD_GET_ID     = "ID";
+	public static final String CMD_RESET      = "RS";
+	public static final String CMD_GET_STATUS = "ST ";
+	public static final String CMD_SET_POWER  = "PW ";
 	private static final byte[] ln = {13,10};
 
 // dynamic
@@ -71,8 +72,8 @@ public class KettlerBikeWriter implements BikeWriter {
 	 *
 	 * @throws IOException thrown if io problems occurred
 	 */
-	public void sendGetData(int power) throws IOException {
-		writeRawBytes((CMD_GET_DATA + power).getBytes());
+	public void sendSetPower(int power) throws IOException {
+		writeRawBytes((CMD_SET_POWER + power).getBytes());
 	}
 
 	public void writeRawBytes(byte[] bytes) throws IOException {

@@ -45,7 +45,7 @@ public class BikeConnectorSimulator implements BikeConnector {
 			public void sendGetId() throws IOException {
 			}
 			@Override
-			public void sendGetData(int power) throws IOException {
+			public void sendSetPower(int power) throws IOException {
 				try {
 					listener.bikeData(new DataRecord(sessionInputStream));
 				} catch (EOFException ignored) {}

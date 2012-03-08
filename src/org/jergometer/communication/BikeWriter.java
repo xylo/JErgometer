@@ -11,5 +11,5 @@ public interface BikeWriter {
 	public void sendHello() throws IOException;
 	public void sendReset() throws IOException;
 	public void sendGetId() throws IOException;
-	public void sendGetData(int power) throws IOException;
+	public void sendSetPower(int power) throws IOException;
 }
