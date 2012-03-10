@@ -34,12 +34,12 @@ public class BikeConnectorSimulatorReplay implements BikeConnector {
 	}
 	@Override
 	public void sendGetData() throws IOException {
-	}
-	@Override
-	public void sendSetPower(int power) throws IOException {
 		try {
 			listener.bikeData(new DataRecord(sessionInputStream));
 		} catch (EOFException ignored) {}
+	}
+	@Override
+	public void sendSetPower(int power) throws IOException {
 	}
 
 	@Override
