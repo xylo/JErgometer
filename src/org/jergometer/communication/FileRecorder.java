@@ -2,7 +2,6 @@ package org.jergometer.communication;
 
 import org.jergometer.model.DataRecord;
 
-import javax.naming.SizeLimitExceededException;
 import java.io.*;
 
 /**
@@ -10,7 +9,7 @@ import java.io.*;
  *
  * @author Stefan Endrullis &lt;stefan@endrullis.de&gt;
  */
-public class FileRecorder implements BikeReaderListener {
+public class FileRecorder implements BikeListener {
 	private DataOutputStream out = null;
 
 	public FileRecorder(String simulatorSession) throws FileNotFoundException {
@@ -33,5 +32,12 @@ public class FileRecorder implements BikeReaderListener {
 
 	@Override
 	public void bikeError() {
+	}
+
+	public void close() {
+		try {
+			out.close();
+		} catch (IOException ignored) {
+		}
 	}
 }

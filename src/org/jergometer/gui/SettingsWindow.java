@@ -1,8 +1,7 @@
 package org.jergometer.gui;
 
-import org.jergometer.communication.KetterBikeConnector;
+import org.jergometer.communication.*;
 import org.jergometer.translation.I18n;
-import org.jergometer.communication.BikeConnectionTester;
 import org.jergometer.JergometerSettings;
 
 import javax.swing.*;
@@ -58,10 +57,10 @@ public class SettingsWindow extends JDialog {
 		gbc.gridy = 1;
 		gbc.fill = GridBagConstraints.VERTICAL;
 		panel1.add(spacer1, gbc);
-		comPortComboBox = new JComboBox();
-		comPortComboBox.setEditable(false);
+		serialPortComboBox = new JComboBox();
+		serialPortComboBox.setEditable(false);
 		final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-		comPortComboBox.setModel(defaultComboBoxModel1);
+		serialPortComboBox.setModel(defaultComboBoxModel1);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -69,7 +68,7 @@ public class SettingsWindow extends JDialog {
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 5, 0, 5);
-		panel1.add(comPortComboBox, gbc);
+		panel1.add(serialPortComboBox, gbc);
 		updatePortsButton = new JButton();
 		this.$$$loadButtonText$$$(updatePortsButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.update_ports"));
 		gbc = new GridBagConstraints();
@@ -266,7 +265,8 @@ public class SettingsWindow extends JDialog {
 	private ReturnCode returnCode;
 
 	private JPanel mainPanel;
-	private JComboBox comPortComboBox;
+	private JComboBox serialDriverComboBox;
+	private JComboBox serialPortComboBox;
 	private JCheckBox enterPortNameCheckBox;
 	private JButton updatePortsButton;
 	private JButton testPortButton;
@@ -290,12 +290,12 @@ public class SettingsWindow extends JDialog {
 		final SettingsWindow settingsWindow = this;
 		enterPortNameCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				comPortComboBox.setEditable(enterPortNameCheckBox.isSelected());
+				serialPortComboBox.setEditable(enterPortNameCheckBox.isSelected());
 			}
 		});
 		updatePortsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateSerialPorts(null);
+				updateSerialConfiguration(null);
 			}
 		});
 		saveButton.addActionListener(new ActionListener() {
@@ -339,10 +339,10 @@ public class SettingsWindow extends JDialog {
 	}
 
 	private void testSerialPort(final SettingsWindow settingsWindow) {
-		BikeConnectionTester bikeConnectionTester = new BikeConnectionTester(settingsWindow, comPortComboBox.getSelectedItem().toString());
+		BikeConnectionTester bikeConnectionTester = new BikeConnectionTester(settingsWindow, serialPortComboBox.getSelectedItem().toString());
 		String id = bikeConnectionTester.test();
 		if (id == null || id.equals("ID")) {
-			JOptionPane.showMessageDialog(this, I18n.getString("msg.connection_failed"));
+			JOptionPane.showMessageDialog(this, I18n.getString("msg.connection_failed"), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
 		} else {
 			JOptionPane.showMessageDialog(this, I18n.getString("connection_tester.connection_successful", id));
 		}
@@ -355,7 +355,7 @@ public class SettingsWindow extends JDialog {
 	 * @return return code
 	 */
 	public ReturnCode showDialog(JergometerSettings settings) {
-		updateSerialPorts(settings);
+		updateSerialConfiguration(settings);
 
 		if (settings != null) {
 			if (settings.getXmlEditor() != null) {
@@ -371,23 +371,41 @@ public class SettingsWindow extends JDialog {
 		return returnCode;
 	}
 
-	private void updateSerialPorts(JergometerSettings settings) {
-		String comPort = null;
-		if (settings != null) {
-			comPort = settings.getSerialPort();
-		}
-		int comPortIndex = -1;
+	private void updateSerialConfiguration(JergometerSettings settings) {
+		String driverName = settings.getSerialDriver();
 
-		DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
+		DefaultComboBoxModel serialDriverComboBoxModel = new DefaultComboBoxModel();
+		int serialDriverIndex = 0;
+
 		int i = 0;
+		for (BikeConnector bikeConnector : BikeConnectors.allBikeConnectors) {
+			serialDriverComboBoxModel.addElement(bikeConnector);
+			if (bikeConnector.getName().equals(driverName)) {
+				serialDriverIndex = i;
+			}
+			i++;
+		}
 
+		serialDriverComboBox.setModel(serialDriverComboBoxModel);
+		serialDriverComboBox.setSelectedIndex(serialDriverIndex);
+
+
+		String serialPort = null;
+		if (settings != null) {
+			serialPort = settings.getSerialPort();
+		}
+		int serialPortIndex = -1;
+
+		DefaultComboBoxModel serialPortComboBoxModel = new DefaultComboBoxModel();
+
+		i = 0;
 		try {
 			// detect available serial ports
-			for (String s : KetterBikeConnector.getPortNames()) {
-				comboBoxModel.addElement(s);
+			for (String s : RXTXLibrary.getPortNames()) {
+				serialPortComboBoxModel.addElement(s);
 				// check if this comport this the current comport
-				if (comPort != null && s.equals(comPort)) {
-					comPortIndex = i;
+				if (serialPort != null && s.equals(serialPort)) {
+					serialPortIndex = i;
 				}
 				i++;
 			}
@@ -401,18 +419,19 @@ public class SettingsWindow extends JDialog {
 		}
 
 		// if comport is not in the list -> add it
-		if (comPort != null && comPortIndex == -1) {
-			comboBoxModel.addElement(comPort);
-			comPortIndex = i;
+		if (serialPort != null && serialPortIndex == -1) {
+			serialPortComboBoxModel.addElement(serialPort);
+			serialPortIndex = i;
 		}
 
-		comPortComboBox.setModel(comboBoxModel);
-		comPortComboBox.setSelectedIndex(comPortIndex);
+		serialPortComboBox.setModel(serialPortComboBoxModel);
+		serialPortComboBox.setSelectedIndex(serialPortIndex);
 	}
 
 	public void saveSettings(JergometerSettings settings) {
 		settings.setCheckForUpdatesOnStart(checkForUpdatesOnStartCheckBox.isSelected());
-		settings.setSerialPort((String) comPortComboBox.getSelectedItem());
+		settings.setSerialDriver(((BikeConnector) serialDriverComboBox.getSelectedItem()).getName());
+		settings.setSerialPort((String) serialPortComboBox.getSelectedItem());
 		settings.setXmlEditor(xmlEditorTextField.getText());
 	}
 }

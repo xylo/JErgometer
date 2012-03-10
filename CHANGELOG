@@ -1,6 +1,11 @@
 Changelog for JErgometer
 """"""""""""""""""""""""
 
+== Coming 0.7.13 ==
+
+2012-03-10
+* [stefan]  * implemented issue #273: provide alternative to buggy RXTX library (socat)
+
 == 0.7.12 ==
 
 2011-04-26

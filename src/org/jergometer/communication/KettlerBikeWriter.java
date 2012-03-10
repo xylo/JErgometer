@@ -7,7 +7,7 @@ import java.io.OutputStream;
 /**
  * It writes messages to the bike.
  */
-public class KettlerBikeWriter implements BikeWriter {
+public class KettlerBikeWriter {
 
 // static
 
@@ -18,10 +18,11 @@ public class KettlerBikeWriter implements BikeWriter {
 	public static final String CMD_RESET      = "RS";
 	public static final String CMD_GET_STATUS = "ST ";
 	public static final String CMD_SET_POWER  = "PW ";
-	private static final byte[] ln = {13,10};
 
 // dynamic
 
+	/** Newline. */
+	private byte[] ln = {'\n'};
 	/** Output stream. */
 	private DataOutputStream out;
 
@@ -30,7 +31,10 @@ public class KettlerBikeWriter implements BikeWriter {
 	 *
 	 * @param out output stream
 	 */
-	public KettlerBikeWriter(OutputStream out) {
+	public KettlerBikeWriter(boolean cr, OutputStream out) {
+		if (cr) {
+			this.ln = new byte[]{'\r', '\n'};
+		}
 		this.out = new DataOutputStream(out);
 	}
 
@@ -68,7 +72,16 @@ public class KettlerBikeWriter implements BikeWriter {
 	}
 
 	/**
-	 * Sends the getData command to the bike.
+	 * Sends the getStatus command to the bike.
+	 *
+	 * @throws IOException thrown if io problems occurred
+	 */
+	public void sendGetData() throws IOException {
+		writeRawBytes((CMD_GET_STATUS).getBytes());
+	}
+
+	/**
+	 * Sends the setPower command to the bike.
 	 *
 	 * @throws IOException thrown if io problems occurred
 	 */

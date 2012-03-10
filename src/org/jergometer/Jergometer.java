@@ -27,7 +27,7 @@ import gnu.io.UnsupportedCommOperationException;
 /**
  * Main class of JErgometer.
  */
-public class Jergometer implements BikeReaderListener, ActionListener, WindowListener {
+public class Jergometer implements BikeListener, ActionListener, WindowListener {
 
 // static
 
@@ -194,24 +194,15 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	 * @throws org.jergometer.communication.UnconfiguredSerialPortException if the serial port is not configured yet
 	 */
 	private void connectToSerialPort() throws BikeException, UnsupportedCommOperationException, IOException, UnconfiguredSerialPortException {
-		String comPort = jergometerSettings.getSerialPort();
-		if (comPort == null) {
+		String driver = jergometerSettings.getSerialDriver();
+		bikeConnector = BikeConnectors.name2bikeConnector.get(driver);
+
+		String serialPort = jergometerSettings.getSerialPort();
+		if (serialPort == null) {
 			throw new UnconfiguredSerialPortException();
-		} else
-		if (comPort.equals("replay")) {
-			bikeConnector = new BikeConnectorSimulator();
-		} else
-		if (comPort.startsWith("record:")) {
-			comPort = comPort.substring("record:".length());
-			bikeConnector = new KetterBikeConnector(comPort);
-			bikeConnector.getReader().addBikeReaderListener(new FileRecorder(BikeConnectorSimulator.SIMULATOR_SESSION));
-		} else {
-			bikeConnector = new KetterBikeConnector(comPort);
 		}
 
-		BikeReader bikeReader = bikeConnector.getReader();
-		bikeReader.addBikeReaderListener(this);
-		bikeReader.start();
+		bikeConnector.connect(serialPort, this);
 	}
 
 	/**
@@ -633,7 +624,7 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 	}
 
 
-// BikeReaderListener by BikeReader
+// BikeListener by BikeReader
 	public void bikeAck() {
 		switch(state) {
 			case hello:
@@ -666,6 +657,12 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 		}
 		*/
 
+		// has the plus or minus key on ergometer been pressed?
+		if (power != data.getDestPower()) {
+			int diff = data.getDestPower() - power;
+			System.out.println(diff);
+		}
+
 		// add new data record to session
 		switch (program.update(data)) {
 			case cycle:
@@ -684,6 +681,11 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 				diagram.addValue("power", time, data.getRealPower());
 
 				power = program.getPower();
+				try {
+					if (state == State.connected)
+						bikeConnector.sendSetPower(power);
+				} catch (IOException ignored) {
+				}
 				break;
 
 			case pulse:
@@ -718,16 +720,16 @@ public class Jergometer implements BikeReaderListener, ActionListener, WindowLis
 				switch(state) {
 					case notConnected:
 						state = State.reset;
-						bikeConnector.getWriter().sendReset();
+						bikeConnector.sendReset();
 						break;
 					case hello:
-						bikeConnector.getWriter().sendHello();
+						bikeConnector.sendHello();
 						break;
 					case reset:
-						bikeConnector.getWriter().sendReset();
+						bikeConnector.sendReset();
 						break;
 					case connected:
-						bikeConnector.getWriter().sendSetPower(power);
+						bikeConnector.sendGetData();
 						break;
 				}
 			} catch (IOException e1) {

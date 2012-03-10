@@ -12,7 +12,7 @@ import gnu.io.UnsupportedCommOperationException;
 /**
  * Test console class of jergometer.
  */
-public class JergometerTestConsole implements BikeReaderListener {
+public class JergometerTestConsole implements BikeListener {
 
 // static
 
@@ -22,23 +22,19 @@ public class JergometerTestConsole implements BikeReaderListener {
 
 // dynamic  
 
-	private KetterBikeConnector bikeConnector;
+	private KettlerBikeConnector bikeConnector;
 
 	public JergometerTestConsole() throws UnsupportedCommOperationException, BikeException {
 		try {
 			String osName = System.getProperty("os.name");
 
+			bikeConnector = new KettlerBikeConnector();
 			if(osName.toLowerCase().startsWith("windows")) {
-				bikeConnector = new KetterBikeConnector("COM1");
+				bikeConnector.connect("COM1", this);
 			} else {
-				bikeConnector = new KetterBikeConnector("/dev/ttyUSB0");
-//				bikeConnector = new KetterBikeConnector("/dev/ttyS0");
+				bikeConnector.connect("/dev/ttyUSB0", this);
+//				bikeConnector = new KettlerBikeConnector("/dev/ttyS0");
 			}
-
-			KettlerBikeWriter bikeWriter = bikeConnector.getWriter();
-			KettlerBikeReader bikeReader = bikeConnector.getReader();
-			bikeReader.addBikeReaderListener(this);
-			bikeReader.start();
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 			System.out.println("* commands: ");
@@ -66,15 +62,15 @@ public class JergometerTestConsole implements BikeReaderListener {
 				switch(sendCmd) {
 
 					case 0:
-						bikeWriter.sendHello();
+						bikeConnector.sendHello();
 						break;
 
 					case 1:
-						bikeWriter.sendSetPower(80);
+						bikeConnector.sendSetPower(80);
 						break;
 
 					case 2:
-						bikeWriter.sendReset();
+						bikeConnector.sendReset();
 						break;
 
 					case 5:
@@ -99,7 +95,7 @@ public class JergometerTestConsole implements BikeReaderListener {
 								data = "" + fst + snd;
 								System.out.println("testing " + data);
 								data += "\r\n";
-								bikeWriter.writeRawBytes(data.getBytes());
+								bikeConnector.writer.writeRawBytes(data.getBytes());
 								try {
 									Thread.sleep(1000);
 								} catch (InterruptedException e) {
@@ -113,7 +109,7 @@ public class JergometerTestConsole implements BikeReaderListener {
 						System.out.print("* enter raw data: ");
 						data = reader.readLine();
 						data += "\r\n";
-						bikeWriter.writeRawBytes(data.getBytes());
+						bikeConnector.writer.writeRawBytes(data.getBytes());
 						break;
 
 					case 9:
@@ -121,11 +117,11 @@ public class JergometerTestConsole implements BikeReaderListener {
 						return;
 
 					case 11:
-						bikeReader.setPrintAvailable(KettlerBikeReader.PrintAvailable.characters);
+						bikeConnector.reader.setPrintAvailable(KettlerBikeReader.PrintAvailable.characters);
 						break;
 
 					case 12:
-						bikeReader.setPrintAvailable(KettlerBikeReader.PrintAvailable.decimals);
+						bikeConnector.reader.setPrintAvailable(KettlerBikeReader.PrintAvailable.decimals);
 						break;
 
 					default:

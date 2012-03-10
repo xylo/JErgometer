@@ -100,7 +100,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	public MainWindow(String title, final Jergometer jergometer) throws HeadlessException {
 		super(title);
 		this.jergometer = jergometer;
-		$$$setupUI$$$();
+		this.$$$setupUI$$$();
 		setContentPane(mainPanel);
 		createPopups();
 		setJMenuBar(createMenuBar());
@@ -630,7 +630,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 					jergometer.getProgramTree().deletePrograms(srcNode);
 				}
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(this, I18n.getString("msg.failed_to_copy_the_files"));
+				JOptionPane.showMessageDialog(this, I18n.getString("msg.failed_to_copy_the_files"), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
 			}
 
 			jergometer.getProgramTree().updateNode(destNode);

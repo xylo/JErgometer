@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * It reads incoming messages from the bike.
  */
-public class KettlerBikeReader extends Thread implements BikeReader {
+public class KettlerBikeReader extends Thread {
 
 // static
 
@@ -22,12 +22,14 @@ public class KettlerBikeReader extends Thread implements BikeReader {
 	public static final String CMD_ERROR    = "ERROR";
 	public static final String CMD_RUN      = "RUN";
 
+// dynamic
+
 	/** Input stream. */
 	private InputStream inStream;
 	private boolean closed = false;
 	private BufferedReader in;
 	/** BikeReaderListeners. */
-	private ArrayList<BikeReaderListener> bikeReaderListeners = new ArrayList<BikeReaderListener>();
+	private ArrayList<BikeListener> bikeListeners = new ArrayList<BikeListener>();
 	/** Print available bytes (for debugging). */
 	private PrintAvailable printAvailable = PrintAvailable.none;
 
@@ -51,22 +53,22 @@ public class KettlerBikeReader extends Thread implements BikeReader {
 
 				if(printAvailable == PrintAvailable.none) {
 					if (dataString.contains(CMD_ACK)) {
-						for (BikeReaderListener listener : bikeReaderListeners) {
+						for (BikeListener listener : bikeListeners) {
 							listener.bikeAck();
 						}
 					}
 					else if (dataString.equals(CMD_ERROR)) {
-						for (BikeReaderListener listener : bikeReaderListeners) {
+						for (BikeListener listener : bikeListeners) {
 							listener.bikeError();
 						}
 					}
 					else if (dataString.equals(CMD_RUN)) {
-						for (BikeReaderListener listener : bikeReaderListeners) {
+						for (BikeListener listener : bikeListeners) {
 							listener.bikeAck();
 						}
 					}
 					else {
-						for (BikeReaderListener listener : bikeReaderListeners) {
+						for (BikeListener listener : bikeListeners) {
 							listener.bikeData(new DataRecord(dataString));
 						}
 					}
@@ -112,11 +114,15 @@ public class KettlerBikeReader extends Thread implements BikeReader {
 		this.printAvailable = printAvailable;
 	}
 
-	public void addBikeReaderListener(BikeReaderListener listener) {
-		bikeReaderListeners.add(listener);
+	public void addBikeReaderListener(BikeListener listener) {
+		bikeListeners.add(listener);
 	}
 
-	public void removeBikeReaderListener(BikeReaderListener listener) {
-		bikeReaderListeners.remove(listener);
+	public void removeBikeReaderListener(BikeListener listener) {
+		bikeListeners.remove(listener);
+	}
+
+	public void removeAllBikeReaderListeners() {
+		bikeListeners.clear();
 	}
 }

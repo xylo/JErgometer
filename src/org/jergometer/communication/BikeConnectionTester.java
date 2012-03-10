@@ -72,7 +72,7 @@ public class BikeConnectionTester extends Thread {
 																	 SerialPort.PARITY_NONE);
 
 		// set reader and writer
-		writer = new KettlerBikeWriter(serialPort.getOutputStream());
+		writer = new KettlerBikeWriter(true, serialPort.getOutputStream());
 		RXTXReader rxtxReader = new RXTXReader(serialPort);
 		reader = new BufferedReader(new InputStreamReader(rxtxReader));
 	}

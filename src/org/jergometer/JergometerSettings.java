@@ -5,6 +5,7 @@ import de.endrullis.utils.StreamUtils;
 import de.endrullis.xml.XMLDocument;
 import de.endrullis.xml.XMLElement;
 import de.endrullis.xml.XMLParser;
+import org.jergometer.communication.BikeConnectors;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +48,7 @@ public class JergometerSettings {
 	private int mainWindowMaximizedState;
 	private ArrayList<String> userNames = new ArrayList<String>();
 	private String lastUserName;
+	private String serialDriver;
 	private String serialPort;
 	private String xmlEditor;
 
@@ -88,6 +90,7 @@ public class JergometerSettings {
 		//properties.addEntry(new BetterProperties2.Comment(" Check for updates"));
 		properties.addEntry(new BetterProperties2.Def("check_for_updates", BOOLEAN, "true"));
 		properties.addEntry(new BetterProperties2.Def("last_user", STRING, null));
+		properties.addEntry(new BetterProperties2.Def("driver", STRING, null));
 		properties.addEntry(new BetterProperties2.Def("comport", STRING, null));
 		properties.addEntry(new BetterProperties2.Def("xml_editor", STRING, null));
 
@@ -139,6 +142,10 @@ public class JergometerSettings {
 
 		lastUserName = properties.getString("last_user");
 		serialPort = properties.getString("comport");
+		serialDriver = properties.getString("driver");
+		if (serialDriver == null) {
+			serialDriver = BikeConnectors.allBikeConnectors[0].getName();
+		}
 		xmlEditor = properties.getString("xml_editor");
 
 		if (oldSettingsFile.exists()) {
@@ -175,6 +182,7 @@ public class JergometerSettings {
 
 		properties.setString("last_user", lastUserName);
 		properties.setString("comport", serialPort);
+		properties.setString("driver", serialDriver);
 		properties.setString("xml_editor", xmlEditor);
 
 		settingsFile.getParentFile().mkdirs();
@@ -247,6 +255,14 @@ public class JergometerSettings {
 
 	public void setSerialPort(String serialPort) {
 		this.serialPort = serialPort;
+	}
+
+	public String getSerialDriver() {
+		return serialDriver;
+	}
+
+	public void setSerialDriver(String serialDriver) {
+		this.serialDriver = serialDriver;
 	}
 
 	public String getXmlEditor() {
