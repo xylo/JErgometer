@@ -2,6 +2,7 @@ package de.endrullis.utils;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -29,6 +30,9 @@ public class VelocityUtils {
 
 	public static Template getTemplate(String name) throws Exception {
 		init();
+
+		InputStream resourceAsStream = VelocityUtils.class.getResourceAsStream("/" + name);
+		if (resourceAsStream == null) throw new ResourceNotFoundException("Resource " + name + " could not be found");
 
 		// get the template
 		return Velocity.getTemplate(name);
