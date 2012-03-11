@@ -34,6 +34,10 @@ public class FileRecorder implements BikeListener {
 	public void bikeError() {
 	}
 
+	@Override
+	public void bikeDestPowerChanged(int change) {
+	}
+
 	public void close() {
 		try {
 			out.close();

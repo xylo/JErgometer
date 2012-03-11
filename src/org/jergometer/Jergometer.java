@@ -657,12 +657,6 @@ public class Jergometer implements BikeListener, ActionListener, WindowListener 
 		}
 		*/
 
-		// has the plus or minus key on ergometer been pressed?
-		if (power != data.getDestPower()) {
-			int diff = data.getDestPower() - power;
-			System.out.println(diff);
-		}
-
 		// add new data record to session
 		switch (program.update(data)) {
 			case cycle:
@@ -682,8 +676,9 @@ public class Jergometer implements BikeListener, ActionListener, WindowListener 
 
 				power = program.getPower();
 				try {
-					if (state == State.connected)
+					if (power != data.getDestPower()) {
 						bikeConnector.sendSetPower(power);
+					}
 				} catch (IOException ignored) {
 				}
 				break;
@@ -712,7 +707,14 @@ public class Jergometer implements BikeListener, ActionListener, WindowListener 
 		System.err.println("Bike: ERROR");
 	}
 
-// ActionListener by communicationTimer
+	@Override
+	/** Called if user has pressed plus or minus key on ergometer. */
+	public void bikeDestPowerChanged(int change) {
+		System.out.println("change: " + change);
+		program.changeInteractively(change);
+	}
+
+	// ActionListener by communicationTimer
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == communicationTimer) {
 			try {

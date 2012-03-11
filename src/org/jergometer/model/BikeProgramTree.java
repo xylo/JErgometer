@@ -6,11 +6,8 @@ import de.endrullis.xml.XMLParser;
 import org.jergometer.JergometerSettings;
 import org.jergometer.translation.I18n;
 import org.jergometer.control.BikeProgram;
-import sun.security.action.GetPropertyAction;
 
-import javax.swing.text.MutableAttributeSet;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import java.io.File;
 import java.io.FileInputStream;

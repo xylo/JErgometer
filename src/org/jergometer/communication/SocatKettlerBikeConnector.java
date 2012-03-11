@@ -15,13 +15,13 @@ public class SocatKettlerBikeConnector implements BikeConnector {
 	private Process process;
 	private KettlerBikeReader reader = null;
 	private KettlerBikeWriter writer = null;
+	private int power = 0;
 
 	@Override
 	public void connect(String serialName, BikeListener listener) throws BikeException, UnsupportedCommOperationException, IOException {
 		process = Runtime.getRuntime().exec(new String[]{
 			"/usr/bin/socat", "-", serialName + ",b9600,min=1,time=1,brkint=0,icrnl=0,ixoff=1,imaxbel=0,opost=0,isig=0,icanon=0,iexten=0,echo=0,echoe=0,echok=0,crnl"
 		});
-		System.out.println("/usr/bin/socat " + serialName + ",b9600,min=1,time=1,brkint=0,icrnl=0,ixoff=1,imaxbel=0,opost=0,isig=0,icanon=0,iexten=0,echo=0,echoe=0,echok=0,crnl STDOUT");
 		writer = new KettlerBikeWriter(false, process.getOutputStream());
 		reader = new KettlerBikeReader(process.getInputStream());
 		reader.addBikeReaderListener(listener);
@@ -45,12 +45,18 @@ public class SocatKettlerBikeConnector implements BikeConnector {
 
 	@Override
 	public void sendGetData() throws IOException {
-		writer.sendGetData();
+		if (power != 0) {
+			writer.sendSetPower(power);
+			power = 0;
+		} else {
+			writer.sendGetData();
+		}
 	}
 
 	@Override
 	public void sendSetPower(int power) throws IOException {
-		writer.sendSetPower(power);
+		reader.setJErgometerDestPower(power);
+		this.power = power;
 	}
 
 	@Override

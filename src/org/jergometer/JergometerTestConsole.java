@@ -147,4 +147,9 @@ public class JergometerTestConsole implements BikeListener {
 	public void bikeError() {
 		System.err.println("Bike: ERROR");
 	}
+
+	@Override
+	public void bikeDestPowerChanged(int change) {
+		System.out.println("change: " + change);
+	}
 }

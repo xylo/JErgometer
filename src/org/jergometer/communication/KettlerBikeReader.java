@@ -32,6 +32,8 @@ public class KettlerBikeReader extends Thread {
 	private ArrayList<BikeListener> bikeListeners = new ArrayList<BikeListener>();
 	/** Print available bytes (for debugging). */
 	private PrintAvailable printAvailable = PrintAvailable.none;
+	private int jergometerDestPower = 25;
+	private boolean changedPower = true;
 
 	/**
 	 * Creates the reader for the incoming messages of the bike.
@@ -69,9 +71,14 @@ public class KettlerBikeReader extends Thread {
 					}
 					else {
 						for (BikeListener listener : bikeListeners) {
-							listener.bikeData(new DataRecord(dataString));
+							DataRecord data = new DataRecord(dataString);
+							listener.bikeData(data);
+							if (!changedPower && jergometerDestPower != data.getDestPower()) {
+								listener.bikeDestPowerChanged((data.getDestPower() - jergometerDestPower)/5);
+							}
 						}
 					}
+					changedPower = false;
 				}
 				else {
 					// for debugging
@@ -124,5 +131,10 @@ public class KettlerBikeReader extends Thread {
 
 	public void removeAllBikeReaderListeners() {
 		bikeListeners.clear();
+	}
+
+	public void setJErgometerDestPower(int jergometerDestPower) {
+		this.jergometerDestPower = jergometerDestPower;
+		this.changedPower = true;
 	}
 }

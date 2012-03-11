@@ -19,6 +19,7 @@ public class KettlerBikeConnector implements BikeConnector {
 	private SerialPort serialPort;
 	public KettlerBikeReader reader = null;
 	public KettlerBikeWriter writer = null;
+	private int power;
 
 	public void connect(String serialName, BikeListener listener) throws BikeException, UnsupportedCommOperationException, IOException {
 		RXTXLibrary.init();
@@ -75,12 +76,18 @@ public class KettlerBikeConnector implements BikeConnector {
 
 	@Override
 	public void sendGetData() throws IOException {
-		writer.sendGetData();
+		if (power != 0) {
+			writer.sendSetPower(power);
+			power = 0;
+		} else {
+			writer.sendGetData();
+		}
 	}
 
 	@Override
 	public void sendSetPower(int power) throws IOException {
-		writer.sendSetPower(power);
+		reader.setJErgometerDestPower(power);
+		this.power = power;
 	}
 
 	@Override

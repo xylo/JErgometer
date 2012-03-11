@@ -3,7 +3,6 @@ package org.jergometer.gui;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import sun.applet.Main;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;

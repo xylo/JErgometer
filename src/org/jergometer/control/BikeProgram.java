@@ -100,4 +100,14 @@ public class BikeProgram extends HoldsFile {
 	public String toString() {
 		return programData.getName();
 	}
+
+	public void changeInteractively(int change) {
+		if (subProgram instanceof SubProgram.Power) {
+			subProgram = new SubProgram.Power(session, subProgram.getPower() + change*5);
+		}
+		if (subProgram instanceof SubProgram.Pulse) {
+			SubProgram.Pulse pulseProgram = (SubProgram.Pulse) subProgram;
+			subProgram = new SubProgram.Pulse(session, pulseProgram.getPower(), pulseProgram.getDestPulse() + change);
+		}
+	}
 }

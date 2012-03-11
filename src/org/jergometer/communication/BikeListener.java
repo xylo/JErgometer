@@ -22,4 +22,11 @@ public interface BikeListener {
 	 * Called if an error occurred.
 	 */
 	public void bikeError();
+
+	/**
+	 * Called if the user pressed one of the buttons used to change the power.
+	 *
+	 * @param change the amount of power change (can be negative of absolute)
+	 */
+	public void bikeDestPowerChanged(int change);
 }

@@ -131,5 +131,9 @@ abstract public class SubProgram {
 				}
 			}
 		}
+
+		public int getDestPulse() {
+			return destPulse;
+		}
 	}
 }
