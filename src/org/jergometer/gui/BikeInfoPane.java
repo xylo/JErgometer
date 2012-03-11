@@ -2,16 +2,13 @@ package org.jergometer.gui;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URL;
 
 /**
  * Template based info pane showing current training statistics.
@@ -28,6 +25,7 @@ public class BikeInfoPane extends JEditorPane implements HyperlinkListener {
 		this.mainWindow = mainWindow;
 		this.template = template;
 		setEditable(false);
+		setDoubleBuffered(true);
 		addHyperlinkListener(this);
 	}
 
