@@ -47,14 +47,14 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.serial_port"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.insets = new Insets(0, 3, 0, 5);
 		panel1.add(label1, gbc);
 		final JPanel spacer1 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 1;
+		gbc.gridy = 2;
 		gbc.fill = GridBagConstraints.VERTICAL;
 		panel1.add(spacer1, gbc);
 		serialPortComboBox = new JComboBox();
@@ -63,7 +63,7 @@ public class SettingsWindow extends JDialog {
 		serialPortComboBox.setModel(defaultComboBoxModel1);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		gbc.weightx = 1.0;
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -73,7 +73,7 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadButtonText$$$(updatePortsButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.update_ports"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 0, 0, 3);
 		panel1.add(updatePortsButton, gbc);
@@ -81,7 +81,7 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadButtonText$$$(enterPortNameCheckBox, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.enter_port_name"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 1;
+		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.insets = new Insets(5, 0, 1, 0);
 		panel1.add(enterPortNameCheckBox, gbc);
@@ -89,7 +89,7 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadButtonText$$$(testPortButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.test_port"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
-		gbc.gridy = 1;
+		gbc.gridy = 2;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 0, 1, 3);
 		panel1.add(testPortButton, gbc);
@@ -104,7 +104,7 @@ public class SettingsWindow extends JDialog {
 		panel2.setRequestFocusEnabled(false);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 2;
+		gbc.gridy = 3;
 		gbc.gridwidth = 3;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 0, 5, 0);
@@ -114,7 +114,7 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadLabelText$$$(label2, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.xml_editor"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.insets = new Insets(0, 3, 0, 5);
 		panel1.add(label2, gbc);
@@ -122,7 +122,7 @@ public class SettingsWindow extends JDialog {
 		xmlEditorTextField.setPreferredSize(new Dimension(6, 22));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 5, 1, 5);
@@ -132,7 +132,7 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadButtonText$$$(xmlEditorChooseButton, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("label.file_choosing"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 0, 1, 3);
 		panel1.add(xmlEditorChooseButton, gbc);
@@ -144,7 +144,7 @@ public class SettingsWindow extends JDialog {
 		panel3.setPreferredSize(new Dimension(1, 1));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 4;
+		gbc.gridy = 5;
 		gbc.gridwidth = 3;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 0, 5, 0);
@@ -154,7 +154,7 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadLabelText$$$(label3, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.update"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.insets = new Insets(0, 3, 0, 5);
 		panel1.add(label3, gbc);
@@ -163,9 +163,29 @@ public class SettingsWindow extends JDialog {
 		this.$$$loadButtonText$$$(checkForUpdatesOnStartCheckBox, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.check_for_updates_on_start"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		gbc.anchor = GridBagConstraints.WEST;
 		panel1.add(checkForUpdatesOnStartCheckBox, gbc);
+		final JLabel label4 = new JLabel();
+		this.$$$loadLabelText$$$(label4, ResourceBundle.getBundle("org/jergometer/translation/jergometer").getString("settings.serial_driver"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.insets = new Insets(0, 3, 5, 5);
+		panel1.add(label4, gbc);
+		serialDriverComboBox = new JComboBox();
+		serialDriverComboBox.setEditable(false);
+		final DefaultComboBoxModel defaultComboBoxModel2 = new DefaultComboBoxModel();
+		serialDriverComboBox.setModel(defaultComboBoxModel2);
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.weightx = 1.0;
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = new Insets(0, 5, 5, 5);
+		panel1.add(serialDriverComboBox, gbc);
 		final JPanel panel4 = new JPanel();
 		panel4.setLayout(new GridBagLayout());
 		gbc = new GridBagConstraints();
@@ -372,7 +392,10 @@ public class SettingsWindow extends JDialog {
 	}
 
 	private void updateSerialConfiguration(JergometerSettings settings) {
-		String driverName = settings.getSerialDriver();
+		String driverName = "";
+		if (settings != null) {
+			driverName = settings.getSerialDriver();
+		}
 
 		DefaultComboBoxModel serialDriverComboBoxModel = new DefaultComboBoxModel();
 		int serialDriverIndex = 0;

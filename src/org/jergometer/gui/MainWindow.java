@@ -35,6 +35,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 	private static double kcalFactor = 0.239005736;
 
 	private Properties iconMap = new Properties();
+
 	{
 		try {
 			iconMap.load(StreamUtils.getInputStream("org/jergometer/images/icon_map.properties"));
@@ -957,7 +958,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		bikeInfoPane.setContentType("text/html");
 		bikeInfoPane.setEditable(false);
 		bikeInfoPane.setEnabled(true);
-		bikeInfoPane.setText("<html>\n  <head>\n\n  </head>\n  <body>\n    <p style=\"margin-top: 0\">\n      \n    </p>\n  </body>\n</html>\n");
+		bikeInfoPane.setText("<html>\n  <head>\n    \n  </head>\n  <body>\n  </body>\n</html>\n");
 		bikeInfoPane.putClientProperty("JEditorPane.honorDisplayProperties", Boolean.TRUE);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
