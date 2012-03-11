@@ -91,7 +91,6 @@ public class KettlerBikeWriter {
 
 	public void writeRawBytes(byte[] bytes) throws IOException {
 		out.write(bytes);
-//		out.flush();
 		out.write(ln);
 		out.flush();
 	}
