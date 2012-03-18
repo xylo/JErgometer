@@ -81,6 +81,10 @@ public class BikeProgram extends HoldsFile {
 		return power;
 	}
 
+	public String getProgramAction() {
+		return subProgram.getActionName();
+	}
+
 	public String getProgramName() {
 		return programName;
 	}

@@ -681,6 +681,7 @@ public class Jergometer implements BikeListener, ActionListener, WindowListener 
 					}
 				} catch (IOException ignored) {
 				}
+				mainWindow.setProgramAction(program.getProgramAction());
 				break;
 
 			case pulse:
@@ -699,6 +700,7 @@ public class Jergometer implements BikeListener, ActionListener, WindowListener 
 					time = program.getSession().getDurationPulse();
 					diagram.addValue("pulse-end", time, data.getPulse());
 				}
+				mainWindow.setProgramAction(I18n.getString("action.recording_pulse"));
 				break;
 		}
 	}

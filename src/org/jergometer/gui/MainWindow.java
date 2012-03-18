@@ -3,8 +3,6 @@ package org.jergometer.gui;
 import de.endrullis.utils.VelocityUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.jergometer.Jergometer;
 import org.jergometer.control.BikeProgram;
@@ -79,6 +77,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 
 	private DefaultMutableTreeNode copiedProgramNode = null;
 	private boolean movePrograms = false;
+	private String lastProgramAction = "-";
 	private DataRecord lastDataRecord;
 	private boolean kcal = false;
 
@@ -169,6 +168,7 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 		if (dataRecord == null) return;
 
 		VelocityContext context = new VelocityContext();
+		context.put("programAction", lastProgramAction);
 		context.put("pulse", dataRecord.getPulse());
 		context.put("pulseString", dataRecord.getPulse() == 0 ? "?" : "" + dataRecord.getPulse());
 		context.put("pedalRpm", dataRecord.getPedalRpm());
@@ -829,6 +829,13 @@ public class MainWindow extends JFrame implements ActionListener, TreeSelectionL
 			return VelocityUtils.getTemplate(templateName + "_" + cc + ".vm");
 		} catch (ResourceNotFoundException e) {
 			return VelocityUtils.getTemplate(templateName + ".vm");
+		}
+	}
+
+	public void setProgramAction(String action) {
+		if (!lastProgramAction.equals(action)) {
+			lastProgramAction = action;
+			updateBikeInfoPane(lastDataRecord);
 		}
 	}
 

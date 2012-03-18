@@ -7,8 +7,11 @@ import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Template based info pane showing current training statistics.
@@ -27,6 +30,14 @@ public class BikeInfoPane extends JEditorPane implements HyperlinkListener {
 		setEditable(false);
 		setDoubleBuffered(true);
 		addHyperlinkListener(this);
+
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent componentEvent) {
+				System.out.println(1);
+				setDoubleBuffered(true);
+			}
+		});
 	}
 
 	public void setTemplate(Template template) {
@@ -54,6 +65,7 @@ public class BikeInfoPane extends JEditorPane implements HyperlinkListener {
 
 	public void resetValues() {
 		VelocityContext context = new VelocityContext();
+		context.put("programAction", "-");
 		context.put("timeString", "-");
 		context.put("destPowerString", "-");
 		context.put("actPowerString", "-");

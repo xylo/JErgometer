@@ -77,10 +77,10 @@ public class KettlerBikeReader extends Thread {
 						}
 
 						for (BikeListener listener : bikeListeners) {
-							listener.bikeData(data);
 							if (data.getDestPower() != lastJergometerDesPower && data.getDestPower() != jergometerDestPower) {
 								listener.bikeDestPowerChanged((data.getDestPower() - jergometerDestPower)/5);
 							}
+							listener.bikeData(data);
 						}
 						lastJergometerDesPower = data.getDestPower();
 					}

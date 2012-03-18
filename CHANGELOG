@@ -3,10 +3,12 @@ Changelog for JErgometer
 
 == Coming 0.7.13 ==
 
+2012-03-18
+* [stefan]  * implemented issue #272: one key to select power during the training
+
 2012-03-11
 * [stefan]  * fixed bug #274: get rid of the error message "ResourceManager : unable to find resource 'org/jergometer/gui/templates/default_de.vm' in any resource loader."
             * fixed bug #275: exception when opening settings dialog
-            * fixed bug #276: pulse, power, pedalRPM, ... information flickers sometimes when updated
 
 2012-03-10
 * [stefan]  * implemented issue #273: provide alternative to buggy RXTX library (socat)

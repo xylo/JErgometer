@@ -3,6 +3,7 @@ package org.jergometer.control;
 import org.jergometer.model.BikeSession;
 import org.jergometer.model.DataRecord;
 import org.jergometer.model.MiniDataRecord;
+import org.jergometer.translation.I18n;
 
 import java.util.ArrayList;
 import java.io.IOException;
@@ -34,6 +35,8 @@ abstract public class SubProgram {
 		if(this.power > 400) this.power = 400;
 	}
 
+	public abstract String getActionName();
+
 
 // sub classes
 	public static class Power extends SubProgram {
@@ -42,6 +45,10 @@ abstract public class SubProgram {
 		}
 
 		public void update(DataRecord dataRecord) {
+		}
+
+		public String getActionName() {
+			return I18n.getString("action.keep_power_at_x", power);
 		}
 	}
 
@@ -134,6 +141,10 @@ abstract public class SubProgram {
 
 		public int getDestPulse() {
 			return destPulse;
+		}
+
+		public String getActionName() {
+			return I18n.getString("action.keep_pulse_at_x", destPulse);
 		}
 	}
 }
