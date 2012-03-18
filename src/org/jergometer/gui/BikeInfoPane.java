@@ -57,10 +57,17 @@ public class BikeInfoPane extends JEditorPane implements HyperlinkListener {
 	}
 
 	public void setContext(VelocityContext context) {
-		Writer writer = new StringWriter();
+		final Writer writer = new StringWriter();
 		context.put("bgColor", Integer.toHexString(getBackground().getRGB() & 0x00ffffff));
 		template.merge(context, writer);
-		setText(writer.toString());
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					setText(writer.toString());
+				}
+			});
+		} catch (Exception ignored) {
+		}
 	}
 
 	public void resetValues() {
