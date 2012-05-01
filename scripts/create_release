@@ -25,10 +25,16 @@ tar -czf $prefix.tar.gz $programName
 mv $prefix.* releases/
 
 # create symbolic links (last.*)
+#cd releases
+#for ext in zip tar.gz; do
+#	[ -e $programName-latest.$ext ] && rm $programName-latest.$ext
+#	ln -s $prefix.$ext $programName-latest.$ext
+#done
+
+# create new redirects for latest versions
 cd releases
-for ext in zip tar.gz; do
-	[ -e $programName-latest.$ext ] && rm $programName-latest.$ext
-	ln -s $prefix.$ext $programName-latest.$ext
-done
+echo 'Redirect /releases/$programName-latest.tar.gz /releases/$prefix.tar.gz
+Redirect /releases/$programName-latest.zip /releases/$prefix.zip
+' >.htaccess
 
 cd ../..
