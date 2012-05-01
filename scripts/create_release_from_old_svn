@@ -1,12 +1,13 @@
 #!/bin/bash
 
 programName=JErgometer
+svnRepo=https://jergometer.org/svn/jergometer
 
 version=$1
 prefix=$programName-$version
 
 # tag this release
-git tag -a "v$version" -m "version $version"
+svn copy . $svnRepo/tags/$version -m "released version $version"
 
 mkdir -p dist/releases
 
