@@ -1,0 +1,8 @@
+.idea
+build
+dist
+out
+*.iml
+build.number
+last_version
+simulator.session
