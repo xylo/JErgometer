@@ -1,7 +1,10 @@
 Changelog for JErgometer
 """"""""""""""""""""""""
 
-== Coming 0.7.13 ==
+== 0.7.13 ==
+
+2012-05-01
+* [stefan]  * fixed bug #285: program updater does not set executable property of scripts after update
 
 2012-03-18
 * [stefan]  * implemented issue #272: one key to select power during the training
@@ -30,7 +33,7 @@ Changelog for JErgometer
 == 0.7.11 ==
 
 2011-04-07
-* [stefan]  * fixed bug #249: incorrect distance and speed displayed (has to be devided by 10)
+* [stefan]  * fixed bug #249: incorrect distance and speed displayed (has to be divided by 10)
             * implemented issue #167: mark real pulse red when pulse information is missing
             * implemented issue #250: display units for distance, speed, power, ...
             * implemented issue #251: select last training program after start

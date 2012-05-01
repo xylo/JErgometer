@@ -239,8 +239,17 @@ public class ProgramUpdater extends JFrame implements ActionListener {
 
 	  // move files in update dir to .
 	  File[] files2move = updateDir.listFiles();
-	  for (File file : files2move) {
-	    file.renameTo(new File(file.getName()));
+		assert files2move != null;
+		for (File file : files2move) {
+			File destFile = new File(file.getName());
+			file.renameTo(destFile);
+			if (file.getName().endsWith(".sh") && !SystemUtils.isWinOS()) {
+				try {
+					SystemUtils.exec(new String[] {"chmod", "uog+x", destFile.getAbsolutePath()});
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 	  }
 
 	  // remove the update dir
