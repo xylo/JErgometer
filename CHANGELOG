@@ -1,7 +1,13 @@
 Changelog for JErgometer
 """"""""""""""""""""""""
 
-== 0.7.13 ==
+== 0.8.2 ==
+
+2012-05-01
+* [stefan]  * fixed inconsistency between version numbers in CHANGELOG and versions of releases
+            *
+
+== 0.8.1 ==
 
 2012-05-01
 * [stefan]  * fixed bug #285: program updater does not set executable property of scripts after update
@@ -17,7 +23,7 @@ Changelog for JErgometer
 2012-03-10
 * [stefan]  * implemented issue #273: provide alternative to buggy RXTX library (socat)
 
-== 0.7.12 ==
+== 0.8.0 ==
 
 2011-04-26
 * [stefan]  * fixed popup menu of program tree
