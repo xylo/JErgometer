@@ -34,7 +34,6 @@ public class BikeInfoPane extends JEditorPane implements HyperlinkListener {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent componentEvent) {
-				System.out.println(1);
 				setDoubleBuffered(true);
 			}
 		});
