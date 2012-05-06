@@ -5,6 +5,7 @@ Changelog for JErgometer
 
 2012-05-06
 * [stefan]  * fixed bug #287: Connection test fails with RXTX driver
+            * implemented issue #286: show error message when socat execution fails
 
 2012-05-01
 * [stefan]  * fixed inconsistency between version numbers in CHANGELOG and versions of releases

@@ -3,6 +3,7 @@ package org.jergometer.communication;
 import gnu.io.UnsupportedCommOperationException;
 import org.jergometer.model.DataRecord;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**

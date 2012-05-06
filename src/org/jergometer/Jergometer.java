@@ -202,7 +202,16 @@ public class Jergometer implements BikeListener, ActionListener, WindowListener 
 			throw new UnconfiguredSerialPortException();
 		}
 
-		bikeConnector.connect(serialPort, this);
+		try {
+			bikeConnector.connect(serialPort, this);
+		} catch (IOException e) {
+			if (e.getMessage().equals("Cannot run program \"/usr/bin/socat\": java.io.IOException: error=2, No such file or directory")) {
+				JOptionPane.showMessageDialog(mainWindow, I18n.getString("msg.socat_not_found"), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(mainWindow, e.getMessage(), I18n.getString("error_dialog.title"), JOptionPane.ERROR_MESSAGE);
+			}
+			throw e;
+		}
 	}
 
 	/**
