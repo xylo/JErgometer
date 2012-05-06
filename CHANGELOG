@@ -1,7 +1,7 @@
 Changelog for JErgometer
 """"""""""""""""""""""""
 
-== Coming 0.8.2 ==
+== 0.8.2 ==
 
 2012-05-06
 * [stefan]  * fixed bug #287: Connection test fails with RXTX driver
