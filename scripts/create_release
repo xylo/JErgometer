@@ -33,8 +33,8 @@ mv $prefix.* releases/
 
 # create new redirects for latest versions
 cd releases
-echo 'Redirect /releases/$programName-latest.tar.gz /releases/$prefix.tar.gz
+echo "Redirect /releases/$programName-latest.tar.gz /releases/$prefix.tar.gz
 Redirect /releases/$programName-latest.zip /releases/$prefix.zip
-' >.htaccess
+" >.htaccess
 
 cd ../..
